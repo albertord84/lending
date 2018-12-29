@@ -43,7 +43,6 @@ class Welcome extends CI_Controller {
         $params['SCRIPT_VERSION']=$GLOBALS['sistem_config']->SCRIPT_VERSION;
         $params['key']=$_SESSION['key'];
         $this->load->view('home',$params);
-        //$this->load->view('inc/footer');
     }
     
     public function checkout() {

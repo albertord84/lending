@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-
-        <title>Empréstimos na hora</title>
+        <title>Empréstimos sem burocracia e rápido</title>
 
         <!-- Bootstrap core CSS -->
         <link href="<?php echo base_url()?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -21,432 +19,315 @@
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css546d.css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
         <!-- Custom styles for this template -->
-        <link href="<?php echo base_url()?>assets/css/agency.min.css" rel="stylesheet">
-
+        <link href="<?php echo base_url()?>assets/css/agency.css" rel="stylesheet">
+        
+        <!-- Social icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <!-- Proper styles -->
+        <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">        
     </head>
 
   <body id="page-top">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav text-uppercase ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team">Team</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
-            </li>
-          </ul>
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Ziglar</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              Menu
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger " href="#services">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </li>            
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger " href="#services">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>            
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#how-function">Como funciona</a>
+                    </li>           
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#contact">Contate-nos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#about">Quens somos</a>
+                    </li>           
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
 
     <!-- Header -->
-    <header class="masthead">
-      <div class="container">
-        <div class="intro-text">
-          <div class="intro-lead-in">Welcome To Our Studio!</div>
-          <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
-          <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+    <header class="masthead text-left">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Solicite seu empréstimo aqui</div>
+                <div class="intro-heading text-uppercase">Rápido e sem burocracia</div>
+                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Simule agora</a>
+            </div>
         </div>
-      </div>
     </header>
 
     <!-- Services -->
-    <section id="services">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Services</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
+    <section id="services" class="bg-light">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Fácil</h4>
+                    <p class="text-muted">Transforme o limite do seu cartão de crédito em dinheiro na sua conta em até 24 horas.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Rápido</h4>
+                    <p class="text-muted">Saque de R$ 300,00 a 5.000,00 em até 12x, com taxa a partir de 3,99% a.m.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Seguro</h4>
+                    <p class="text-muted">Pague as prestações através da fatura do seu cartão de crédito.</p>
+                </div>
+            </div>
         </div>
-        <div class="row text-center">
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">E-Commerce</h4>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-          </div>
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">Responsive Design</h4>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-          </div>
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">Web Security</h4>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Portfolio Grid -->
-    <section class="bg-light" id="portfolio">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Portfolio</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/01-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Threads</h4>
-              <p class="text-muted">Illustration</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/02-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Explore</h4>
-              <p class="text-muted">Graphic Design</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal3">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/03-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Finish</h4>
-              <p class="text-muted">Identity</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal4">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/04-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Lines</h4>
-              <p class="text-muted">Branding</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal5">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/05-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Southwest</h4>
-              <p class="text-muted">Website Design</p>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#portfolioModal6">
-              <div class="portfolio-hover">
-                <div class="portfolio-hover-content">
-                  <i class="fas fa-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="<?php echo base_url()?>assets/img/portfolio/06-thumbnail.jpg" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>Window</h4>
-              <p class="text-muted">Photography</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- About -->
     <section id="about">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">About</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <ul class="timeline">
-              <li>
-                <div class="timeline-image">
-                  <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/1.jpg" alt="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">Como funciona?</h2>
+                    <h3 class="section-subheading text-muted">Veja o passo a passo.</h3>
                 </div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4>2009-2011</h4>
-                    <h4 class="subheading">Our Humble Beginnings</h4>
-                  </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                  </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="timeline">
+                        <li>
+                            <div class="timeline-image">
+                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/1.jpg" alt="">
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <h4>Passo 1.</h4>
+                                    <h4 class="subheading">Simule o valor desejado</h4>
+                                </div>
+                                <div class="timeline-body">
+                                    <p class="text-muted">Você entra o valor que deseja tomar emprestado e o número de parcelas em que deseja pagar. Nós lhe informamos o valor de cada parcela e a quantidade total a pagar. </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="timeline-inverted">
+                            <div class="timeline-image">
+                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/2.jpg" alt="">
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <h4>Passo 2.</h4>
+                                    <h4 class="subheading">Adicione seus dados e documentos</h4>
+                                </div>
+                              <div class="timeline-body">
+                                    <p class="text-muted">Voce fornece digitalmente os dados pessoais, dados do cartão de crédito, dados bancários e documentos de identificação para formalizar-mos o empréstimo. Por último, você assina digitalmente o contrato.</p>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="timeline-image">
+                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/3.jpg" alt="">
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <h4>Passo 3.</h4>
+                                    <h4 class="subheading">Análise de dados e documentos</h4>
+                                </div>
+                              <div class="timeline-body">
+                                    <p class="text-muted">A nossa equipe analisa seus dados e documentos na hora e a resposta sobre a aprovação do seu crédito é instantânea.</p>
+                              </div>
+                            </div>
+                        </li>
+                        <li class="timeline-inverted">
+                            <div class="timeline-image">
+                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/4.jpg" alt="">
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <h4>Passo 4.</h4>
+                                    <h4 class="subheading">Dinheiro na sua conta.</h4>
+                                </div>
+                                <div class="timeline-body">
+                                    <p class="text-muted">Após a aprovação do empréstimo, o dinheiro cai na sua conta em até 1 dia útil.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="timeline-inverted">                           
+                            <div class="timeline-image">
+                                <h4>Solicite
+                                    <br>o empréstimo
+                                    <br>agora!!
+                                </h4>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-              </li>
-              <li class="timeline-inverted">
-                <div class="timeline-image">
-                  <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/2.jpg" alt="">
-                </div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4>March 2011</h4>
-                    <h4 class="subheading">An Agency is Born</h4>
-                  </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="timeline-image">
-                  <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/3.jpg" alt="">
-                </div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4>December 2012</h4>
-                    <h4 class="subheading">Transition to Full Service</h4>
-                  </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                  </div>
-                </div>
-              </li>
-              <li class="timeline-inverted">
-                <div class="timeline-image">
-                  <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/4.jpg" alt="">
-                </div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4>July 2014</h4>
-                    <h4 class="subheading">Phase Two Expansion</h4>
-                  </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                  </div>
-                </div>
-              </li>
-              <li class="timeline-inverted">
-                <div class="timeline-image">
-                  <h4>Be Part
-                    <br>Of Our
-                    <br>Story!</h4>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+            </div>
       </div>
     </section>
 
-    <!-- Team -->
+    <!-- Feedbaks -->
     <section class="bg-light" id="team">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="team-member">
-              <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/1.jpg" alt="">
-              <h4>Kay Garland</h4>
-              <p class="text-muted">Lead Designer</p>
-              <ul class="list-inline social-buttons">
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-twitter"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-facebook-f"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-linkedin-in"></i>
-                  </a>
-                </li>
-              </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">Nossa reputação?</h2>
+                    <img src="<?php echo base_url()?>assets/img/avaliation-stars.jpeg" width="100px">
+                    <h3 class="section-subheading text-muted">Feedbacks de cleintes satisfeitos como o nosso seviço.</h3>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="team-member">
-              <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/2.jpg" alt="">
-              <h4>Larry Parker</h4>
-              <p class="text-muted">Lead Marketer</p>
-              <ul class="list-inline social-buttons">
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-twitter"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-facebook-f"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-linkedin-in"></i>
-                  </a>
-                </li>
-              </ul>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/1.jpg" alt="">
+                        <h4>Margarida Monteiro</h4>
+                        <b class="text-muted">Lojista</b>
+                        <p class="text-muted">"Sou mãe, estava precisando muito de dinheiro em espécie, os juros de empréstimos em outros lugares são muito altos e decidi usar esse serviço. Agradeço muito essa App por ter me ajudado... <br>Obrigado!"</p>                        
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/2.jpg" alt="">
+                        <h4>Leonam Ferreira</h4>
+                        <b class="text-muted">Microempreendedor</b>
+                        <p class="text-muted">"Sou MEI, precisava de dinheiro em epécie para comprar mais insumos no atacado. Solicitei um empréstimo e em menos de 24 horas já tinha o dinheiro solicitado <br> na minha conta. Graças a Lending  não fui à falhencia..."</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/3.jpg" alt="">
+                    <h4>Vanessa Pereira</h4>
+                    <b class="text-muted">Professora</b>                    
+                    <p class="text-muted">"Juros bem abaixo comparado com outras fontes disponíveis, envio de documentos totalmente digital e fácil, reposta de aprovação bem rápida, e recibi o dinheiro em 12 horas, esse serviço é muito bom. Voltaria a usar com certeza..."</p>
+                  </div>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="team-member">
-              <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/3.jpg" alt="">
-              <h4>Diana Pertersen</h4>
-              <p class="text-muted">Lead Developer</p>
-              <ul class="list-inline social-buttons">
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-twitter"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-facebook-f"></i>
-                  </a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="#">
-                    <i class="fab fa-linkedin-in"></i>
-                  </a>
-                </li>
-              </ul>
+            <hr>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h4>Aos nossos clientes:</h4>
+                  <p class="large text-muted">
+                      "Obrigado por nos visitar e solicitar nosso serviço! Nós estamos contentes que você encontrou o que estava procurando. Nosso objetivo é a sua satisfação. Atentamente, Lending -:)"</p>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="row">
-          <div class="col-lg-8 mx-auto text-center">
-            <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-          </div>
-        </div>
-      </div>
     </section>
-
-    <!-- Clients -->
-    <section class="py-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 col-sm-6">
-            <a href="#">
-              <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/logos/envato.jpg" alt="">
-            </a>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <a href="#">
-              <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/logos/designmodo.jpg" alt="">
-            </a>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <a href="#">
-              <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/logos/themeforest.jpg" alt="">
-            </a>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <a href="#">
-              <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/logos/creative-market.jpg" alt="">
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    
     <!-- Contact -->
     <section id="contact">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Contact Us</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <form id="contactForm" name="sentMessage" novalidate="novalidate">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
+        <div class="container">
+            <div class="row">
                 <div class="col-lg-12 text-center">
-                  <div id="success"></div>
-                  <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                    <h2 class="section-heading text-uppercase" style="color: black">Contate-nos</h2>
+                    <h3 class="section-subheading text-muted">Agradecemos seu contato desde já. Em breve responderemos.</h3>
                 </div>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div class="row">                
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10">
+                    <form id="contact-form" name="sentMessage" novalidate="novalidate">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
         </div>
-      </div>
+    </section>
+    
+    <!--QUENS SOMOS-->
+    <section id="how-we-are" style="color: white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase" >Quens somos?</h2>
+                    <div class="">
+                        <a href="#lnk_home_start">
+                            <img src="https://doorig.com/assets/images/resources/logo-footer-white.png" width="200px" alt="Footer Logo">
+                        </a>
+                    </div>
+                </div>
+            </div>   
+            <br>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-5">
+                    <div class="text-justify">
+                        <p>A Lending é uma plataforma de crédito on-line que segue as diretrizes do Banco Central do Brasil, nos termos da 
+                            <a href="https://www.bcb.gov.br/pre/normativos/res/2011/pdf/res_3954_v7_L.pdf">Resolução nº. 3.954</a>, de 24 de fevereiro de 2011. </p>
+                        <p>O Custo Efetivo Total (CET) praticado varia de 56,68% a 98,32% ao ano, já incluindo a taxa de juros mensal que varia de 3,99% a 9,95% e a taxa de abertura de cadastro (TAC) de 20% sobre o valor tomado.</p>
+                        <p>Coronel Moreira César, 160, Icaraí, Niterói - RJ, 24230-061.</p>
+                        <p>CNPJ - 999.9999.9999.99</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="single-footer-widget pd-top pd-left">
+                         <div class="title">
+                            <h5>Notícias e promoções?</h5>
+                        </div>
+                        <p>Subscreva-se e receba nossas notícias e novidades em primeira mão!</p>
+                        <form id="contactForm" name="sentMessage" novalidate="novalidate">
+                            <div class="form-group">
+                                <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                            </div>
+                        </form>               
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -454,7 +335,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <span class="copyright">Copyright &copy; Your Website 2018</span>
+            <span class="copyright">Copyright &copy; Lending <?php echo date("Y",time());?></span>
           </div>
           <div class="col-md-4">
             <ul class="list-inline social-buttons">
@@ -488,9 +369,7 @@
         </div>
       </div>
     </footer>
-
-    <!-- Portfolio Modals -->
-
+    
     <!-- Modal 1 -->
     <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
