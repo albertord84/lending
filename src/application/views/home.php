@@ -33,7 +33,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">Ziglar</a>
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lending</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               Menu
               <i class="fas fa-bars"></i>
@@ -51,13 +51,13 @@
                         </a>
                     </li>            
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#how-function">Como funciona</a>
+                        <a class="nav-link js-scroll-trigger" href="#about">Como funciona</a>
                     </li>           
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#contact">Contate-nos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#about">Quens somos</a>
+                        <a class="nav-link js-scroll-trigger" href="#who-we-are">Quens somos</a>
                     </li>           
                 </ul>
             </div>
@@ -70,7 +70,7 @@
             <div class="intro-text">
                 <div class="intro-lead-in">Solicite seu empréstimo aqui</div>
                 <div class="intro-heading text-uppercase">Rápido e sem burocracia</div>
-                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Simule agora</a>
+                <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#">Simule agora</a>
             </div>
         </div>
     </header>
@@ -121,12 +121,13 @@
                     <ul class="timeline">
                         <li>
                             <div class="timeline-image">
-                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/1.jpg" alt="">
+                                <!--class="rounded-circle img-fluid"-->
+                                <img class="my-round-circle" src="<?php echo base_url()?>assets/img/about/1.jpg" alt="">
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>Passo 1.</h4>
-                                    <h4 class="subheading">Simule o valor desejado</h4>
+                                    <h4>Passo 1</h4>
+                                    <h4 class="subheading">Simule o valor desejado.</h4>
                                 </div>
                                 <div class="timeline-body">
                                     <p class="text-muted">Você entra o valor que deseja tomar emprestado e o número de parcelas em que deseja pagar. Nós lhe informamos o valor de cada parcela e a quantidade total a pagar. </p>
@@ -135,12 +136,12 @@
                         </li>
                         <li class="timeline-inverted">
                             <div class="timeline-image">
-                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/2.jpg" alt="">
+                                <img class="my-round-circle" src="<?php echo base_url()?>assets/img/about/2.jpg" alt="">
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>Passo 2.</h4>
-                                    <h4 class="subheading">Adicione seus dados e documentos</h4>
+                                    <h4>Passo 2</h4>
+                                    <h4 class="subheading">Adicione seus dados e documentos.</h4>
                                 </div>
                               <div class="timeline-body">
                                     <p class="text-muted">Voce fornece digitalmente os dados pessoais, dados do cartão de crédito, dados bancários e documentos de identificação para formalizar-mos o empréstimo. Por último, você assina digitalmente o contrato.</p>
@@ -149,12 +150,12 @@
                         </li>
                         <li>
                             <div class="timeline-image">
-                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/3.jpg" alt="">
+                                <img class="my-round-circle" src="<?php echo base_url()?>assets/img/about/3.jpg" alt="">
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>Passo 3.</h4>
-                                    <h4 class="subheading">Análise de dados e documentos</h4>
+                                    <h4>Passo 3</h4>
+                                    <h4 class="subheading">Análise de dados e documentos.</h4>
                                 </div>
                               <div class="timeline-body">
                                     <p class="text-muted">A nossa equipe analisa seus dados e documentos na hora e a resposta sobre a aprovação do seu crédito é instantânea.</p>
@@ -163,7 +164,7 @@
                         </li>
                         <li class="timeline-inverted">
                             <div class="timeline-image">
-                                <img class="rounded-circle img-fluid" src="<?php echo base_url()?>assets/img/about/4.jpg" alt="">
+                                <img class="my-round-circle" src="<?php echo base_url()?>assets/img/about/4.jpg" alt="">
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
@@ -177,10 +178,7 @@
                         </li>
                         <li class="timeline-inverted">                           
                             <div class="timeline-image">
-                                <h4>Solicite
-                                    <br>o empréstimo
-                                    <br>agora!!
-                                </h4>
+                                <a id="simule-now-2" href="#" style="color:white"><h4>Simule seu<br>empréstimo <br>agora!!</h4></a>
                             </div>
                         </li>
                     </ul>
@@ -252,28 +250,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
+                                    <input class="form-control" id="name" type="text" placeholder="Nome Completo *" required="required" data-validation-required-message="Please enter your name.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
+                                    <input class="form-control" id="email" type="email" placeholder="Email *" required="required" data-validation-required-message="Please enter your email address.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                    <input class="form-control" id="phone" type="tel" placeholder="Telefone *" required="required" data-validation-required-message="Please enter your phone number.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
+                                    <textarea class="form-control" id="message" placeholder="Mensagem *" required="required" data-validation-required-message="Please enter a message."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Enviar Mensagem</button>
                             </div>
                         </div>
                     </form>
@@ -284,7 +282,7 @@
     </section>
     
     <!--QUENS SOMOS-->
-    <section id="how-we-are" style="color: white">
+    <section id="who-we-are" style="color: white">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -316,11 +314,11 @@
                         <p>Subscreva-se e receba nossas notícias e novidades em primeira mão!</p>
                         <form id="contactForm" name="sentMessage" novalidate="novalidate">
                             <div class="form-group">
-                                <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                <input class="form-control" id="phone" type="tel" placeholder="Email *" required="required" data-validation-required-message="Please enter your phone number.">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Subscrever-se</button>
                             </div>
                         </form>               
                     </div>
@@ -338,12 +336,7 @@
             <span class="copyright">Copyright &copy; Lending <?php echo date("Y",time());?></span>
           </div>
           <div class="col-md-4">
-            <ul class="list-inline social-buttons">
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="fab fa-twitter"></i>
-                </a>
-              </li>
+            <ul class="list-inline social-buttons">              
               <li class="list-inline-item">
                 <a href="#">
                   <i class="fab fa-facebook-f"></i>
@@ -351,18 +344,15 @@
               </li>
               <li class="list-inline-item">
                 <a href="#">
-                  <i class="fab fa-linkedin-in"></i>
+                  <i class="fab fa-instagram"></i>
                 </a>
               </li>
             </ul>
           </div>
           <div class="col-md-4">
-            <ul class="list-inline quicklinks">
+            <ul class="list-inline quicklinks">              
               <li class="list-inline-item">
-                <a href="#">Privacy Policy</a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">Terms of Use</a>
+                <a href="#">Termos de Uso</a>
               </li>
             </ul>
           </div>
