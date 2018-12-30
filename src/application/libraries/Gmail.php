@@ -1,16 +1,12 @@
 <?php
-
-
-//namespace follows\cls {
+    //This example shows settings to use when sending via Google's Gmail servers.
     //SMTP needs accurate times, and the PHP time zone MUST be set
     //This should be done in your php.ini, but this is how to do it if you don't have access to that
     date_default_timezone_set('Etc/UTC');
-    //require_once 'libraries/PHPMailer-master/PHPMailerAutoload.php';
-    
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/follows/src/externals/PHPMailer-master/PHPMailerAutoload.php';
-    
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/PHPMailer-master/PHPMailerAutoload.php';
     class Gmail {
-        public $mail = NULL;
+        protected $mail = NULL;
+        
         public function __construct() {
             //Create a new PHPMailer instance
             $this->mail = new \PHPMailer;
@@ -25,34 +21,23 @@
             $this->mail->Debugoutput = 'html';
             //Set the hostname of the mail server
             $this->mail->Host = 'smtp.gmail.com'; // dumbu.system
-            //$this->mail->Host = 'imap.gmail.com'; // atendimento
+            
             // use
             // $mail->Host = gethostbyname('smtp.gmail.com');
             // if your network does not support SMTP over IPv6
             //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
             $this->mail->Port = 587; // dumbu.system
-            //$this->mail->Port = 993; // atendimento
             //Set the encryption system to use - ssl (deprecated) or tls
             $this->mail->SMTPSecure = 'tls'; // dumbu.system
-            //$this->mail->SMTPSecure = 'ssl'; // atendimento
             //Whether to use SMTP authentication
             $this->mail->SMTPAuth = true; // dumbu.system
-            //$this->mail->SMTPAuth = false; // atendimento
             //Username to use for SMTP authentication - use full email address for gmail
-            //$this->mail->Username = $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN;
-            //$this->mail->Username = $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN;
-            //$this->mail->Username = $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN3;
-            $this->mail->Username = $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN;
+            $this->mail->Username = $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN;//'josergm86';
             //Password to use for SMTP authentication
-            //$this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS;
-            //$this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS2;
-            //$this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS3;
-            $this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS;
+            $this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS;//'78578122522624666';
             //Set who the message is to be sent from
-            //$this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL, 'DUMBU');
-            //$this->mail->setFrom($GLOBALS['sistem_config']->ATENDENT_EMAIL, 'DUMBU');
-            //$this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL3, 'DUMBU');           
-            $result = $this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL, 'DUMBU');
+            //$this->mail->setFrom('josergm86@gmail.com', 'CreditSociety');
+            $this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL, 'Livre.digital');
         }
         
         public function send_mail($useremail, $username, $subject, $mail) {
@@ -82,267 +67,30 @@
             $this->mail->smtpClose();
             return $result;
         }
-        public function send_client_login_error($useremail, $username, $instaname, $instapass = NULL) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
+       
+        public function send_client_contact_form($username, $useremail, $usermsg) {
+            $aaa = $GLOBALS['sistem_config']->ATENDENT_EMAIL;
             $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail, $username);
-            $this->mail->clearCCs();
-            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            //Set the subject line
-            //$this->mail->Subject = 'DUMBU Problemas no seu login';
-            $this->mail->Subject = 'DUMBU Problem with your login';
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $instaname = urlencode($instaname);
-            $instapass = urlencode($instapass);
-            //$this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //Replace the plain text body with one created manually
-            //$this->mail->AltBody = 'DUMBU Problemas no seu login';
-            $this->mail->AltBody = 'DUMBU Problem with your login';
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-        }
-        public function send_client_not_rps($useremail, $username, $instaname, $instapass) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
-            $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail, $username);
-            $this->mail->clearCCs();
-            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            //Set the subject line
-            //$this->mail->Subject = 'DUMBU Cliente sem perfis de referencia';
-            $this->mail->Subject = 'DUMBU Client without reference profiles alert';
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $instaname = urlencode($instaname);
-            $instapass = urlencode($instapass);
-            //$this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/not_reference_profiles.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //Replace the plain text body with one created manually
-            //$this->mail->AltBody = 'DUMBU Cliente sem perfis de referência';
-            $this->mail->AltBody = 'DUMBU Client without reference profiles alert';
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-        }
-        public function send_client_payment_error($useremail, $username, $instaname, $instapass, $diff_days = 0) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
-            $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail, $username);
-            $this->mail->clearCCs();
-            //$this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            //Set the subject line
-            //$this->mail->Subject = "DUMBU Problemas de pagamento $diff_days dia(s)";
-            $this->mail->Subject = "DUMBU Payment Issues $diff_days day(s)";
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $instaname = urlencode($instaname);
-            $instapass = urlencode($instapass);
-            //$this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/payment_error.php?username=$username&instaname=$instaname&instapass=$instapass&diff_days=$diff_days"), dirname(__FILE__));
-            //Replace the plain text body with one created manually
-            //$this->mail->AltBody = 'DUMBU Problemas de pagamento';
-            $this->mail->Subject = "DUMBU Payment Issues";
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-                //print "<b>Informações do erro:</b> " . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-        }
-        public function send_client_payment_success($useremail, $username, $instaname, $instapass) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
-            $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail, $username);
-            $this->mail->clearCCs();
-            //            $this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            //Set the subject line
-            //$this->mail->Subject = 'DUMBU Assinatura aprovada com sucesso!';
-            $this->mail->Subject = 'DUMBU Sign in successfully approved!';
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $instaname = urlencode($instaname);
-            $instapass = urlencode($instapass);
-            //$this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/payment_success.php?username=$username&instaname=$instaname"), dirname(__FILE__));
-            //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Sign in successfully approved!';
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-        }
-        public function send_client_contact_form($username, $useremail, $usermsg, $usercompany = NULL, $userphone = NULL) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to           
-            $this->mail->clearAddresses();
-            $this->mail->addAddress($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
             $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
             $this->mail->clearReplyTos();
             $this->mail->addReplyTo($useremail, $username);
-            $this->mail->isHTML(true);
             //Set the subject line
             $this->mail->Subject = "User Contact: $username";
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $username = urlencode($username);
-            $usermsg = urlencode($usermsg);
-            $usercompany = urlencode($usercompany);
-            $userphone = urlencode($userphone);
-           
-           // $this->mail->msgHTML(@file_get_contents("http://dumbu.one/follows/src/resources/emails/contact_form.php?username=$username&useremail=$useremail&usercompany=$usercompany&userphone=$userphone&usermsg=$usermsg"), dirname(__FILE__));
-            
-            $this->mail->msgHTML(@file_get_contents("http://". $_SERVER['SERVER_NAME'] ."/follows/src/resources/emails/contact_form.php?username=$username&useremail=$useremail&usercompany=$usercompany&userphone=$userphone&usermsg=$usermsg"), dirname(__FILE__));
-            //$this->mail->Body = $usermsg;
-            //Replace the plain text body with one created manually
-            $this->mail->AltBody = "User Contact: $username";
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            //-------------Alberto
-            /* if (!$this->mail->send()) {
-              echo "Mailer Error: " . $this->mail->ErrorInfo;
-              } else {
-              echo "Message sent!";
-              }
-              $this->mail->smtpClose(); */
-            //-------------Jose R
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-            //-------------------
-        }
-        public function send_new_client_payment_done($username, $useremail, $plane = 0) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
-            $this->mail->clearAddresses();
-            //$this->mail->addAddress($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->clearReplyTos();
-            $this->mail->addReplyTo($useremail, $username);
-            //Set the subject line
-            $this->mail->Subject = 'New Client with payment!';
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $plane = urlencode($plane);
-            //$this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
-            $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $email_msg = "http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/emails/new_client_with_payment.php?username=$username&useremail=$useremail";
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/new_client_with_payment.php?username=$username&useremail=$useremail&plane=$plane"), dirname(__FILE__));
-            //Replace the plain text body with one created manually
-            $this->mail->AltBody = 'New Client with payment';
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
-            //-------------Alberto
-            /* if (!$this->mail->send()) {
-              echo "Mailer Error: " . $this->mail->ErrorInfo;
-              } else {
-              echo "Message sent!";
-              }
-              $this->mail->smtpClose(); */
-            //-------------Jose R
-            if (!$this->mail->send()) {
-                $result['success'] = false;
-                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
-            } else {
-                $result['success'] = true;
-                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
-            }
-            $this->mail->smtpClose();
-            return $result;
-            //-------------------
-        }
-        
-        public function  sendAuthenticationErrorMail($username, $useremail)
-        {}
-        
-        public function send_link_ticket_bank_and_access_link($username, $useremail, $access_link, $ticket_link)
-        {      
-            $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail);
-            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-            $this->mail->clearReplyTos();
+            $usermsg  = urlencode($usermsg);
+            $file = "http://".$_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/contact_form.php?username=$username&useremail=$useremail&userphone=$userphone&usermsg=$usermsg";
+            //echo $file;
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
             $this->mail->isHTML(true);
-            $this->mail->Subject = "Ticket bank generated successfully!!";
-            $username = urlencode($username);
-            $access_link = urlencode($access_link);
-            $ticket_link = urlencode($ticket_link);
-            $this->mail->msgHTML(@file_get_contents("http://". $_SERVER['SERVER_NAME'] ."/follows/src/resources/emails/tiket_bank.php?username=$username&access_link=$access_link&ticket_link=$ticket_link"), dirname(__FILE__));
-            //$this->mail->AltBody = "Boleto bancário de: $username";
+            
+            //$a=file_get_contents($file);
+            $this->mail->msgHTML(@file_get_contents($file), dirname(__FILE__));
+            //$this->mail->Body = $this->curl_get_contents($file);
+            //Replace the plain text body with one created manually
+            $this->mail->AltBody = "User Contact: $username";            
             if (!$this->mail->send()) {
                 $result['success'] = false;
                 $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
@@ -354,36 +102,26 @@
             return $result;
         }
         
-        public function send_user_to_purchase_step($useremail, $username, $instaname, $purchase_access_token) {
-            //Set an alternative reply-to address
-            //$mail->addReplyTo('albertord@ic.uff.br', 'First Last');
-            //Set who the message is to be sent to
+        public function transaction_email_approved($name, $useremail, $account, $agency, $bank_name, $full_name) {
             $this->mail->clearAddresses();
-            $this->mail->addAddress($useremail, $username);
+            $this->mail->addAddress($useremail, $name);
             $this->mail->clearCCs();
-            //            $this->mail->addCC($GLOBALS['sistem_config']->SYSTEM_EMAIL, $GLOBALS['sistem_config']->SYSTEM_USER_LOGIN);
-            //$this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
             $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
-
-            //Set the subject line
-            $this->mail->Subject = 'DUMBU Continuar com o cadastro!';
-
-            //Read an HTML message body from an external file, convert referenced images to embedded,
-            //convert HTML into a basic plain-text alternative body
-            $username = urlencode($username);
-            $instaname = urlencode($instaname);
-            $purchase_access_token = urlencode($purchase_access_token);
-            //            $this->mail->msgHTML(file_get_contents("http://localhost/follows/src/resources/emails/login_error.php?username=$username&instaname=$instaname&instapass=$instapass"), dirname(__FILE__));
-            //echo "http://" . $_SERVER['SERVER_NAME'] . "<br><br>";
+            $this->mail->Subject = 'Aprovado! - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);           
+            $account = urlencode($account);           
+            $bank_name = urlencode($bank_name);           
+            $agency = urlencode($agency);           
+            $full_name = urlencode($full_name);           
             $lang = $GLOBALS['sistem_config']->LANGUAGE;
-            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/follows/src/resources/$lang/emails/link_purchase_step.php?username=$username&instaname=$instaname&purchase_access_token=$purchase_access_token"), dirname(__FILE__));
-
-            //Replace the plain text body with one created manually
-            $this->mail->Subject = 'DUMBU Account Confirmation!';
-
-            //Attach an image file
-            //$mail->addAttachment('images/phpmailer_mini.png');
-            //send the message, check for errors
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-aprovado.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-aprovado.php?name=$name&account=$account&agency=$agency&bank_name=$bank_name&full_name=$full_name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));            
             if (!$this->mail->send()) {
                 $result['success'] = false;
                 $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
@@ -394,5 +132,327 @@
             $this->mail->smtpClose();
             return $result;
         }
+        
+        function curl_get_contents($url){
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        }
+        
+        public function transaction_request_new_photos($name, $useremail,$link) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Suas fotos não foram aprovadas - Livre.digital';            
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            
+            $name = urlencode($name);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;            
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-fotos-recusadas.php?name=$name&link=$link"), dirname(__FILE__));            
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-fotos-recusadas.php?name=$name&link=$link");            
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_request_new_account_bank($name, $useremail,$link) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Atualize seus dados bancários - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';            
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            
+            $name = urlencode($name);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-dados-bancarios.php?name=$name&link=$link");
+            $this->mail->msgHTML(@file_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-dados-bancarios.php?name=$name&link=$link"), dirname(__FILE__));            
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_request_new_sing_us($name, $useremail,$link) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Envie sua assinatura - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-nova-assinatura_easy.php?name=$name&link=$link");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-nova-assinatura_easy.php?name=$name&link=$link";
+
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_request_recused($name,$useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Solicitação cancelada - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-cancelada.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-cancelada.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function credit_card_recused($name,$useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Pedido negado - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-negado.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-negado.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_email_almost($name, $useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Dados enviados com sucesso! - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);           
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-almost.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-almost.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_email_trans_in_process($name, $useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Falta pouco! Seus dados foram aprovados! - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);           
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-in_process.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-in_process.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_email_conclua($name, $useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Conclua seu cadastro - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);           
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-conclua.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-conclua.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function transaction_email_ainda_precisa($name, $useremail) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Ainda precisa do crédito solicitado? - Livre.digital';
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);           
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-ainda_precisa.php?name=$name");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-ainda_precisa.php?name=$name";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function credor_ccb($name, $useremail,$ccb) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = 'Informação sobre sua transação - Livre.digital';            
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);
+            $ccb = urlencode($ccb);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+
+            //$this->mail->Body = $this->curl_get_contents("https://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/credor-ccb.php?name=$name&ccb=$ccb");
+            $file = "http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/credor-ccb.php?name=$name&ccb=$ccb";
+            $this->mail->msgHTML(file_get_contents($file), dirname(__FILE__));
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+        
+        public function email_iugu_report($name, $useremail, $subject, $text) {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($useremail, $name);
+            $this->mail->clearCCs();
+            $this->mail->addCC($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->addReplyTo($GLOBALS['sistem_config']->ATENDENT_EMAIL, $GLOBALS['sistem_config']->ATENDENT_USER_LOGIN);
+            $this->mail->Subject = $subject;
+            $this->mail->CharSet = 'UTF-8';
+            $this->mail->SMTPSecure = 'ssl';           
+            $this->mail->Port = 465;
+            $this->mail->isHTML(true);
+            $name = urlencode($name);
+            //$text = urlencode($text);
+            $lang = $GLOBALS['sistem_config']->LANGUAGE;
+            //$this->mail->Body = $this->curl_get_contents("http://" . $_SERVER['SERVER_NAME'] . "/lending/src/resources/emails/email-iugu-report.php?name=$name&text=$tex");
+            $message_body = 'Olá '.$name.'! Tudo bem?<br>';
+            $message_body .= '<p>'.$text.'<br><br>';
+            $message_body .= 'Se precisar de ajuda é só escrever! ';
+            $this->mail->Body = $message_body;
+            if (!$this->mail->send()) {
+                $result['success'] = false;
+                $result['message'] = "Mailer Error: " . $this->mail->ErrorInfo;
+            } else {
+                $result['success'] = true;
+                $result['message'] = "Message sent!" . $this->mail->ErrorInfo;
+            }
+            $this->mail->smtpClose();
+            return $result;
+        }
+                
     }
-//}
