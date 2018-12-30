@@ -12,7 +12,103 @@ class Welcome extends CI_Controller {
         parent::__construct();
     }
 
+    public function test_cr(){
+        $this->load->model('class/Crypt');
+        echo $this->Crypt->crypt('1');
+    }
+    
+    public function test5(){
+        //$this->load->model('class/transaction_model');
+        //$this->transaction_model->save_generated_bill(1, '33333333444444444');
+        //$hoje = strtotime("now");        
+        //$d = getdate($hoje);
+        //$da = date("Y-m-d");
+        //$this->robot_conciliation();
+        /*$trasactions = $this->topazio_conciliations("2018-09-20");
+        foreach ($trasactions as $t) {
+            var_dump($t);
+        }*/
+    }
+   
+    public function test3(){
+        /*$_SESSION['logged_role']= 'ADMIN';
+        $resp = $this->topazio_emprestimo(4); //1388,1542
+        if($resp['success']){
+            $this->transaction_model->save_in_db(
+                    'transactions',
+                    'id',4,
+                    'ccb_number',$resp['ccb']);                
+            $this->transaction_model->save_in_db(
+                    'transactions',
+                    'id',4,
+                    'contract_id',$resp['contract_id']);                
+            print_r("ok");
+        }/**/
+        //var_dump($resp);
+        /*
+        $phone_country_code = '+55';            
+        $phone_ddd = "21";
+        $phone_number = "982856319";
+        $message = "Um email foi enviado a seu email jjj@gmail.com. \\n\\n Se precisar fale conosco pelo e-mail seja@livre.digital";
+        $response_sms = $this->sms_message($phone_country_code, $phone_ddd, $phone_number, $message);         
+         */
+    }    
+        
+    public function test_sig(){
+        /*$id = 4;
+        $uudid_doc = $this->upload_document_template_D4Sign($id);
+        if($uudid_doc){
+            //4. cadastrar un signatario para ese docuemnto y guardar token del signatario
+            $token_signer = $this->signer_for_doc_D4Sign($id);
+            if($token_signer){
+                //5.  mandar a assinar
+                $result_send = $this->send_for_sign_document_D4Sign($id);
+                if($result_send){
+                    //2. salvar el status para WAIT_SIGNATURE
+                    $this->transaction_model->update_transaction_status(
+                                        $_SESSION['pk'], 
+                                        transactions_status::WAIT_SIGNATURE);
+                }
+            }
+        }*/
+    }
+    
+    public function update_acount_bank_by_user_id() {//para trabajar manual
+        $this->load->model('class/Transaction_model');    
+        $this->load->model('class/Crypt');  
+        $datas['pk']=198;
+        $datas['bank']=341;
+        $datas['agency']=1412;
+        $datas['account_type']='CC';
+        $datas['account']=50021;
+        $datas['dig']=5;  
+        
+        $datas1['client_id']=$datas['pk'];
+        $datas1['bank']= $this->Crypt->crypt($datas['bank']);
+        $datas1['agency']= $this->Crypt->crypt($datas['agency']);
+        $datas1['account_type']= $this->Crypt->crypt($datas['account_type']);
+        $datas1['account']= $this->Crypt->crypt($datas['account']);
+        $datas1['dig']= $this->Crypt->crypt($datas['dig']); 
+        
+        var_dump($datas1);
+    }
+    
+    public function conciliation_by_partnerId(){ 
+        $partnerId = $_GET['partnerId'];
+        $trasactions = $this->topazio_conciliations_by_partnerId($partnerId);
+        var_dump($trasactions);
+    }
+    
+    public function test_crontab(){
+        echo "<br>\n<br>\n----------  INIT TEST CRONTAB AT ".date('Y-m-d H:i:s',time());
+    }
+    
+    public function test_crontab2(){
+        echo "<br>\n<br>\n----------  INIT TEST CRONTAB2 AT ".date('Y-m-d H:i:s',time());
+    }
+    
     //-------VIEWS FUNCTIONS--------------------------------    
+
     public function index() {   
         if($this->is_ip_hacker_response()){
             die('Sitio atualmente inacessível');
@@ -43,9 +139,10 @@ class Welcome extends CI_Controller {
         $params['SCRIPT_VERSION']=$GLOBALS['sistem_config']->SCRIPT_VERSION;
         $params['key']=$_SESSION['key'];
         $this->load->view('home',$params);
+        //$this->load->view('inc/footer');
     }
     
-    public function checkout() {
+    public function wizard() {
         $this->load->model('class/track_money_model');
         //die('This functionalities is under development :-)');
         if(session_id()=='')header('Location: '.base_url());
@@ -979,7 +1076,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transactions_status');        
         $this->load->model('class/payment_manager');
         
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->Gmail = new Gmail();
         $params['SCRIPT_VERSION']=$GLOBALS['sistem_config']->SCRIPT_VERSION;
@@ -1203,7 +1300,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transactions_status');        
         $this->load->model('class/payment_manager');
         
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->Gmail = new Gmail();
         $params['SCRIPT_VERSION']=$GLOBALS['sistem_config']->SCRIPT_VERSION;
@@ -1376,7 +1473,7 @@ class Welcome extends CI_Controller {
     public function message() {
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $this->Gmail = new Gmail();        
         $datas = $this->input->post();
         $result = $this->Gmail->send_client_contact_form($datas['name'], $datas['email'], $datas['message']);
@@ -1495,7 +1592,7 @@ class Welcome extends CI_Controller {
                     $_SESSION['affiliates_databank_signin_datas'] = $datas;
                     $_SESSION['affiliates_steep_2'] = true;
                     //enviar email de nuevo afiliado al atendimento
-                    require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+                    require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
                     $this->Gmail = new Gmail();
                     $result = $this->Gmail->send_mail(
                         $GLOBALS['sistem_config']->ATENDENT_EMAIL,
@@ -1913,7 +2010,7 @@ class Welcome extends CI_Controller {
                 foreach ($transactions as $tr) {
                     $id = $tr['id'];
                     var_dump($id);
-                    $path_name = "/opt/lampp/htdocs/livre/assets/data_users/".$tr['folder_in_server'];
+                    $path_name = "/opt/lampp/htdocs/lending/src/assets/data_users/".$tr['folder_in_server'];
 
                     if($tr['folder_in_server']){
                         if(is_dir($path_name)){ 
@@ -2036,7 +2133,7 @@ class Welcome extends CI_Controller {
 
                 //email de bem sucedido
                 $GLOBALS['sistem_config'] = $this->system_config->load();
-                require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+                require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
                 $this->Gmail = new Gmail();      
                 $name = explode(' ', $_SESSION['transaction_requested_datas']['name']); $name = $name[0];
                 $useremail = $_SESSION['transaction_requested_datas']['email'];
@@ -2093,7 +2190,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transaction_model');
         $this->load->model('class/Crypt');
         $result['success'] = false;
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         if($_SESSION['logged_role'] === 'ADMIN'){
             $tr_data = $this->transaction_model->get_client('id', $_SESSION['transaction_requested_id'])[0];
             if($tr_data['status_id'] == transactions_status::TOPAZIO_IN_ANALISYS ||
@@ -2183,7 +2280,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transaction_model');
         $this->load->model('class/Crypt');
         $result['success'] = false;
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");        
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");        
         if($_SESSION['logged_role'] === 'ADMIN'){
             $tr_data = $this->transaction_model->get_client('id', $_SESSION['transaction_requested_id'])[0];
             if(($tr_data['status_id'] == transactions_status::TOPAZIO_IN_ANALISYS && $_SESSION['robot'] != true) ||
@@ -2333,7 +2430,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transaction_model');
         $this->load->model('class/Crypt');
         $result['success'] = false;
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         if($_SESSION['logged_role'] === 'ADMIN'){
             $tr_data = $this->transaction_model->get_client('id', $_SESSION['transaction_requested_id'])[0];
             if($tr_data['status_id'] == transactions_status::TOPAZIO_IN_ANALISYS ||
@@ -2411,7 +2508,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transaction_model');
         $this->load->model('class/Crypt');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $this->Gmail = new Gmail();
         $result['success'] = false;
         if($_SESSION['logged_role'] === 'ADMIN'){
@@ -2756,8 +2853,8 @@ class Welcome extends CI_Controller {
     public function generate_contract($client_id) {        
         $this->load->model('class/transaction_model');
         $this->load->model('class/transactions_status');        
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/livre/contrat/fpdf/fpdf.php';
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/livre/contrat/contrato.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/lending/src/contrat/fpdf/fpdf.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/lending/src/contrat/contrato.php';
         $pdf = new PDF('P','mm','A4');
         $datas = $this->transaction_model->get_all_client_datas_by_id($client_id);
         $pdf->GenerateContrat($datas,false,true,false);
@@ -3411,7 +3508,7 @@ class Welcome extends CI_Controller {
     
     //-------IUGU API-----------------------------------------------
     /*public function iugu_simples_sale(){
-        require_once($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/iugu-php-master/lib/Iugu.php");
+        require_once($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/iugu-php-master/lib/Iugu.php");
         Iugu::setApiKey("c73d49f9-6490-46ee-ba36-dcf69f6334fd"); // Ache sua chave API no Painel
         Iugu_Charge::create(
             [
@@ -4295,7 +4392,7 @@ class Welcome extends CI_Controller {
         $token_4sign = $GLOBALS['sistem_config']->TOKEN_API_D4SIGN;        
         $crypt_4sign = $GLOBALS['sistem_config']->CRYPT_D4SIGN;        
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4318,7 +4415,7 @@ class Welcome extends CI_Controller {
         $token_4sign = $GLOBALS['sistem_config']->TOKEN_API_D4SIGN;        
         $crypt_4sign = $GLOBALS['sistem_config']->CRYPT_D4SIGN;                
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4344,7 +4441,7 @@ class Welcome extends CI_Controller {
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4355,7 +4452,7 @@ class Welcome extends CI_Controller {
 
         } catch (Exception $e) {
                 //echo $e->getMessage();
-                return $e->getMessage();;
+                return $e->getMessage();
         } 
         return $docs;
     }
@@ -4369,7 +4466,7 @@ class Welcome extends CI_Controller {
         $crypt_4sign = $GLOBALS['sistem_config']->CRYPT_D4SIGN;        
         $safe_livre_4sign = $GLOBALS['sistem_config']->SAFE_LIVRE_D4SIGN;                
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
@@ -4378,7 +4475,7 @@ class Welcome extends CI_Controller {
                 $client->setAccessToken($token_4sign);
                 $client->setCryptKey($crypt_4sign);
 
-                $path_file = $_SERVER['DOCUMENT_ROOT'].'/livre/assets/data_users/'.$transaction['folder_in_server'].'/cpf_card.png';//contract.pdf
+                $path_file = $_SERVER['DOCUMENT_ROOT'].'/lending/src/assets/data_users/'.$transaction['folder_in_server'].'/cpf_card.png';//contract.pdf
                 $id_doc = $client->documents->upload($safe_livre_4sign, $path_file);
                 if(is_object($id_doc) && $id_doc->message == "success")                    
                     $this->transaction_model->save_in_db(
@@ -4401,7 +4498,7 @@ class Welcome extends CI_Controller {
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4454,7 +4551,7 @@ class Welcome extends CI_Controller {
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4484,7 +4581,7 @@ class Welcome extends CI_Controller {
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4513,7 +4610,7 @@ class Welcome extends CI_Controller {
         
         $transaction = $this->transaction_model->get_client('id', $id)[0];
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4569,7 +4666,7 @@ class Welcome extends CI_Controller {
             $plot_date2 = date("d/m/Y", strtotime($plot_date));
         }
         
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         
         try{
                 $client = new D4sign\Client();
@@ -4678,7 +4775,7 @@ class Welcome extends CI_Controller {
         $token_4sign = $GLOBALS['sistem_config']->TOKEN_API_D4SIGN;        
         $crypt_4sign = $GLOBALS['sistem_config']->CRYPT_D4SIGN;        
         $transaction = $this->transaction_model->get_client('id', $id)[0];
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/livre/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/lending/src/application/libraries/d4sign-php-master/sdk/vendor/autoload.php');
         $result['success'] = false;
         try{
             $client = new D4sign\Client();
@@ -4751,7 +4848,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/affiliate_model');
         $this->load->model('class/system_config');
         $this->load->model('class/transactions_status');
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->Gmail = new Gmail();
         $_SESSION['logged_role'] = 'ADMIN';
@@ -4858,7 +4955,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/affiliate_model');
         $this->load->model('class/system_config');
         $this->load->model('class/transactions_status');
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->Gmail = new Gmail();
         $_SESSION['logged_role'] = 'ADMIN';
@@ -4996,7 +5093,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/transaction_model');
         $this->load->model('class/transactions_status');
         $this->load->model('class/system_config');        
-        require_once ($_SERVER['DOCUMENT_ROOT']."/livre/application/libraries/Gmail.php");
+        require_once ($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/Gmail.php");
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $this->Gmail = new Gmail();
         $_SESSION['logged_role'] = 'ADMIN';
@@ -5810,105 +5907,5 @@ class Welcome extends CI_Controller {
         
         return $result;
     }
-    
-    
-    
-    
-    //-------TEST FUNCTIONS--------------------------------    
-    public function test_cr(){
-        $this->load->model('class/Crypt');
-        echo $this->Crypt->crypt('1');
-    }
-    
-    public function test5(){
-        //$this->load->model('class/transaction_model');
-        //$this->transaction_model->save_generated_bill(1, '33333333444444444');
-        //$hoje = strtotime("now");        
-        //$d = getdate($hoje);
-        //$da = date("Y-m-d");
-        //$this->robot_conciliation();
-        /*$trasactions = $this->topazio_conciliations("2018-09-20");
-        foreach ($trasactions as $t) {
-            var_dump($t);
-        }*/
-    }
-   
-    public function test3(){
-        /*$_SESSION['logged_role']= 'ADMIN';
-        $resp = $this->topazio_emprestimo(4); //1388,1542
-        if($resp['success']){
-            $this->transaction_model->save_in_db(
-                    'transactions',
-                    'id',4,
-                    'ccb_number',$resp['ccb']);                
-            $this->transaction_model->save_in_db(
-                    'transactions',
-                    'id',4,
-                    'contract_id',$resp['contract_id']);                
-            print_r("ok");
-        }/**/
-        //var_dump($resp);
-        /*
-        $phone_country_code = '+55';            
-        $phone_ddd = "21";
-        $phone_number = "982856319";
-        $message = "Um email foi enviado a seu email jjj@gmail.com. \\n\\n Se precisar fale conosco pelo e-mail seja@livre.digital";
-        $response_sms = $this->sms_message($phone_country_code, $phone_ddd, $phone_number, $message);         
-         */
-    }    
-        
-    public function test_sig(){
-        /*$id = 4;
-        $uudid_doc = $this->upload_document_template_D4Sign($id);
-        if($uudid_doc){
-            //4. cadastrar un signatario para ese docuemnto y guardar token del signatario
-            $token_signer = $this->signer_for_doc_D4Sign($id);
-            if($token_signer){
-                //5.  mandar a assinar
-                $result_send = $this->send_for_sign_document_D4Sign($id);
-                if($result_send){
-                    //2. salvar el status para WAIT_SIGNATURE
-                    $this->transaction_model->update_transaction_status(
-                                        $_SESSION['pk'], 
-                                        transactions_status::WAIT_SIGNATURE);
-                }
-            }
-        }*/
-    }
-    
-    public function update_acount_bank_by_user_id() {//para trabajar manual
-        $this->load->model('class/Transaction_model');    
-        $this->load->model('class/Crypt');  
-        $datas['pk']=198;
-        $datas['bank']=341;
-        $datas['agency']=1412;
-        $datas['account_type']='CC';
-        $datas['account']=50021;
-        $datas['dig']=5;  
-        
-        $datas1['client_id']=$datas['pk'];
-        $datas1['bank']= $this->Crypt->crypt($datas['bank']);
-        $datas1['agency']= $this->Crypt->crypt($datas['agency']);
-        $datas1['account_type']= $this->Crypt->crypt($datas['account_type']);
-        $datas1['account']= $this->Crypt->crypt($datas['account']);
-        $datas1['dig']= $this->Crypt->crypt($datas['dig']); 
-        
-        var_dump($datas1);
-    }
-    
-    public function conciliation_by_partnerId(){ 
-        $partnerId = $_GET['partnerId'];
-        $trasactions = $this->topazio_conciliations_by_partnerId($partnerId);
-        var_dump($trasactions);
-    }
-    
-    public function test_crontab(){
-        echo "<br>\n<br>\n----------  INIT TEST CRONTAB AT ".date('Y-m-d H:i:s',time());
-    }
-    
-    public function test_crontab2(){
-        echo "<br>\n<br>\n----------  INIT TEST CRONTAB2 AT ".date('Y-m-d H:i:s',time());
-    }
-    
 
 }

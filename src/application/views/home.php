@@ -70,6 +70,7 @@
             <div class="intro-text">
                 <div class="intro-lead-in">Solicite seu empréstimo aqui</div>
                 <div class="intro-heading text-uppercase">Rápido e sem burocracia</div>
+                <div class="intro-lead-in-in">Atrelado ao seu cartão de crédito</div>
                 <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#">Simule agora</a>
             </div>
         </div>
@@ -78,6 +79,48 @@
     <!-- Services -->
     <section id="services" class="bg-light">
         <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase" style="color: black">Simule aqui</h2>
+                    <img src="<?php echo base_url()?>assets/img/down-arrow.png" width="50px">
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6" style="padding-top: 40px">
+                    <form id="simulationForm" name="sentMessage" novalidate="novalidate">
+                        <div class="row text-center">
+                            <div class="form-group col-lg-6">
+                                <input class="form-control" id="solicited_value" type="tel" placeholder="Valor desejado" required="required" data-validation-required-message="Por favor, entre o valor desejado.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Verificar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+            <div class="row" style="visibility:visible;padding-top:20px;padding-bottom:40px; margin: 2px">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8" style="border:1px solid silver; border-radius: 5px;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <p>O limite disponível no seu cartão de crédito deve ser pelo menos de:</p>
+                            <p><b id="cet" style="font-size:2em">R$ 1356,00</b></p>
+                        </div>
+                        <div class="col-lg-7">
+                            <p class="text-justify">Valor solicitado: R$ 1000,00</p>
+                            <p class="text-justify">Total a pagar: </p>
+                            <p class="text-justify">Número de parcelas: 10</p>
+                            <p class="text-justify">Valor de cada parcelas: 135,60</p>
+                        </div>                        
+                    </div>                    
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            
             <div class="row text-center">
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -168,7 +211,7 @@
                             </div>
                             <div class="timeline-panel">
                                 <div class="timeline-heading">
-                                    <h4>Passo 4.</h4>
+                                    <h4>Passo 4</h4>
                                     <h4 class="subheading">Dinheiro na sua conta.</h4>
                                 </div>
                                 <div class="timeline-body">
@@ -286,7 +329,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading text-uppercase" >Quens somos?</h2>
+                    <h2 class="section-heading text-uppercase" >Quem somos?</h2>
                     <div class="">
                         <a href="#lnk_home_start">
                             <img src="https://doorig.com/assets/images/resources/logo-footer-white.png" width="200px" alt="Footer Logo">
