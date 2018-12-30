@@ -12,7 +12,6 @@
   <br>
   <p>User personal contact information:</p>
   <p>email -> <strong><?php echo $_GET["useremail"]; ?></strong></p>
-  <p>company -> <strong><?php echo $_GET["usercompany"]; ?></strong></p>
   <p>phone -> <strong><?php echo $_GET["userphone"]; ?></strong></p>
   <br>
   <p>DUMBU SYSTEM</p>
