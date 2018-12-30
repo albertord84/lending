@@ -37,6 +37,10 @@ class Test extends CI_Controller {
 
         $this->gmail->send_client_contact_form($username, $useremail, $userphone, $usermsg);
     }    
+    
+    public function vindi() {
+        echo "Thanks God!!!<br>";
+    }    
 
 }
 ?>
