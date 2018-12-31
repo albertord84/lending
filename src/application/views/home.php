@@ -10,20 +10,16 @@
 
         <!-- Bootstrap core CSS -->
         <link href="<?php echo base_url()?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
         <!-- Custom fonts for this template -->
         <link href="<?php echo base_url()?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url()?>assets/fonts.googleapis.com/csse3e5.css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css2275.css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css4391.css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css546d.css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-
         <!-- Custom styles for this template -->
         <link href="<?php echo base_url()?>assets/css/agency.css" rel="stylesheet">
-        
         <!-- Social icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        
         <!-- Proper styles -->
         <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">        
     </head>
@@ -41,17 +37,20 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger " href="#services">
+                        <a class="nav-link js-scroll-trigger " href="#">
                             <i class="fab fa-facebook"></i>
                         </a>
                     </li>            
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger " href="#services">
+                        <a class="nav-link js-scroll-trigger " href="#">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </li>            
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#about">Como funciona</a>
+                    </li>           
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#services">Simular Agora</a>
                     </li>           
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#contact">Contate-nos</a>
@@ -71,85 +70,41 @@
                 <div class="intro-lead-in">Solicite seu empréstimo aqui</div>
                 <div class="intro-heading text-uppercase">Rápido e sem burocracia</div>
                 <div class="intro-lead-in-in">Atrelado ao seu cartão de crédito</div>
-                <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#">Simule agora</a>
+                <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Simule agora</a>
+                
             </div>
         </div>
     </header>
-
-    <!-- Services -->
-    <section id="services" class="bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading text-uppercase" style="color: black">Simule aqui</h2>
-                    <img src="<?php echo base_url()?>assets/img/down-arrow.png" width="50px">
-                </div>
-            </div>            
-            <div class="row">
-                <div class="col-lg-3"></div>
-                <div class="col-lg-6" style="padding-top: 40px">
-                    <form id="simulationForm" name="sentMessage" novalidate="novalidate">
-                        <div class="row text-center">
-                            <div class="form-group col-lg-6">
-                                <input class="form-control" id="solicited_value" type="tel" placeholder="Valor desejado" required="required" data-validation-required-message="Por favor, entre o valor desejado.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Verificar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-3"></div>
+    
+    <section class="bg-light" id="team">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Fácil</h4>
+                <p class="text-muted">Transforme o limite do seu cartão de crédito em dinheiro na sua conta em até 24 horas.</p>
             </div>
-            <div class="row" style="visibility:visible;padding-top:20px;padding-bottom:40px; margin: 2px">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-8" style="border:1px solid silver; border-radius: 5px;">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <p>O limite disponível no seu cartão de crédito deve ser pelo menos de:</p>
-                            <p><b id="cet" style="font-size:2em">R$ 1356,00</b></p>
-                        </div>
-                        <div class="col-lg-7">
-                            <p class="text-justify">Valor solicitado: R$ 1000,00</p>
-                            <p class="text-justify">Total a pagar: </p>
-                            <p class="text-justify">Número de parcelas: 10</p>
-                            <p class="text-justify">Valor de cada parcelas: 135,60</p>
-                        </div>                        
-                    </div>                    
-                </div>
-                <div class="col-lg-2"></div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Rápido</h4>
+                <p class="text-muted">Saque de R$ 300,00 a 5.000,00 em até 12x, com taxa a partir de 3,99% a.m.</p>
             </div>
-            
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Fácil</h4>
-                    <p class="text-muted">Transforme o limite do seu cartão de crédito em dinheiro na sua conta em até 24 horas.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Rápido</h4>
-                    <p class="text-muted">Saque de R$ 300,00 a 5.000,00 em até 12x, com taxa a partir de 3,99% a.m.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Seguro</h4>
-                    <p class="text-muted">Pague as prestações através da fatura do seu cartão de crédito.</p>
-                </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Seguro</h4>
+                <p class="text-muted">Pague as prestações através da fatura do seu cartão de crédito.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- About -->
     <section id="about">
         <div class="container">
@@ -219,19 +174,95 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="timeline-inverted">                           
+                        <!--<li class="timeline-inverted">                           
                             <div class="timeline-image">
                                 <a id="simule-now-2" href="#" style="color:white"><h4>Simule seu<br>empréstimo <br>agora!!</h4></a>
                             </div>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </div>
       </div>
     </section>
+    
+    <!-- Services -->
+    <section id="services" class="bg-light" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase" style="color: black">Simule aqui</h2>
+                    <img src="<?php echo base_url()?>assets/img/down-arrow.png" width="50px">
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6" style="padding-top: 40px">
+                    <form id="simulationForm" name="sentMessage" novalidate="novalidate">
+                        <div class="row text-center">
+                            <div class="form-group col-lg-6">
+<!--                                <input class="form-control" id="input_verify" type="tel" placeholder="Valor desejado" required="required" data-validation-required-message="Por favor, entre o valor desejado.">-->
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">R$</span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Quantia">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                </div>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Verificar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+            <div class="row" style="visibility:visible;padding-top:20px;padding-bottom:40px; margin: 2px">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8" style="border:1px solid silver; border-radius: 5px; padding:40px">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p>O limite disponível no seu cartão de crédito deve ser pelo menos de:</p>
+                            <p><b id="cet" style="font-size:1.4em">R$ 0,00</b></p>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-5">     
+                            <p>VALOR POR PARCELAS:<br>
+                            <b style="font-size:1.4em">10x</b> 
+                            de 
+                            <b id="month_value" style="font-size:1.4em">R$ 0,00</b></p>
+                            
+                            <b>Outras parcelas?</b>
+                            <input value="12" min="4" step="1" max="12" type="range" id="range">                                        
+                            <script>
+                                // RANGER
+                                var range = document.getElementById('range');
+                                var result = document.getElementById('result-value');
+                                range.addEventListener('change', function(){
+                                    result.innerHTML = this.value;
+                                    $(".its li").addClass('at');
+                                });
+                            </script>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4 text-rigth">
+                            <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Solicitar</button>
+                        </div>
+                        <div class="col-lg-4"></div>
+                   </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- Feedbaks -->
-    <section class="bg-light" id="team">
+    <section id="team">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -278,7 +309,7 @@
     </section>
     
     <!-- Contact -->
-    <section id="contact">
+    <section id="contact" class="bg-light">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -314,7 +345,7 @@
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Enviar Mensagem</button>
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Enviar</button>
                             </div>
                         </div>
                     </form>
@@ -620,7 +651,9 @@
 
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
-
+    
+    <script src="<?php echo base_url()?>assets/js/index.js"></script>
+    
   </body>
 
 </html>

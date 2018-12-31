@@ -7,6 +7,8 @@ $(document).ready(function () {
     var slideToggle=1;
     
     
+    //$('#input_verify').val('R$ 1.000,00');
+    
     $('#verify_container').keypress(function (e) {
         if (e.which == 13) {
             $("#btn_verify").click();
