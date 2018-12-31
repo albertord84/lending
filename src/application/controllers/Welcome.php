@@ -11,67 +11,6 @@ class Welcome extends CI_Controller {
         parent::__construct();
     }
     
-    public function test_cr() {
-        $this->load->model('class/Crypt');
-        echo $this->Crypt->crypt('1');
-    }
-
-    public function test5() {
-        //$this->load->model('class/transaction_model');
-        //$this->transaction_model->save_generated_bill(1, '33333333444444444');
-        //$hoje = strtotime("now");        
-        //$d = getdate($hoje);
-        //$da = date("Y-m-d");
-        //$this->robot_conciliation();
-        /* $trasactions = $this->topazio_conciliations("2018-09-20");
-          foreach ($trasactions as $t) {
-          var_dump($t);
-          } */
-    }
-
-    public function test3() {
-        /* $_SESSION['logged_role']= 'ADMIN';
-          $resp = $this->topazio_emprestimo(4); //1388,1542
-          if($resp['success']){
-          $this->transaction_model->save_in_db(
-          'transactions',
-          'id',4,
-          'ccb_number',$resp['ccb']);
-          $this->transaction_model->save_in_db(
-          'transactions',
-          'id',4,
-          'contract_id',$resp['contract_id']);
-          print_r("ok");
-          }/* */
-        //var_dump($resp);
-        /*
-          $phone_country_code = '+55';
-          $phone_ddd = "21";
-          $phone_number = "982856319";
-          $message = "Um email foi enviado a seu email jjj@gmail.com. \\n\\n Se precisar fale conosco pelo e-mail seja@livre.digital";
-          $response_sms = $this->sms_message($phone_country_code, $phone_ddd, $phone_number, $message);
-         */
-    }
-
-    public function test_sig() {
-        /* $id = 4;
-          $uudid_doc = $this->upload_document_template_D4Sign($id);
-          if($uudid_doc){
-          //4. cadastrar un signatario para ese docuemnto y guardar token del signatario
-          $token_signer = $this->signer_for_doc_D4Sign($id);
-          if($token_signer){
-          //5.  mandar a assinar
-          $result_send = $this->send_for_sign_document_D4Sign($id);
-          if($result_send){
-          //2. salvar el status para WAIT_SIGNATURE
-          $this->transaction_model->update_transaction_status(
-          $_SESSION['pk'],
-          transactions_status::WAIT_SIGNATURE);
-          }
-          }
-          } */
-    }
-
     public function update_acount_bank_by_user_id() {//para trabajar manual
         $this->load->model('class/Transaction_model');
         $this->load->model('class/Crypt');
@@ -98,13 +37,6 @@ class Welcome extends CI_Controller {
         var_dump($trasactions);
     }
 
-    public function test_crontab() {
-        echo "<br>\n<br>\n----------  INIT TEST CRONTAB AT " . date('Y-m-d H:i:s', time());
-    }
-
-    public function test_crontab2() {
-        echo "<br>\n<br>\n----------  INIT TEST CRONTAB2 AT " . date('Y-m-d H:i:s', time());
-    }
 
     //-------VIEWS FUNCTIONS--------------------------------    
 
