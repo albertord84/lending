@@ -25,6 +25,7 @@
         const store_flag_names = "Visa, MasterCard, American Express, Aura, Diners, Discover, Elo, JCB, Visa Electron e Mastercard Débito";
         const prod_lead_id = "231525";
         const prod_1real_id = "231526";
+        const plane_1real_id = "79404";
 
         private $api_arguments;
 
@@ -69,13 +70,11 @@
          * @param type $payment_data 
          * @return payment data or \Exception whether error
          */
-        public function addClientPayment($client_id, $payment_data) {
+        public function addClientPayment($gateway_client_id, $payment_data) {
             $payment = null;
             $return = new \stdClass();
             $return->success = false;
             try {
-                $DB = new \follows\cls\DB();
-                $client_data = $DB->get_client_payment_data($client_id);
                 $payment_profilesService = new \Vindi\PaymentProfile($this->api_arguments);
                 $payment = $payment_profilesService->create([
                     "holder_name" => $payment_data['credit_card_name'],
@@ -83,7 +82,7 @@
                     "card_number" => $payment_data['credit_card_number'],
                     "card_cvv" => $payment_data['credit_card_cvc'],
                     "payment_method_code" => "credit_card",
-                    "customer_id" => $client_data->gateway_client_id
+                    "customer_id" => $gateway_client_id
                 ]);
             } catch (Exception $e) {
                 $return->message = $e->getMessage();
@@ -95,12 +94,12 @@
 
         /**
          * Add new Assigment for client 
-         * @param type $client_id Follows client id
+         * @param type $gateway_client_id Gateway client id
+         * @param type $gateway_plane_id Gateway plane  id
          * @param time $date
-         * @param plane_id In update plane situation
-         * @return \Exception recurrency payment or exception
+         * @return recurrency payment or \Exception exception
          */
-        public function create_recurrency_payment($client_id, $date = NULL, $dumbu_plane_id = NULL) {
+        public function create_recurrency_payment($gateway_client_id, $gateway_plane_id, $date = NULL) {
             // Cria nova assignatura:
             if(!$date) $date=  time ();                
             $date = date("d/m/Y",$date);
@@ -108,17 +107,12 @@
             $return = new \stdClass();
             $return->success = false;
             try {
-                // Load cient data from DB
-                $DB = new \follows\cls\DB();
-                $client_data = $DB->get_client_payment_data($client_id);
-                $gateway_plane_id = $DB->get_gateway_plane_id($dumbu_plane_id);
-                        
                 // Instancia o serviço de Subscription (Assinaturas) com o array contendo VINDI_API_KEY e VINDI_API_URI
                 $subscriptionService = new \Vindi\Subscription($this->api_arguments);
                 $subscription = $subscriptionService->create([
                     "start_at" => $date,
                     "plan_id" => $gateway_plane_id, //$client_data->gateway_plane_id,
-                    "customer_id" => $client_data->gateway_client_id,
+                    "customer_id" => $gateway_client_id,
                     "payment_method_code" => "credit_card"
                 ]);
             } catch (\Exception $e) {
@@ -128,57 +122,6 @@
             $return->success = $subscription->status == 'active' || $subscription->status == 'future';
             $return->payment_key = isset($subscription) && isset($subscription->id)? $subscription->id : NULL;
             $return->subscription = $subscription;
-            return $return;
-        }
-
-        /**
-         * Reschedule Assigment for client 
-         * @param type $client_id Follows client id
-         * @param timestamp $date
-         * @return \Exception reschedule recurrency payment or exception
-         */
-        public function reschedule_recurrency_payment($client_id, $date) {
-            // Cria nova assignatura:
-            $return = new \stdClass();
-            $return->success = false;
-            try {
-                // Load cient data from DB
-                $DB = new \follows\cls\DB();
-                $client_data = $DB->get_client_payment_data($client_id);
-                if (!$client_data) throw new Exception ("Client payment data not found");
-
-                // Instancia o serviço de Subscription (Assinaturas) com o array contendo VINDI_API_KEY e VINDI_API_URI
-                $subscriptionService = new \Vindi\Subscription($this->api_arguments);
-                $subscription = $subscriptionService->update($client_data->payment_key, [
-                    "billing_trigger_day" => $date
-                ]);
-            } catch (\Exception $e) {
-                $return->message = $e->getMessage();
-                return $return;
-            }
-            $return->success = $subscription->status == 'active' || $subscription->status == 'future';
-            $return->payment_key = isset($subscription) && isset($subscription->id)? $subscription->id : NULL;
-            $return->subscription = $subscription;
-            return $return;
-        }
-
-        /**
-         * Delete recurrency payment status (Cancel subscription)
-         * @param type $payment_id
-         * @return Subscription or \Exception
-         */
-        public function cancel_recurrency_payment($payment_id) {
-            $return = new \stdClass();
-            $return->success = false;
-            try {
-                // Instancia o serviço de Subscription (Assinaturas) com o array contendo VINDI_API_KEY e VINDI_API_URI
-                $subsService = new \Vindi\Subscription($this->api_arguments);
-                $subs = $subsService->delete($payment_id);
-            } catch (\Exception $e) {
-                $return->message = $e->getMessage();
-                return $return;
-            }
-            $return->success = $subs->status == 'canceled' || $subs->status == 'expired';
             return $return;
         }
 
@@ -201,30 +144,27 @@
 
         /**
          * Create a instantan payment 
-         * @param type $client_id Follows client id
+         * @param type $gateway_client_id gateway client id
+         * @param type $gateway_plane_id gateway plane id
          * @param type $prod_id Products id
          * @param type $amount Amount of Products to by payed
          * @return \Exception recurrency payment or exception
          */
-        public function create_payment($client_id, $prod_id = this::prod_1real_id, $amount = 0) {
+        public function create_payment(int $gateway_client_id, $gateway_plane_id = self::plane_1real_id, $gateway_prod_id = self::prod_1real_id, $amount = 1) {
             // Cria pagamento abulso:
             $return = new \stdClass();
             $return->success = false;
             try {
-                // Load cient data from DB
-                $DB = new \follows\cls\DB();
-                $client_data = $DB->get_client_payment_data($client_id);
-                //var_dump($client_data);
                 // Instancia o serviço de Bill (Fatura) com o array contendo VINDI_API_KEY e VINDI_API_URI
-//                $billService = new \Vindi\Bill($this->api_arguments);
                 $billService = new \Vindi\Bill($this->api_arguments);
                 $bill = $billService->create([
-                    "plan_id" => $client_data->gateway_plane_id,
-                    "customer_id" => $client_data->gateway_client_id,
+                    "plan_id" => $gateway_plane_id,
+                    "customer_id" => $gateway_client_id,
+                    
                     "payment_method_code" => "credit_card",
                     "bill_items" => [
                         [
-                            "product_id" => $prod_id,
+                            "product_id" => $gateway_prod_id,
                             "amount" => $amount
                         ]
                     ]

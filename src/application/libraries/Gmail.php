@@ -44,7 +44,7 @@ class Gmail {
         $this->mail->Password = $GLOBALS['sistem_config']->SYSTEM_USER_PASS; //'78578122522624666';
         //Set who the message is to be sent from
         //$this->mail->setFrom('josergm86@gmail.com', 'CreditSociety');
-        $this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL, 'Livre.digital');
+        $this->mail->setFrom($GLOBALS['sistem_config']->SYSTEM_EMAIL, 'Lending');
     }
 
     public function test($useremail, $username, $subject, $mail) {
