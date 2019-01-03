@@ -370,6 +370,23 @@
                 return false;
             }
         }
+        
+        public function subscription($datas){
+            try {
+                $this->db->select('*');
+                $this->db->from('news_subscriptions');
+                $this->db->where('email',$datas['email']);
+                $exist = $this->db->get()->result_array()[0];
+                if(!$exist){
+                    $this->db->insert('news_subscriptions',$datas);
+                    $id_row=$this->db->insert_id();
+                    return $id_row;
+                } else
+                    return -1;
+            } catch (Exception $exc) {
+                return 0;
+            }
+        }  
                 
     }
 ?>

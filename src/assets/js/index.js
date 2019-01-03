@@ -6,12 +6,16 @@ $(document).ready(function () {
     var utm_content= typeof getUrlVars()["utm_content"] !== 'undefined' ? getUrlVars()["utm_content"] : 'NULL';
     var slideToggle=1;
     
-    
-    //$('#input_verify').val('R$ 1.000,00');
-    
     $('#verify_container').keypress(function (e) {
         if (e.which == 13) {
             $("#btn_verify").click();
+            return false;
+        }
+    });
+    
+    $('#painel-values').keypress(function (e) {
+        if (e.which == 13) {
+            $("#btn_contratar_emprestimo").click();
             return false;
         }
     });
@@ -43,7 +47,11 @@ $(document).ready(function () {
     });
             
     $("#btn_verify").click(function () {
-        verify(1);
+        verify(1);        
+    });
+    
+    $("#input_verify").focus(function () {
+        $("#painel-values").fadeOut("slow");
     });
     
     $("#lnk_checkout").click(function () {
@@ -52,12 +60,9 @@ $(document).ready(function () {
         $("#input_verify").focus();
     });
     
-    //$("#input_verify").maskMoney({symbol:'R$ ', thousands:'.', decimal:',', symbolStay: true});
-    $("#input_verify").maskMoney();
-    
-    function verify(flag){    
-        if($('#input_verify').val()===''){
-           modal_alert_message("Preencha com o valor que deseja solicitar o crédito. Lembre-se que ele deve ser menor que o seu limite no cartão de crédito.");
+    function verify(flag){
+        if(!$.isNumeric(parseInt($('#input_verify').val())) || parseInt($('#input_verify').val())==0){
+            modal_alert_message("Entre o valor que deseja tomar emprestado.");
         }else{
             solicited_value = $('#input_verify').val();
             solicited_value = solicited_value.replace('R$ ','');
@@ -75,13 +80,10 @@ $(document).ready(function () {
                     dataType: 'json',
                     success: function (response) {
                         $('#month_value').text('R$ '+response['month_value']);
-                        $('#total_cust_value').text('R$ '+response['total_cust_value']);
-                        $('#total_cust_value1').text('R$ '+response['total_cust_value']);                        
+                        $('#total_cust_value').text(response['total_cust_value']);
                         if (response['success']) {
-                            if(flag==1 && slideToggle==1){
-                                set_global_var('slideToggle', 0);
-                                $('.result').slideToggle(150); 
-                            }
+                            $("#painel-values").fadeIn("slow");                            
+                            $("#painel-values").css("display","block");
                         }
                         else{
                             $('#permited_value').css('color','red');
@@ -91,38 +93,16 @@ $(document).ready(function () {
                     error: function (xhr, status) {
                         modal_alert_message('Internal error Verify value');
                     }
-                });                
-            } else{                
-                if(!error){
-                    error = true;
-                    $.ajax({
-                        url: base_url + 'index.php/welcome/track_init',
-                        data:{
-                            'solicited_value': solicited_value                       
-                        },
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function (response) {                                                                                    
-                            modal_alert_message('Só pode solicitar um valor entre R$300 e R$5000');                            
-                        },
-                        error: function (xhr, status) {
-                            modal_alert_message('Internal error Verify value');
-                        }
-                    }); 
-                }
-                else{                    
-                    modal_alert_message('Só pode solicitar um valor entre R$300 e R$5000');
-                }
+                });
+            } else{              
+                modal_alert_message('Só pode solicitar um valor entre R$300 e R$5000');
             }
         }
     }
-    
+        
     $('#btn_contratar_emprestimo').click(function () {
-        if($('#money_use_form').val()==='00'){
-           modal_alert_message("Selecione a forma em que vai usar o dinheiro");
-        }else
-        if(!$('#use_term').is(':checked')){
-           modal_alert_message("Leia e aceite os termos legais para poder continuar");
+        if(!$.isNumeric(parseInt($('#input_verify').val())) || parseInt($('#input_verify').val())==0){
+           modal_alert_message("Entre o valor que deseja tomar emprestado.");
         }else
             if($('#input_verify').val()===''){
                modal_alert_message("Operação não permitida");
@@ -132,7 +112,7 @@ $(document).ready(function () {
                 solicited_value = solicited_value.replace(',','.');
                 solicited_value = parseFloat(solicited_value);
                 params="utm_source="+utm_source+"&frm_money_use_form="+$('#money_use_form').val()+"&utm_content="+utm_content+"&utm_campaign="+utm_campaign;
-                url=base_url+"index.php/welcome/checkout?"+params;
+                url=base_url+"index.php/welcome/lending?"+params;
                 $(location).attr('href',url);
             }
     });
@@ -176,5 +156,20 @@ $(document).ready(function () {
     }
     
     //amount_months=12;
+    
+    $("#input_verify").keydown(function (e) {   
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();            
+        }        
+    });
     
 });
