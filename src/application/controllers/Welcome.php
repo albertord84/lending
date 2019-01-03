@@ -11,33 +11,7 @@ class Welcome extends CI_Controller {
         parent::__construct();
     }
     
-    public function update_acount_bank_by_user_id() {//para trabajar manual
-        $this->load->model('class/Transaction_model');
-        $this->load->model('class/Crypt');
-        $datas['pk'] = 198;
-        $datas['bank'] = 341;
-        $datas['agency'] = 1412;
-        $datas['account_type'] = 'CC';
-        $datas['account'] = 50021;
-        $datas['dig'] = 5;
-
-        $datas1['client_id'] = $datas['pk'];
-        $datas1['bank'] = $this->Crypt->crypt($datas['bank']);
-        $datas1['agency'] = $this->Crypt->crypt($datas['agency']);
-        $datas1['account_type'] = $this->Crypt->crypt($datas['account_type']);
-        $datas1['account'] = $this->Crypt->crypt($datas['account']);
-        $datas1['dig'] = $this->Crypt->crypt($datas['dig']);
-
-        var_dump($datas1);
-    }
-
-    public function conciliation_by_partnerId() {
-        $partnerId = $_GET['partnerId'];
-        $trasactions = $this->topazio_conciliations_by_partnerId($partnerId);
-        var_dump($trasactions);
-    }
-
-
+    
     //-------VIEWS FUNCTIONS--------------------------------    
 
     public function index() {
@@ -73,12 +47,12 @@ class Welcome extends CI_Controller {
         //$this->load->view('inc/footer');
     }
     
-    public function lending() {
-        $this->load->view('lending');
-    }
+//    public function lending() {
+//        $this->load->view('lending');
+//    }
     
 
-    public function wizard() {
+    public function lending() {
         $this->load->model('class/track_money_model');
         //die('This functionalities is under development :-)');
         if (session_id() == '')
@@ -108,8 +82,8 @@ class Welcome extends CI_Controller {
         $data_track['track_date'] = time();
         $id_row = $this->track_money_model->insert_required_money($data_track);
 
-        $this->load->view('checkout', $params);
-        $this->load->view('inc/footer');
+        $this->load->view('lending', $params);
+        //$this->load->view('inc/footer');
     }
 
     public function suceso_compra() {
@@ -1359,6 +1333,22 @@ class Welcome extends CI_Controller {
             $result['message'] = 'Falha enviando mensagem. Tente depois.';
         echo json_encode($result);
     }
+    
+    public function subscription() {
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        $this->load->model('class/transaction_model');        
+        $datas = $this->input->post();
+        $result['success'] = $this->transaction_model->subscription($datas);
+        if ($result['success']==1)
+            $result['message'] = 'Subscrição realizada com sucesso.';
+        else
+        if ($result['success']==-1)
+            $result['message'] = 'Subscrição já existia anteriormente.';
+        else
+            $result['message'] = 'Erro na subscrição';
+        echo json_encode($result);
+    }
 
     //-------AFFILIATES FUNCTIONS----------------------------------
     /*
@@ -2522,6 +2512,26 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
 
+    public function update_acount_bank_by_user_id() {//para trabajar manual
+        $this->load->model('class/Transaction_model');
+        $this->load->model('class/Crypt');
+        $datas['pk'] = 198;
+        $datas['bank'] = 341;
+        $datas['agency'] = 1412;
+        $datas['account_type'] = 'CC';
+        $datas['account'] = 50021;
+        $datas['dig'] = 5;
+
+        $datas1['client_id'] = $datas['pk'];
+        $datas1['bank'] = $this->Crypt->crypt($datas['bank']);
+        $datas1['agency'] = $this->Crypt->crypt($datas['agency']);
+        $datas1['account_type'] = $this->Crypt->crypt($datas['account_type']);
+        $datas1['account'] = $this->Crypt->crypt($datas['account']);
+        $datas1['dig'] = $this->Crypt->crypt($datas['dig']);
+
+        var_dump($datas1);
+    }
+
     //-------AUXILIAR FUNCTIONS------------------------------------    
     public function set_session() {
         session_start();
@@ -2541,6 +2551,12 @@ class Welcome extends CI_Controller {
         }
     }
 
+    public function conciliation_by_partnerId() {
+        $partnerId = $_GET['partnerId'];
+        $trasactions = $this->topazio_conciliations_by_partnerId($partnerId);
+        var_dump($trasactions);
+    }
+    
     public function is_ip_hacker_response() {
         $IP_hackers = array(
             '191.176.169.242', '138.0.85.75', '138.0.85.95', '177.235.130.16', '191.176.171.14', '200.149.30.108', '177.235.130.212', '66.85.185.69',
@@ -2898,7 +2914,7 @@ class Welcome extends CI_Controller {
         return $csv;
     }
 
-    function str_putcsv2($data) {
+    public function str_putcsv2($data) {
         # Generate CSV data from array
         $fh = fopen('php://temp', 'rw'); # don't create a file, attempt
         # to use memory instead
@@ -4971,8 +4987,12 @@ class Welcome extends CI_Controller {
 
         $B11 = number_format($valor_solicitado, 2, '.', '');
         $B16 = $num_parcelas;
-        if (!$tax)
-            $B10 = ( $this->tax_model->get_tax_row($B16)[$this->get_field($B11)] ) / 100;
+        if (!$tax){
+            $x1=$this->get_field($B11);
+            $x2=$this->tax_model->get_tax_row($B16)[$x1];
+            $B10 = ( $x2 ) / 100;
+        }
+            
         else
             $B10 = $tax / 100;
         $num_days = 30 * ($num_parcelas - 1) + 10;
@@ -5145,7 +5165,8 @@ class Welcome extends CI_Controller {
 
     //------------BRASPAG---COBRANÇA PARCELADA NO CARTÃO DE CRÉDITO-------------------------
 
-    public function BRASPAG_Authorize($param) { /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
+    public function BRASPAG_Authorize($param) { 
+        /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
@@ -5214,7 +5235,8 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
-    public function BRASPAG_Authorize_with_Issuer_DATA($param) { /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
+    public function BRASPAG_Authorize_with_Issuer_DATA($param) { 
+        /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
@@ -5329,7 +5351,8 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
-    public function BRASPAG_Authorize_with_Issuer_DATA_and_AVS($param) { /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
+    public function BRASPAG_Authorize_with_Issuer_DATA_and_AVS($param) { 
+        /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
@@ -5420,7 +5443,8 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
-    public function BRASPAG_Capture($payment_id, $amount) { /* Captura uma transacao previamente autorizada */
+    public function BRASPAG_Capture($payment_id, $amount) { 
+        /* Captura uma transacao previamente autorizada */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
@@ -5469,7 +5493,8 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
-    public function BRASPAG_Devolution($payment_id, $amount) { /* O estorno é aplicável quando uma transação criada no dia anterior ou antes já estiver capturada. Neste caso, a transação será submetida no processo de ‘chargeback’ pela adquirente. */
+    public function BRASPAG_Devolution($payment_id, $amount) { 
+        /* O estorno é aplicável quando uma transação criada no dia anterior ou antes já estiver capturada. Neste caso, a transação será submetida no processo de ‘chargeback’ pela adquirente. */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;

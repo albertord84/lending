@@ -22,6 +22,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Proper styles -->
         <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">        
+        
+        <script type="text/javascript">
+            var base_url = '<?php echo base_url();?>';
+            var key = '<?php echo $key;?>';
+        </script>
     </head>
 
   <body id="page-top">
@@ -174,11 +179,11 @@
                                 </div>
                             </div>
                         </li>
-                        <!--<li class="timeline-inverted">                           
+                        <li class="timeline-inverted">                           
                             <div class="timeline-image">
-                                <a id="simule-now-2" href="#" style="color:white"><h4>Simule seu<br>empréstimo <br>agora!!</h4></a>
+                                <a id="simule-now-2" href="#services" style="color:white"><h4>Simule seu<br>empréstimo <br>agora!!</h4></a>
                             </div>
-                        </li>-->
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -189,23 +194,25 @@
     <section id="services" class="bg-light" >
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-3 text-center"></div>
+                <div class="col-lg-6 text-center">
                     <h2 class="section-heading text-uppercase" style="color: black">Simule aqui</h2>
+                    <h3 class="section-subheading text-muted" style="margin-bottom: 15px ">O valor desejado deve estar entre 300 e 5.000 reais.</h3>                    
                     <img src="<?php echo base_url()?>assets/img/down-arrow.png" width="50px">
                 </div>
+                <div class="col-lg-3 text-center"></div>
             </div>            
             <div class="row">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6" style="padding-top: 40px">
-                    <form id="simulationForm" name="sentMessage" novalidate="novalidate">
+                    <form id="verify_container" name="sentMessage" novalidate="novalidate">
                         <div class="row text-center">
-                            <div class="form-group col-lg-6">
-<!--                                <input class="form-control" id="input_verify" type="tel" placeholder="Valor desejado" required="required" data-validation-required-message="Por favor, entre o valor desejado.">-->
+                            <div class="form-group col-lg-6 text-center">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">R$</span>
                                     </div>
-                                    <input type="text" class="form-control" aria-label="Quantia">
+                                    <input id="input_verify" type="text" minlength="3" maxlength="4" style="padding-left:10px;padding-right:10px" class="form-control" required="required" aria-label="Quantia" placeholder="Valor desejado">
                                     <div class="input-group-append">
                                         <span class="input-group-text">.00</span>
                                     </div>
@@ -213,32 +220,33 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group col-lg-6">
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Verificar</button>
+                                <button id="btn_verify" class="btn btn-primary btn-xl text-uppercase" type="button">Verificar</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-3"></div>
             </div>
-            <div class="row" style="visibility:visible;padding-top:20px;padding-bottom:40px; margin: 2px">
+            <div  class="row" style="padding-top:20px;padding-bottom:40px; margin: 2px">
                 <div class="col-lg-2"></div>
-                <div class="col-lg-8" style="border:1px solid silver; border-radius: 5px; padding:40px">
+                <div id="painel-values" class="col-lg-8" style="display:none;border:1px solid silver; border-radius: 5px; padding:40px">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <p>O limite disponível no seu cartão de crédito deve ser pelo menos de:</p>
-                            <p><b id="cet" style="font-size:1.4em">R$ 0,00</b></p>
+                        <div class="col-lg-6 text-center">
+                            <p>O limite disponível no seu cartão de crédito deve ser superior a:</p>
+                            <b style="font-size:1.4em">R$ </b>
+                            <b id="total_cust_value" style="font-size:1.4em">0,00</b>
                         </div>
                         <div class="col-lg-1"></div>
-                        <div class="col-lg-5">     
+                        <div class="col-lg-5 text-center">     
                             <p>VALOR POR PARCELAS:<br>
-                            <b style="font-size:1.4em">10x</b> 
+                                <b id="result-value1" style="font-size:1.4em">12</b> 
+                                <b style="font-size:1.4em;padding-left:2px"><i>x</i> </b> 
                             de 
                             <b id="month_value" style="font-size:1.4em">R$ 0,00</b></p>
                             
                             <b>Outras parcelas?</b>
                             <input value="12" min="4" step="1" max="12" type="range" id="range">                                        
                             <script>
-                                // RANGER
                                 var range = document.getElementById('range');
                                 var result = document.getElementById('result-value');
                                 range.addEventListener('change', function(){
@@ -251,7 +259,7 @@
                     <div class="row">
                         <div class="col-lg-4"></div>
                         <div class="col-lg-4 text-rigth">
-                            <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Solicitar</button>
+                            <br><button id="btn_contratar_emprestimo" class="btn btn-primary btn-xl text-uppercase" type="submit">Solicitar</button>
                         </div>
                         <div class="col-lg-4"></div>
                    </div>
@@ -320,32 +328,32 @@
             <div class="row">                
                 <div class="col-lg-1"></div>
                 <div class="col-lg-10">
-                    <form id="contact-form" name="sentMessage" novalidate="novalidate">
+                    <form id="contact-us-form" name="contact-us" novalidate="novalidate">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input class="form-control" id="name" type="text" placeholder="Nome Completo *" required="required" data-validation-required-message="Please enter your name.">
+                                    <input class="form-control" id="contact-us-name" type="text" placeholder="Nome Completo *" required="required" data-validation-required-message="Please enter your name.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="email" type="email" placeholder="Email *" required="required" data-validation-required-message="Please enter your email address.">
+                                    <input class="form-control" id="contact-us-email" type="email" placeholder="Email *" required="required" data-validation-required-message="Please enter your email address.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="phone" type="tel" placeholder="Telefone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                    <input class="form-control" id="contact-us-phone" type="tel" placeholder="Telefone" required="required" data-validation-required-message="Please enter your phone number.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <textarea class="form-control" id="message" placeholder="Mensagem *" required="required" data-validation-required-message="Please enter a message."></textarea>
+                                    <textarea class="form-control" id="contact-us-message" placeholder="Mensagem *" required="required" data-validation-required-message="Please enter a message."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Enviar</button>
+                                <button id="contact-us-btn" class="btn btn-primary btn-xl text-uppercase" type="button">Enviar</button>
                             </div>
                         </div>
                     </form>
@@ -386,13 +394,13 @@
                             <h5>Notícias e promoções?</h5>
                         </div>
                         <p>Subscreva-se e receba nossas notícias e novidades em primeira mão!</p>
-                        <form id="contactForm" name="sentMessage" novalidate="novalidate">
+                        <form id="contactForm " name="sentMessage" novalidate="novalidate">
                             <div class="form-group">
-                                <input class="form-control" id="phone" type="tel" placeholder="Email *" required="required" data-validation-required-message="Please enter your phone number.">
+                                <input class="form-control" id="subscription-email" autocomplete="" type="emnail" placeholder="Email *" required="required" data-validation-required-message="Please enter your phone number.">
                                 <p class="help-block text-danger"></p>
                             </div>
-                            <div class="form-group">
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Subscrever-se</button>
+                            <div class="form-group text-center">
+                                <button id="subscription-btn" class="btn btn-primary btn-xl text-uppercase" type="button">Subscrever-se</button>
                             </div>
                         </form>               
                     </div>
@@ -433,210 +441,27 @@
         </div>
       </div>
     </footer>
-    
-    <!-- Modal 1 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/01-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Threads</li>
-                    <li>Category: Illustration</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
+    <!--modal_container_alert_message-->
+    <div class="modal fade" style="top:30%" id="modal_alert_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
+            <div class="modal-content">
+                <div class="modal-header text-muted">
+                    <i class="fas fa-exclamation-triangle"> Mensagem</i>
+                    <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal 2 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/02-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Explore</li>
-                    <li>Category: Graphic Design</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
+                <div class="modal-body text-muted">                                            
+                    <p id="message_text">;</p>                        
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal 3 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/03-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Finish</li>
-                    <li>Category: Identity</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
+                <div class="modal-footer text-center">
+                    <button id="accept_modal_alert_message" type="button" class="btn btn-primary active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                        <spam class="ladda-label"><div style="color:white; font-weight:bold">ACEITAR</div></spam>
+                    </button>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal 4 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/04-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Lines</li>
-                    <li>Category: Branding</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal 5 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/05-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Southwest</li>
-                    <li>Category: Website Design</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal 6 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 mx-auto">
-                <div class="modal-body">
-                  <!-- Project Details Go Here -->
-                  <h2 class="text-uppercase">Project Name</h2>
-                  <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                  <img class="img-fluid d-block mx-auto" src="<?php echo base_url()?>assets/img/portfolio/06-full.jpg" alt="">
-                  <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                  <ul class="list-inline">
-                    <li>Date: January 2017</li>
-                    <li>Client: Window</li>
-                    <li>Category: Photography</li>
-                  </ul>
-                  <button class="btn btn-primary" data-dismiss="modal" type="button">
-                    <i class="fas fa-times"></i>
-                    Close Project</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </div>                                                        
+    </div> 
 
     <!-- Bootstrap core JavaScript -->
     <script src="<?php echo base_url()?>assets/vendor/jquery/jquery.min.js"></script>
@@ -647,12 +472,12 @@
 
     <!-- Contact form JavaScript -->
     <script src="<?php echo base_url()?>assets/js/jqBootstrapValidation.js"></script>
-    <script src="<?php echo base_url()?>assets/js/contact_me.js"></script>
 
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
     
     <script src="<?php echo base_url()?>assets/js/index.js"></script>
+    <script src="<?php echo base_url()?>assets/js/talkme_painel.js"></script>
     
   </body>
 

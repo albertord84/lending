@@ -6,10 +6,23 @@ $(document).ready(function () {
     var solicited_value= typeof getUrlVars()["solicited_value"] !== 'undefined' ? getUrlVars()["solicited_value"] : 'NULL';
     var amount_months= typeof getUrlVars()["amount_months"] !== 'undefined' ? getUrlVars()["amount_months"] : 'NULL';
     init_values();
-    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('8 H(4){4=x(4);4=y(4);4=B(4);4=t(4);4=D(4);a 4}8 J(4){4=C(4);4=u(4);4=v(4);4=z(4);4=w(4);a 4}8 x(4){k=0;e 7=c f();d(i=0;i<4.b;i++){o(i%2===0){7[k]=r(0,9);k++;7[k]=4[i]}m 7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 w(4){k=0;e 7=c f();d(i=0;i<4.b;i++){o(i%3===0){}m 7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 y(4){e 7=c f();d(i=0;i<4.b;i++){l=4[i].q(0)+A;7[i]=p.n(l)}7=7.h();a 7.j(/,/g,\'\')}8 z(4){e 7=c f();d(i=0;i<4.b;i++){l=4[i].q(0)-A;7[i]=p.n(l)}7=7.h();a 7.j(/,/g,\'\')}8 B(4){k=0;e 7=c f();d(i=0;i<4.b;i++){o(i%5===0){7[k]=r(0,9);k++;7[k]=4[i]}m 7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 v(4){k=0;e 7=c f();d(i=0;i<4.b;i++){o(i%6===0){}m 7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 t(4){e 7=c f();d(i=0;i<4.b;i++){l=4[i].q(0)*2;7[i]=p.n(l)}7=7.h();a 7.j(/,/g,\'\')}8 u(4){e 7=c f();d(i=0;i<4.b;i++){l=4[i].q(0)/2;7[i]=p.n(l)}7=7.h();a 7.j(/,/g,\'\')}8 D(4){e 7=c f();k=0;d(i=4.b-1;i>=0;i--){7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 C(4){e 7=c f();k=0;d(i=4.b-1;i>=0;i--){7[k]=4[i];k++}7=7.h();a 7.j(/,/g,\'\')}8 r(s,E){a G(F.I()*(E-s)+s)}',46,46,'||||str|||new_str|function||return|length|new|for|var|Array||toString||replace||tmp|else|fromCharCode|if|String|charCodeAt|getRandomArbitrary|min|cs4|anti_cs4|anti_cs3|anti_cs1|cs1|cs2|anti_cs2|13|cs3|anti_cs5|cs5|max|Math|parseInt|codify|random|decodify'.split('|'),0,{}))
+    
 
     //---------PRIMARY FUNCTIONS---------------------------------
-    $("#btn_steep_1").click(function () {
+    $("#btn_code_request").click(function () {
+        $('.code_request').toggle("hide");
+        $('.code_verify').toggle("slow");
+        return false;
+    });
+    
+    $("#btn_code_verify").click(function () {
+//        $('.code_verify').toggle("hide");
+//        $('.cnt_btn_steep_1').toggle("slow");
+        $('.check1').toggle("hide");
+        $('.check2').toggle("slow");
+    });
+    
+    $("#btn_steep_1").click(function () {             
         var cpf_value=$('#cpf').val();
         cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
         name  = validate_element('#name', '^[a-zA-Zñçâêôûîáéíóúàãẽõ ]{6,150}$');
@@ -88,9 +101,14 @@ $(document).ready(function () {
     $("#btn_steep_2_prev").click(function () {
         $('.check2').toggle("hide");
         $('.check1').toggle("slow");
+        return false;
     });
     
-    $("#btn_steep_2_next").click(function () {                
+    $("#btn_steep_2_next").click(function () {
+        $('.check2').toggle("hide");
+        $('.check3').toggle("slow");
+        return false;
+        
         if(        ($('#credit_card_name').val()).toUpperCase()==='VISA' 
                 || ($('#credit_card_name').val()).toUpperCase()==='MASTERCARD' 
                 || ($('#credit_card_name').val()).toUpperCase()==='ELO' 
@@ -238,9 +256,14 @@ $(document).ready(function () {
     $("#btn_steep_3_prev").click(function () {
         $('.check3').toggle("hide");
         $('.check2').toggle("slow");
+        return false;
     });
         
     $("#btn_steep_3_next").click(function () {
+        $('.check3').toggle("hide");
+        $('.check4').toggle("slow");
+        return false;
+        
         var cpf_value=$('#titular_cpf').val();
         cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');        
         var bank = validate_element('#bank', "^[0-9]{3,3}$");        
@@ -293,6 +316,48 @@ $(document).ready(function () {
         }
     });
     
+    $("#btn_steep_4_prev").click(function () {  
+        $('.check4').toggle("hide");
+        $('.check3').toggle("slow");
+        return false;
+    });
+    
+    $("#btn_steep_4_next").click(function (){
+        $('.check5').toggle("hide");
+        $('.check4').toggle("slow");
+        return false;
+        if(1){
+            $.ajax({
+                url: base_url + 'index.php/welcome/insert_datas_steep_4',
+                data: {
+                    'pk': pk,
+                    'key':key
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response['success']) {
+                        $('.check4').toggle("hide");
+                        $('.check6').toggle("slow");                        
+                    } else {
+                        modal_alert_message(response['message']);
+                    }
+                },
+                error: function (xhr, status) {
+                    modal_alert_message('Internal error in Steep 3');
+                }
+            });
+        } else {
+            modal_alert_message('Data errada');                
+        }
+    });
+      
+    $("#lnk_use_term").click(function () {
+        url = base_url + "assets/others/TERMOS DE USO CREDITSOCIETY.pdf";
+        window.open(url, '_blank');
+        return false;
+    });
+    
     $("#send_new_account_datas").click(function () {
         var cpf_value=$('#titular_cpf').val();        
         cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');        
@@ -337,44 +402,6 @@ $(document).ready(function () {
         } else{
             modal_alert_message('Verifique os dados fornecidos');            
         }
-    });
-    
-    $("#btn_steep_4_prev").click(function () {  
-        $('.check4').toggle("hide");
-        $('.check3').toggle("slow");
-    });
-    
-    $("#btn_steep_4_next").click(function (){
-        if(1){
-            $.ajax({
-                url: base_url + 'index.php/welcome/insert_datas_steep_4',
-                data: {
-                    'pk': pk,
-                    'key':key
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    if (response['success']) {
-                        $('.check4').toggle("hide");
-                        $('.check6').toggle("slow");                        
-                    } else {
-                        modal_alert_message(response['message']);
-                    }
-                },
-                error: function (xhr, status) {
-                    modal_alert_message('Internal error in Steep 3');
-                }
-            });
-        } else {
-            modal_alert_message('Data errada');                
-        }
-    });
-      
-    $("#lnk_use_term").click(function () {
-        url = base_url + "assets/others/TERMOS DE USO CREDITSOCIETY.pdf";
-        window.open(url, '_blank');
-        return false;
     });
     
     //---------SECUNDARY FUNCTIONS-------------------------------
@@ -506,46 +533,46 @@ $(document).ready(function () {
     
     function validate_element(element_selector, pattern) {
         if (!$(element_selector).val().match(pattern)) {
-            $(element_selector).css("color", "red");
-            $(element_selector).css("border", "solid 1px red");
+//            $(element_selector).css("color", "red");
+//            $(element_selector).css("border", "solid 1px red");
             return false;
         } else {
-            $(element_selector).css("border", "solid 1px black");
-            $(element_selector).css("color", "black");
+//            $(element_selector).css("border", "solid 1px black");
+//            $(element_selector).css("color", "black");
             return true;
         }
     }
     
     function validate_empty(element_selector){
         if($(element_selector).val()===''){
-            $(element_selector).css("border", "1px solid red");
+//            $(element_selector).css("border", "1px solid red");
             return false;
         } else{
-            $(element_selector).css("border", "1px solid gray");
+//            $(element_selector).css("border", "1px solid gray");
             return true;
         }
     }
 
     function validate_month(element_selector, pattern) {
         if (!$(element_selector).val().match(pattern) || Number($(element_selector).val()) > 12) {
-            $(element_selector).css("color", "red");
-            $(element_selector).css("border", "solid 1px red");
+//            $(element_selector).css("color", "red");
+//            $(element_selector).css("border", "solid 1px red");
             return false;
         } else {
-            $(element_selector).css("color", "black");
-            $(element_selector).css("border", "solid 1px black");
+//            $(element_selector).css("color", "black");
+//            $(element_selector).css("border", "solid 1px black");
             return true;
         }
     }
     
     function validate_year(element_selector, pattern) {
         if (!$(element_selector).val().match(pattern) || Number($(element_selector).val()) < 2017) {
-            $(element_selector).css("color", "red");
-            $(element_selector).css("border", "solid 1px red");
+//            $(element_selector).css("color", "red");
+//            $(element_selector).css("border", "solid 1px red");
             return false;
         } else {
-            $(element_selector).css("color", "black");
-            $(element_selector).css("border", "solid 1px black");
+//            $(element_selector).css("color", "black");
+//            $(element_selector).css("border", "solid 1px black");
             return true;
         }
     }
