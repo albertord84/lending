@@ -64,7 +64,7 @@
     <section style="padding: 0px">
         <div class="row" style="margin-top: 100px;margin-bottom: 0px">
             
-            <div class="col-lg-3" style="padding:50px;padding-right:20px; background-color:#e9ecef">
+            <div class="col-lg-3" style="padding:50px;padding-right:20px; background-color:white"><!--#e9ecef-->
                 <h5 class="subheading">Resumo do empréstimo</h5>
                 <div class="text-left">
                     <span class="text-muted">
@@ -109,8 +109,7 @@
             </div>
 
             <div class="col-lg-5 bg-light" style="padding-top:50px;padding-bottom:50px;">
-                <div style="margin-left:8px;margin-right:8px">
-                    
+                <div style="margin-left:12px;margin-right:12px">                    
                     <!-- STEEP 1: Personal datas-->
                     <div class="form-sec check1" style="display:block">                        
                         <!-- Wizard-STEEP 1 -->
