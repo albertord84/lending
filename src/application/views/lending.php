@@ -23,7 +23,7 @@
         <!-- Proper styles -->
         <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">
         
-        <link rel="stylesheet" href="<?php echo base_url().'assets/'?>css/wizard.css">
+        <link rel="stylesheet" href="<?php echo base_url().'assets/'?>css/wizard.css">       
         
         <script type="text/javascript">
             var base_url = '<?php echo base_url();?>';
@@ -109,7 +109,7 @@
             </div>
 
             <div class="col-lg-5 bg-light" style="padding-top:50px;padding-bottom:50px;">
-                <div style="margin-left:12px;margin-right:12px">                    
+                <div style="margin-left:15px;margin-right:15px">                    
                     <!-- STEEP 1: Personal datas-->
                     <div class="form-sec check1" style="display:block">                        
                         <!-- Wizard-STEEP 1 -->
@@ -152,26 +152,26 @@
                                     </div>
                                 </div>                                
                                 <div class="code_request" style="display:block">
-                                    <div class="row">
+                                    <div class="row text-center">
                                         <div class="col-lg-6 form-group">
-                                            <input id="phone_number" class="form-control" type="tel" placeholder="Telefone *" required="required" data-validation-required-message="Telefone celular inválido.">
+                                            <input id="phone_number" class="form-control fone" type="tel" placeholder="Telefone *" required="required" data-validation-required-message="Telefone celular inválido.">
                                             <p class="help-block text-danger"></p>
                                         </div>
                                         <div class="col-lg-6 form-group">
-                                            <button id="btn_code_request" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;width:100%" type="button">SOLICITAR CÓDIGO</button>
+                                            <button id="btn_code_request" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;" type="button">SOLICITAR CÓDIGO</button>
                                         </div>                                            
                                     </div>                                            
                                 </div>
                                 <div class="code_verify" style="display:none">
                                     <p class="text-muted">VALIDAÇÃO DO TELEFONE</p>
-                                    <div class="row">
+                                    <div class="row text-center">
                                         <div class="col-lg-6 form-group">
                                             <input id="phone_sms_code" class="form-control" type="tel" placeholder="Inserir código *" required="required" data-validation-required-message="Código inválido.">
                                             <p class="help-block text-danger"></p>
                                         </div>
                                         <div class="col-lg-6 form-group text-right">
-                                            <button id="btn_code_verify" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;width:100%" type="button">CONFERIR</button>
-                                            <a href="#" class="text-muted">Novo código?</a>
+                                            <button id="btn_code_verify" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;width:170px" type="button">CONFERIR</button><br>
+                                            <a id="lnk_code_resend" href="#" class="text-muted">Novo código?</a>
                                         </div>                                            
                                     </div>                                            
                                 </div>                       
@@ -480,7 +480,7 @@
                             </div>                                   
                         </form>
                     </div>
-               </div> 
+                </div> 
             </div>
 
             <div class="col-lg-4" style="padding:50px;">
@@ -682,7 +682,7 @@
         <div id="modal_container_alert_message" class="modal-dialog modal-sm" role="document">                                                          
             <div class="modal-content">
                 <div class="modal-header text-muted">
-                    <i class="fas fa-exclamation-triangle"> Mensagem</i>
+                    <i class="fas fa-exclamation-triangle"> Alerta</i>
                     <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -699,21 +699,43 @@
         </div>                                                        
     </div> 
     
+    <!--modal_container_success_message-->
+    <div class="modal fade" style="top:30%" id="modal_success_message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id="modal_container_success_message" class="modal-dialog modal-sm" role="document">                                                          
+            <div class="modal-content">
+                <div class="modal-header text-muted">
+                    <i class="fas fa-check-square"> Sucesso</i>
+                    <button id="btn_modal_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-muted">                                            
+                    <p id="message_success_text"></p>                        
+                </div>
+                <div class="modal-footer text-center">
+                    <button id="accept_modal_success_message" type="button" class="btn btn-primary active text-center ladda-button" data-style="expand-left" data-spinner-color="#ffffff">
+                        <spam class="ladda-label"><div style="color:white; font-weight:bold">ACEITAR</div></spam>
+                    </button>
+                </div>
+            </div>
+        </div>                                                        
+    </div> 
+    
     <!-- Bootstrap core JavaScript -->
     <script src="<?php echo base_url()?>assets/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="<?php echo base_url()?>assets/js/jquery.mask.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="<?php echo base_url()?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Contact form JavaScript -->
-    <script src="<?php echo base_url()?>assets/js/jqBootstrapValidation.js"></script>
 
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
     
     <script src="<?php echo base_url()?>assets/js/sign_in.js"></script>
     <script src="<?php echo base_url()?>assets/js/talkme_painel.js"></script>
+    <script src="<?php echo base_url()?>assets/js/script.js"></script>
     
   </body>
 

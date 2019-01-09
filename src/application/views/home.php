@@ -61,7 +61,7 @@
                         <a class="nav-link js-scroll-trigger" href="#contact">Contate-nos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#who-we-are">Quens somos</a>
+                        <a class="nav-link js-scroll-trigger" href="#who-we-are">Quem somos</a>
                     </li>           
                 </ul>
             </div>

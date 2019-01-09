@@ -6,6 +6,12 @@ $(document).ready(function () {
     var utm_content= typeof getUrlVars()["utm_content"] !== 'undefined' ? getUrlVars()["utm_content"] : 'NULL';
     var slideToggle=1;
     
+    $("#lnk_use_term").click(function () {
+        url = base_url + "assets/others/TERMOS DE USO CREDITSOCIETY.pdf";
+        window.open(url, '_blank');
+        return false;
+    });
+    
     $('#verify_container').keypress(function (e) {
         if (e.which == 13) {
             $("#btn_verify").click();

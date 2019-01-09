@@ -7,21 +7,88 @@ $(document).ready(function () {
     var amount_months= typeof getUrlVars()["amount_months"] !== 'undefined' ? getUrlVars()["amount_months"] : 'NULL';
     init_values();
     
-
     //---------PRIMARY FUNCTIONS---------------------------------
-    $("#btn_code_request").click(function () {
+    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais
+    $("#btn_code_request").click(function () {        
         $('.code_request').toggle("hide");
         $('.code_verify').toggle("slow");
         return false;
+        phone_ddd = validate_element('#phone_ddd', '^[0-9]{2}$');
+        phone_number = validate_element('#phone_number', '^[0-9]{7,10}$');
+        if(phone_ddd && phone_number){
+            $('#wait').show();
+            $.ajax({
+                url: base_url+'index.php/welcome/request_sms_code',                
+                data: {
+                    'phone_ddd':$('#phone_ddd').val(),
+                    'phone_number': $('#phone_number').val(),
+                    'key':key
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    $('#wait').hide();
+                    if(response['success']){
+                        $('#sms').modal('show');
+                    } else{
+                        modal_alert_message(response['message']);
+                    }
+                }
+            });            
+        }else{
+            modal_alert_message('Dados telefónicos com problemas');
+        }
     });
     
+    //Passo 1.2. Conferir codigo de verificação de telefone
     $("#btn_code_verify").click(function () {
-//        $('.code_verify').toggle("hide");
-//        $('.cnt_btn_steep_1').toggle("slow");
         $('.check1').toggle("hide");
         $('.check2').toggle("slow");
+        return false;
+        $.ajax({
+            url: base_url+'index.php/welcome/verify_sms_code',                
+            data: {
+                'input_sms_code_confirmation':$('#input_sms_code_confirmation').val(),
+                'key':key
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if(response['success']){
+                   $('#sms').modal('hide');
+                   $('#request_cep_container').css({"visibility":"visible", "display":"block"});
+                   $('#request_cep_container').setCursorPosition(1);
+                   $('#request_cep_container').focus();
+                } else{
+                    $('#input_sms_code_confirmation').val('');
+                    $('#text_error_sms_confirmation').text("Codigo incorreto. Tente de novo");
+                }
+            }
+        });
     });
     
+    //Passo 1.3. Requerir novo codigo de verificação de telefone
+    $("#lnk_code_resend").click(function () {
+        $.ajax({
+            url: base_url+'index.php/welcome/request_sms_code',                
+            data: {
+                'phone_ddd':$('#phone_ddd').val(),
+                'phone_number': $('#phone_number').val(),
+                'key':key
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if(response['success']){
+                    modal_success_message("Código reenviado satisfatóriamente");
+                } else{
+                    modal_alert_message(response['message']);
+                }
+            }
+        });
+    });
+    
+    //Passo 2. Enviar dados do endereço
     $("#btn_steep_1").click(function () {             
         var cpf_value=$('#cpf').val();
         cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
@@ -98,12 +165,14 @@ $(document).ready(function () {
         } 
     });
     
+    //Passo 2. Voltar ao passo 1
     $("#btn_steep_2_prev").click(function () {
         $('.check2').toggle("hide");
         $('.check1').toggle("slow");
         return false;
     });
     
+    //Passo 3. Enviar dados do cartão
     $("#btn_steep_2_next").click(function () {
         $('.check2').toggle("hide");
         $('.check3').toggle("slow");
@@ -253,12 +322,14 @@ $(document).ready(function () {
         }   
     });
     
+    //Passo 3. Voltar ao passo 2 
     $("#btn_steep_3_prev").click(function () {
         $('.check3').toggle("hide");
         $('.check2').toggle("slow");
         return false;
     });
-        
+    
+    //Passo 4. Enviar dados bancários
     $("#btn_steep_3_next").click(function () {
         $('.check3').toggle("hide");
         $('.check4').toggle("slow");
@@ -316,12 +387,14 @@ $(document).ready(function () {
         }
     });
     
+    //Passo 4 Voltar ao passo 3
     $("#btn_steep_4_prev").click(function () {  
         $('.check4').toggle("hide");
         $('.check3').toggle("slow");
         return false;
     });
     
+    //Passo 5. Enviar fotos
     $("#btn_steep_4_next").click(function (){
         $('.check5').toggle("hide");
         $('.check4').toggle("slow");
@@ -352,11 +425,12 @@ $(document).ready(function () {
         }
     });
       
-    $("#lnk_use_term").click(function () {
-        url = base_url + "assets/others/TERMOS DE USO CREDITSOCIETY.pdf";
-        window.open(url, '_blank');
-        return false;
-    });
+    //Passo 5. Voltar ao Passo 4
+    
+    
+    
+       
+    //---------SECUNDARY FUNCTIONS-------------------------------
     
     $("#send_new_account_datas").click(function () {
         var cpf_value=$('#titular_cpf').val();        
@@ -403,33 +477,6 @@ $(document).ready(function () {
             modal_alert_message('Verifique os dados fornecidos');            
         }
     });
-    
-    //---------SECUNDARY FUNCTIONS-------------------------------
-    $('#name').focusin(function (e) {$('#name').css("color", "black");});
-    $('#email').focusin(function (e) {$('#email').css("color", "black");});
-    $('#phone_ddd').focusin(function (e) {$('#phone_ddd').css("color", "black");});
-    $('#phone_number').focusin(function (e) {$('#phone_number').css("color", "black");});
-    $('#cpf').focusin(function (e) {$('#cpf').css("color", "black");});
-    $('#cep').focusin(function (e) {$('#cep').css("color", "black");});    
-    $('#street_address').focusin(function (e) {$('#street_address').css("color", "black");});
-    $('#number_address').focusin(function (e) {$('#number_address').css("color", "black");});
-    $('#complement_number_address').focusin(function (e) {$('#complement_number_address').css("color", "black");});
-    $('#city_address').focusin(function (e) {$('#city_address').css("color", "black");});
-    $('#state_address').focusin(function (e) {$('#state_address').css("color", "black");});
-    
-    $('#credit_card_number').focusin(function (e) {$('#credit_card_number').css("color", "black");});
-    $('#credit_card_cvv').focusin(function (e) {$('#credit_card_cvv').css("color", "black");});
-    $('#credit_card_name').focusin(function (e) {$('#credit_card_name').css("color", "black");});
-    $('#credit_card_exp_month').focusin(function (e) {$('#credit_card_exp_month').css("color", "black");});
-    $('#credit_card_exp_year').focusin(function (e) {$('#credit_card_exp_year').css("color", "black");});
-    
-    $('#bank').focusin(function (e) {$('#bank').css("color", "black");});
-    $('#agency').focusin(function (e) {$('#agency').css("color", "black");});
-    $('#account_type').focusin(function (e) {$('#account_type').css("color", "black");});
-    $('#account').focusin(function (e) {$('#account').css("color", "black");});
-    $('#dig').focusin(function (e) {$('#dig').css("color", "black");});
-    $('#titular_name').focusin(function (e) {$('#titular_name').css("color", "black");});
-    $('#titular_cpf').focusin(function (e) {$('#titular_cpf').css("color", "black");});
     
     $('#container_form_steep_1').keypress(function (e) {
         if (e.which == 13) {
@@ -478,6 +525,15 @@ $(document).ready(function () {
     
     $("#accept_modal_alert_message").click(function () {
         $('#modal_alert_message').modal('hide');
+    });
+       
+    function modal_success_message(text_message){       
+        $('#modal_success_message').modal('show');        
+        $('#message_success_text').text(text_message);
+    }
+    
+    $("#accept_modal_success_message").click(function () {
+        $('#modal_success_message').modal('hide');
     });
     
     $("#btn_modal_close").click(function () {
@@ -621,81 +677,6 @@ $(document).ready(function () {
         });
     }
     
-    $("#btn_verify_phone_number").click(function () {       
-        phone_ddd = validate_element('#phone_ddd', '^[0-9]{2}$');
-        phone_number = validate_element('#phone_number', '^[0-9]{7,10}$');
-        if(phone_ddd && phone_number){
-            $('#wait').show();
-            $.ajax({
-                url: base_url+'index.php/welcome/request_sms_code',                
-                data: {
-                    'phone_ddd':$('#phone_ddd').val(),
-                    'phone_number': $('#phone_number').val(),
-                    'key':key
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    $('#wait').hide();
-                    if(response['success']){
-                        $('#sms').modal('show');
-                    } else{
-                        modal_alert_message(response['message']);
-                    }
-                }
-            });            
-        }else{
-            modal_alert_message('Dados telefónicos com problemas');
-        }
-    });    
-    
-    $("#btn_verify_sms_send_code").click(function () {
-        $('#text_error_sms_confirmation').text("");
-        $.ajax({
-            url: base_url+'index.php/welcome/verify_sms_code',                
-            data: {
-                'input_sms_code_confirmation':$('#input_sms_code_confirmation').val(),
-                'key':key
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                if(response['success']){
-                   $('#sms').modal('hide');
-                   $('#request_cep_container').css({"visibility":"visible", "display":"block"});
-                   $('#request_cep_container').setCursorPosition(1);
-                   $('#request_cep_container').focus();
-                } else{
-                    $('#input_sms_code_confirmation').val('');
-                    $('#text_error_sms_confirmation').text("Codigo incorreto. Tente de novo");
-                }
-            }
-        });
-    });
-    
-    $("#resend_sms_code").click(function () {
-        $('#text_error_sms_confirmation').text("");
-        $.ajax({
-            url: base_url+'index.php/welcome/request_sms_code',                
-            data: {
-                'phone_ddd':$('#phone_ddd').val(),
-                'phone_number': $('#phone_number').val(),
-                'key':key
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                if(response['success']){
-                    $('#text_error_sms_confirmation').text("Código enviado novamente");
-                    $('#request_cep_container').focus();
-                } else{
-                    modal_alert_message(response['message']);
-                }
-            }
-        });
-        
-    });
-    
     $("#verify_cep").click(function () {
         if(validate_element("#cep",'^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$')){
             $('#wait').show();
@@ -749,7 +730,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#cartao").on("change", function (e) {
+    $("#cartao").change( function (e) {
         var file = $(this)[0].files[0];        
         var upload = new Upload(file);
         // execute upload
@@ -757,7 +738,7 @@ $(document).ready(function () {
         //alert("file upload");
     });    
     
-    $("#selcartao").on("change", function (e) {
+    $("#selcartao").change( function (e) {
         var file = $(this)[0].files[0];        
         var upload = new Upload(file);
         // execute upload
@@ -765,7 +746,7 @@ $(document).ready(function () {
         //alert("file upload");
     });
     
-    $("#id").on("change", function (e) {
+    $("#id").change( function (e) {
         var file = $(this)[0].files[0];        
         var upload = new Upload(file);
         // execute upload
@@ -773,7 +754,7 @@ $(document).ready(function () {
         //alert("file upload");
     });
     
-    $("#selid").on("change", function (e) {
+    $("#selid").change( function (e) {
         var file = $(this)[0].files[0];        
         var upload = new Upload(file);
         // execute upload
@@ -787,7 +768,7 @@ $(document).ready(function () {
         }
     });
     
-    $("#ucpf_img").on("change", function (e) {
+    $("#ucpf_img").change( function (e) {
         var file = $(this)[0].files[0];        
         var upload = new Upload(file);
         // execute upload
@@ -796,15 +777,17 @@ $(document).ready(function () {
     });
     
     var Upload = function (file) {
-    this.file = file;
+        this.file = file;
     };
 
     Upload.prototype.getType = function() {
         return this.file.type;
     };
+    
     Upload.prototype.getSize = function() {
         return this.file.size;
     };
+    
     Upload.prototype.getName = function() {
         return this.file.name;
     };
@@ -1005,10 +988,6 @@ $(document).ready(function () {
         $('#modal_captured').modal('hide');
     });
     
-//    $("#modal_captured").on("hidden.bs.modal", function () {
-//        modal_alert_message("Dinheiro liberado");
-//    });
-    
     $("#phone_number").keydown(function (e) {   
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
              // Allow: Ctrl+A, Command+A
@@ -1130,10 +1109,6 @@ $(document).ready(function () {
     });
     
     
-    
-    
-    
-    //init();    
 }); 
 
 $(function() {
