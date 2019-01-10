@@ -118,7 +118,7 @@ $(document).ready(function () {
                 solicited_value = solicited_value.replace(',','.');
                 solicited_value = parseFloat(solicited_value);
                 params="utm_source="+utm_source+"&frm_money_use_form="+$('#money_use_form').val()+"&utm_content="+utm_content+"&utm_campaign="+utm_campaign;
-                url=base_url+"index.php/welcome/lending?"+params;
+                url=base_url+"index.php/welcome/lend?"+params;
                 $(location).attr('href',url);
             }
     });

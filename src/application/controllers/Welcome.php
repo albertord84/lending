@@ -29,7 +29,6 @@ class Welcome extends CI_Controller {
             $_SESSION['utm_source'] = $datas['utm_source'];
         else
             $_SESSION['utm_source'] = '';
-
         if (isset($datas['utm_campaign']) && $datas['utm_campaign'] != NULL)
             $_SESSION['utm_campaign'] = $datas['utm_campaign'];
         else
@@ -44,17 +43,11 @@ class Welcome extends CI_Controller {
         $params['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         $params['key'] = $_SESSION['key'];
         $this->load->view('home', $params);
-        //$this->load->view('inc/footer');
     }
     
-//    public function lending() {
-//        $this->load->view('lending');
-//    }
-    
-
-    public function lending() {
+    public function lend() {
+        die("aaaaaaaaa");
         $this->load->model('class/track_money_model');
-        //die('This functionalities is under development :-)');
         if (session_id() == '')
             header('Location: ' . base_url());
         if (!$_SESSION['transaction_values']['amount_months'])
@@ -83,7 +76,6 @@ class Welcome extends CI_Controller {
         $id_row = $this->track_money_model->insert_required_money($data_track);
 
         $this->load->view('lending', $params);
-        //$this->load->view('inc/footer');
     }
 
     public function suceso_compra() {

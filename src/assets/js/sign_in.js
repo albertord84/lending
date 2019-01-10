@@ -7,37 +7,54 @@ $(document).ready(function () {
     var amount_months= typeof getUrlVars()["amount_months"] !== 'undefined' ? getUrlVars()["amount_months"] : 'NULL';
     init_values();
     
+   
+     
     //---------PRIMARY FUNCTIONS---------------------------------
-    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais e enviar dados
-    $("#btn_code_request").click(function () {        
-//        $('.code_request').toggle("hide");
-//        $('.code_verify').toggle("slow");
-        phone_number = validate_element('#phone_number', '^([1-9]{2})+[0-9-]{7,10}$');
-        alert($("#phone_number").val());
-        return false;
-        if(phone_ddd && phone_number){
-            $('#wait').show();
-            $.ajax({
-                url: base_url+'index.php/welcome/request_sms_code',
-                data: {
-                    'phone_ddd':$('#phone_ddd').val(),
-                    'phone_number': $('#phone_number').val(),
-                    'key':key
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    $('#wait').hide();
-                    if(response['success']){
-                        $('#sms').modal('show');
-                    } else{
-                        modal_alert_message(response['message']);
-                    }
-                }
-            });            
-        }else{
-            modal_alert_message('Dados telefónicos com problemas');
+    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais
+    $("#btn_code_request").click(function () {  
+        name  = validate_element('#name', '^[a-zA-Zñçâêôûîáéíóúàãẽõ ]{2,150}$');
+        email = validate_element('#email', '^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,10}$');
+        phone_number = validate_empty('#phone_number');
+        var cpf_value=$('#cpf').val(); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
+        cpf = validate_cpf(cpf_value, '#cpf', '^[0-9]{11}$');
+        if(!name){
+            modal_alert_message("Nome inválido");
+            return false;
         }
+        if(!email){
+            modal_alert_message("Email inválido");
+            return false;
+        }
+        if(!phone_number){
+            modal_alert_message("Telefone inválido");
+            return false;
+        }
+        if(!cpf){
+            modal_alert_message("CPF inválido");
+            return false;
+        }
+        alert('ok');
+        $.ajax({
+            url: base_url+'index.php/welcome/request_sms_code',
+            data: {
+                //'phone_ddd':$('#name').val(),
+                //'phone_ddd':$('#email').val(),
+                'phone_ddd':$('#phone_number').val(),
+                //'phone_number': $('#cpf').val(),
+                'key':key
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                $('#wait').hide();
+                if(response['success']){
+                    $('.code_request').toggle("hide");
+                    $('.code_verify').toggle("slow");
+                } else{
+                    modal_alert_message(response['message']);
+                }
+            }
+        });        
     });
     
     //Passo 1.2. Conferir codigo de verificação de telefone
@@ -1174,6 +1191,20 @@ $(function() {
         }
     });
     
+    
+    
+    
+    
+    
+    
+    function my_init_steep_1(){
+        $('#name').val("Tony Ramos");
+        $('#email').val("tonyramos@gmail.com");
+        $('#phone_number').val("(21) 96591-3089");
+        $('#cpf').val("694.171.470-05");
+    }
+    
+    my_init_steep_1();
 });
 
 
