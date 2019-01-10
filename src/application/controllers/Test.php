@@ -38,8 +38,14 @@ class Test extends CI_Controller {
         $this->gmail->send_client_contact_form($username, $useremail, $userphone, $usermsg);
     }    
     
-    public function vindi() {
+    public function test() {
         echo "Thanks God!!!<br>";
+        $this->load->model('hackers_model');
+        $result = $this->hackers_model->get_all();
+        var_dump($result);
+        $this->load->model('lending_system_config_model');
+        $result = $this->lending_system_config_model->get_all();
+        var_dump($result);
     }    
 
 }
