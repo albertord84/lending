@@ -26,91 +26,52 @@
     height:150px;
     border: 8px solid #e9ecef;
 }
-/*
-input[type=range] {
-  height: 35px;
-  -webkit-appearance: none;
-  width: 100%;
-}
-input[type=range]:focus {
-  outline: none;
-}
-input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 3px;
-  cursor: pointer;
-  animate: 0.2s;
-  background: #0c0c0c;
-  border-radius: 0px;
-  border: 0px solid #0c0c0c;
-}
-input[type=range]::-webkit-slider-thumb {
-  border: 0px solid #0c0c0c;
-  height: 15px;
-  width: 15px;
-  border-radius: 50px;
-  background: #07d39c;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -6px;
-}
-input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #0c0c0c;
-}
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 10px;
-  cursor: pointer;
-  animate: 0.2s;
-  background: #0c0c0c;
-  border-radius: 0px;
-  border: 0px solid #0c0c0c;
-}
-input[type=range]::-moz-range-thumb {
-  border: 1px solid #0c0c0c;
-  height: 25px;
-  width: 25px;
-  border-radius: 50px;
-  background: #07d39c;
-  cursor: pointer;
-}
-input[type=range]::-ms-track {
-  width: 100%;
-  height: 10px;
-  cursor: pointer;
-  animate: 0.2s;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-input[type=range]::-ms-fill-lower {
-  background: #0c0c0c;
-  border: 0px solid #0c0c0c;
-  border-radius: 0px;
-}
-input[type=range]::-ms-fill-upper {
-  background: #0c0c0c;
-  border: 0px solid #0c0c0c;
-  border-radius: 0px;
-}
-input[type=range]::-ms-thumb {
-  margin-top: 1px;
-  border: 1px solid #0c0c0c;
-  height: 25px;
-  width: 25px;
-  border-radius: 50px;
-  background: #07d39c;
-  cursor: pointer;
-}
-input[type=range]:focus::-ms-fill-lower {
-  background: #0c0c0c;
-}
-input[type=range]:focus::-ms-fill-upper {
-  background: #0c0c0c;
-}
-.bk-none{
-    background: none;
-}*/
 
+.hidden{
+    visibility: hidden;
+    display: none;
+}
 
+.upload{
+    border: 1px solid silver;
+    /*border-radius: 8px;*/
+} 
+
+.upload-white{
+    background-color:white;    
+}
+
+.upload-green{
+    background-color:#00b33c;    
+}
+
+.upload-red{
+    background-color:#e60000;    
+}
+
+.h-over:hover  {
+  background-color: #f5f4f4;
+  cursor: pointer;
+}
+
+.h-over-success:hover  {
+  background-color: #ccffcc;
+  cursor: pointer;
+}
+
+.h-over-error   :hover  {
+  background-color: #ffcccc;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {    
+  .upl {
+    text-align:center;
+  }
+  
+  .res {
+    margin-left: 50px;
+  }
+  
+}
 

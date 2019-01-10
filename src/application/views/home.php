@@ -17,11 +17,11 @@
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css4391.css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css546d.css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
         <!-- Custom styles for this template -->
-        <link href="<?php echo base_url()?>assets/css/agency.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>assets/css/agency.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">
         <!-- Social icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Proper styles -->
-        <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">        
+        <link href="<?php echo base_url()?>assets/css/style.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">        
         
         <script type="text/javascript">
             var base_url = '<?php echo base_url();?>';
@@ -34,7 +34,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lending</a>
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lendgol</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               Menu
               <i class="fas fa-bars"></i>
@@ -61,7 +61,7 @@
                         <a class="nav-link js-scroll-trigger" href="#contact">Contate-nos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#who-we-are">Quens somos</a>
+                        <a class="nav-link js-scroll-trigger" href="#who-we-are">Quem somos</a>
                     </li>           
                 </ul>
             </div>
@@ -293,7 +293,7 @@
                         <img class="mx-auto rounded-circle" src="<?php echo base_url()?>assets/img/team/2.jpg" alt="">
                         <h4>Leonam Ferreira</h4>
                         <b class="text-muted">Microempreendedor</b>
-                        <p class="text-muted">"Sou MEI, precisava de dinheiro em epécie para comprar mais insumos no atacado. Solicitei um empréstimo e em menos de 24 horas já tinha o dinheiro solicitado <br> na minha conta. Graças a Lending  não fui à falhencia..."</p>
+                        <p class="text-muted">"Sou MEI, precisava de dinheiro em epécie para comprar mais insumos no atacado. Solicitei um empréstimo e em menos de 24 horas já tinha o dinheiro solicitado <br> na minha conta. Graças a Lendgol  não fui à falhencia..."</p>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -310,7 +310,7 @@
                 <div class="col-lg-8 mx-auto text-center">
                     <h4>Aos nossos clientes:</h4>
                   <p class="large text-muted">
-                      "Obrigado por nos visitar e solicitar nosso serviço! Nós estamos contentes que você encontrou o que estava procurando. Nosso objetivo é a sua satisfação. Atentamente, Lending -:)"</p>
+                      "Obrigado por nos visitar e solicitar nosso serviço! Nós estamos contentes que você encontrou o que estava procurando. Nosso objetivo é a sua satisfação. Atentamente, Lendgol -:)"</p>
                 </div>
             </div>
         </div>
@@ -381,7 +381,7 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-5">
                     <div class="text-justify">
-                        <p>A Lending é uma plataforma de crédito on-line que segue as diretrizes do Banco Central do Brasil, nos termos da 
+                        <p>A Lendgol é uma plataforma de crédito on-line que segue as diretrizes do Banco Central do Brasil, nos termos da 
                             <a href="https://www.bcb.gov.br/pre/normativos/res/2011/pdf/res_3954_v7_L.pdf">Resolução nº. 3.954</a>, de 24 de fevereiro de 2011. </p>
                         <p>O Custo Efetivo Total (CET) praticado varia de 56,68% a 98,32% ao ano, já incluindo a taxa de juros mensal que varia de 3,99% a 9,95% e a taxa de abertura de cadastro (TAC) de 20% sobre o valor tomado.</p>
                         <p>Coronel Moreira César, 160, Icaraí, Niterói - RJ, 24230-061.</p>
@@ -415,7 +415,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <span class="copyright">Copyright &copy; Lending <?php echo date("Y",time());?></span>
+            <span class="copyright">Copyright &copy; Lendgol <?php echo date("Y",time());?></span>
           </div>
           <div class="col-md-4">
             <ul class="list-inline social-buttons">              
@@ -476,8 +476,8 @@
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
     
-    <script src="<?php echo base_url()?>assets/js/index.js"></script>
-    <script src="<?php echo base_url()?>assets/js/talkme_painel.js"></script>
+    <script src="<?php echo base_url()?>assets/js/index.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url()?>assets/js/talkme_painel.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
     
   </body>
 
