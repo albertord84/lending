@@ -36,7 +36,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lending</a>
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lendgol</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               Menu
               <i class="fas fa-bars"></i>
@@ -66,7 +66,7 @@
             
             <div class="col-lg-3" style="padding:50px;padding-right:20px; background-color:white"><!--#e9ecef-->
                 <h5 class="subheading">Resumo do empréstimo</h5>
-                <div class="text-left">
+                <div class="text-left res">
                     <span class="text-muted">
                         <small>Valor solicitado por você:</small>
                         <h6 class="">R$ <?php echo $solicited_value;?></h6>
@@ -303,7 +303,13 @@
                                     <div class="row" >                                        
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select id="credit_card_exp_month" class="form-control" required="">
-                                                <option value="01" selected="true">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                                                <option value="01" selected="true">01</option>
+                                                <option value="02">02</option><option value="03">03</option>
+                                                <option value="04">04</option><option value="05">05</option>
+                                                <option value="06">06</option><option value="07">07</option>
+                                                <option value="08">08</option><option value="09">09</option>
+                                                <option value="10">10</option><option value="11">11</option>
+                                                <option value="12">12</option>
                                             </select>
                                             <p class="help-block text-danger"></p>                                        
                                         </div>                                        
@@ -369,7 +375,7 @@
                                 <div class="form-group">
                                     <select id="bank" class="form-control" required="">
                                         <option value="341" selected="true">ITAÚ UNIBANCO BM S.A.</option> 
-                                        <option value="237">BCO BRADESCO S.A.</option> <option value="033">BCO SANTANDER (BRASIL) S.A.</option> <option value="001">BCO DO BRASIL S.A.</option> <option value="104">CAIXA ECONOMICA FEDERAL</option> <option value="117">ADVANCED CC LTDA</option> <option value="748">BANCO COOPERATIVO SICREDI S.A.</option> <option value="172">ALBATROSS CCV S.A</option> <option value="188">ATIVA S.A. INVESTIMENTOS CCTVM</option> <option value="280">AVISTA S.A. CFI</option> <option value="080">B&T CC LTDA.</option> <option value="063">BANCO BRADESCARD</option> <option value="208">BANCO BTG PACTUAL S.A.</option> <option value="233">BANCO CIFRA</option> <option value="094">BANCO FINAXIS</option> <option value="012">BANCO INBURSA</option> <option value="077">BANCO INTER</option> <option value="249">BANCO INVESTCRED UNIBANCO S.A.</option> <option value="029">BANCO ITAÚ CONSIGNADO S.A.</option> <option value="217">BANCO JOHN DEERE S.A.</option> <option value="212">BANCO ORIGINAL</option> <option value="623">BANCO PAN</option> <option value="743">BANCO SEMEAR</option> <option value="754">BANCO SISTEMA</option> <option value="082">BANCO TOPÁZIO S.A.</option> <option value="756">BANCOOB</option> <option value="268">BARIGUI CH</option> <option value="081">BBN BCO BRASILEIRO DE NEGOCIOS S.A.</option> <option value="654">BCO A.J. RENNER S.A.</option> <option value="246">BCO ABC BRASIL S.A.</option> <option value="075">BCO ABN AMRO S.A.</option> <option value="121">BCO AGIBANK S.A.</option> <option value="025">BCO ALFA S.A.</option> <option value="641">BCO ALVORADA S.A.</option> <option value="065">BCO ANDBANK S.A.</option> <option value="213">BCO ARBI S.A.</option> <option value="096">BCO B3 S.A.</option> <option value="024">BCO BANDEPE S.A.</option> <option value="021">BCO BANESTES S.A.</option> <option value="036">BCO BBI S.A.</option> <option value="318">BCO BMG S.A.</option> <option value="752">BCO BNP PARIBAS BRASIL S A</option> <option value="107">BCO BOCOM BBM S.A.</option> <option value="122">BCO BRADESCO BERJ S.A.</option> <option value="204">BCO BRADESCO CARTOES S.A.</option> <option value="394">BCO BRADESCO FINANC. S.A.</option> <option value="218">BCO BS2 S.A.</option> <option value="473">BCO CAIXA GERAL BRASIL S.A.</option> <option value="412">BCO CAPITAL S.A.</option> <option value="040">BCO CARGILL S.A.</option> <option value="320">BCO CCB BRASIL S.A.</option> <option value="266">BCO CEDULA S.A.</option> <option value="739">BCO CETELEM S.A.</option> <option value="745">BCO CITIBANK S.A.</option> <option value="241">BCO CLASSICO S.A.</option> <option value="095">BCO CONFIDENCE DE CÂMBIO S.A.</option> <option value="748">BCO COOPERATIVO SICREDI S.A.</option> <option value="222">BCO CRÉDIT AGRICOLE BR S.A.</option> <option value="505">BCO CREDIT SUISSE (BRL) S.A.</option> <option value="069">BCO CREFISA S.A.</option> <option value="003">BCO DA AMAZONIA S.A.</option> <option value="083">BCO DA CHINA BRASIL S.A.</option> <option value="707">BCO DAYCOVAL S.A</option> <option value="047">BCO DO EST. DE SE S.A.</option> <option value="037">BCO DO EST. DO PA S.A.</option> <option value="041">BCO DO ESTADO DO RS S.A.</option> <option value="004">BCO DO NORDESTE DO BRASIL S.A.</option> <option value="265">BCO FATOR S.A.</option> <option value="224">BCO FIBRA S.A.</option> <option value="626">BCO FICSA S.A.</option> <option value="612">BCO GUANABARA S.A.</option> <option value="604">BCO INDUSTRIAL DO BRASIL S.A.</option> <option value="653">BCO INDUSVAL S.A.</option> <option value="630">BCO INTERCAP S.A.</option> <option value="184">BCO ITAÚ BBA S.A.</option> <option value="479">BCO ITAUBANK S.A.</option> <option value="376">BCO J.P. MORGAN S.A.</option> <option value="076">BCO KDB BRASIL S.A.</option> <option value="757">BCO KEB HANA DO BRASIL S.A.</option> <option value="300">BCO LA NACION ARGENTINA</option> <option value="495">BCO LA PROVINCIA B AIRES BCE</option> <option value="600">BCO LUSO BRASILEIRO S.A.</option> <option value="243">BCO MÁXIMA S.A.</option> <option value="389">BCO MERCANTIL DO BRASIL S.A.</option> <option value="370">BCO MIZUHO S.A.</option> <option value="746">BCO MODAL S.A.</option> <option value="066">BCO MORGAN STANLEY S.A.</option> <option value="456">BCO MUFG BRASIL S.A.</option> <option value="169">BCO OLÉ BONSUCESSO CONSIGNADO S.A.</option> <option value="079">BCO ORIGINAL DO AGRO S/A</option> <option value="712">BCO OURINVEST S.A.</option> <option value="611">BCO PAULISTA S.A.</option> <option value="643">BCO PINE S.A.</option> <option value="747">BCO RABOBANK INTL BRASIL S.A.</option> <option value="633">BCO RENDIMENTO S.A.</option> <option value="494">BCO REP ORIENTAL URUGUAY BCE</option> <option value="741">BCO RIBEIRAO PRETO S.A.</option> <option value="120">BCO RODOBENS S.A.</option> <option value="422">BCO SAFRA S.A.</option> <option value="366">BCO SOCIETE GENERALE BRASIL</option> <option value="637">BCO SOFISA S.A.</option> <option value="464">BCO SUMITOMO MITSUI BRASIL S.A.</option> <option value="634">BCO TRIANGULO S.A.</option> <option value="018">BCO TRICURY S.A.</option> <option value="655">BCO VOTORANTIM S.A.</option> <option value="610">BCO VR S.A.</option> <option value="119">BCO WESTERN UNION</option> <option value="124">BCO WOORI BANK DO BRASIL S.A.</option> <option value="074">BCO. J.SAFRA S.A.</option> <option value="250">BCV</option> <option value="144">BEXS BCO DE CAMBIO S.A.</option> <option value="253">BEXS CC S.A.</option> <option value="134">BGC LIQUIDEZ DTVM LTDA</option> <option value="007">BNDES</option> <option value="017">BNY MELLON BCO S.A.</option> <option value="755">BOFA MERRILL LYNCH BM S.A.</option> <option value="126">BR PARTNERS BI</option> <option value="125">BRASIL PLURAL S.A. BCO.</option> <option value="070">BRB - BCO DE BRASILIA S.A.</option> <option value="092">BRK S.A. CFI</option> <option value="173">BRL TRUST DTVM SA</option> <option value="142">BROKER BRASIL CC LTDA.</option> <option value="011">C.SUISSE HEDGING-GRIFFO CV S/A</option> <option value="288">CAROL DTVM LTDA.</option> <option value="130">CARUANA SCFI</option> <option value="159">CASA CREDITO S.A. SCM</option> <option value="097">CCC NOROESTE BRASILEIRO LTDA.</option> <option value="091">CCCM UNICRED CENTRAL RS</option> <option value="016">CCM DESP TRÂNS SC E RS</option> <option value="279">CCR DE PRIMAVERA DO LESTE</option> <option value="273">CCR DE SÃO MIGUEL DO OESTE</option> <option value="089">CCR REG MOGIANA</option> <option value="114">CENTRAL COOPERATIVA DE CRÉDITO NO ESTADO DO ESPÍRITO SANTO</option> <option value="477">CITIBANK N.A.</option> <option value="180">CM CAPITAL MARKETS CCTVM LTDA</option> <option value="127">CODEPE CVC S.A.</option> <option value="163">COMMERZBANK BRASIL S.A. - BCO MÚLTIPLO</option> <option value="136">CONF NAC COOP CENTRAIS UNICRED</option> <option value="060">CONFIDENCE CC S.A.</option> <option value="085">COOP CENTRAL AILOS</option> <option value="098">CREDIALIANÇA CCR</option> <option value="010">CREDICOAMO</option> <option value="133">CRESOL CONFEDERAÇÃO</option> <option value="182">DACASA FINANCEIRA S/A - SCFI</option> <option value="487">DEUTSCHE BANK S.A.BCO ALEMAO</option> <option value="140">EASYNVEST - TÍTULO CV SA</option> <option value="149">FACTA S.A. CFI</option> <option value="196">FAIR CC S.A.</option> <option value="278">GENIAL INVESTIMENTOS CVM S.A.</option> <option value="138">GET MONEY CC LTDA</option> <option value="064">GOLDMAN SACHS DO BRASIL BM S.A</option> <option value="177">GUIDE</option> <option value="146">GUITTA CC LTDA</option> <option value="078">HAITONG BI DO BRASIL S.A.</option> <option value="062">HIPERCARD BM S.A.</option> <option value="189">HS FINANCEIRA</option> <option value="269">HSBC BANCO DE INVESTIMENTO</option> <option value="271">IB CCTVM LTDA</option> <option value="157">ICAP DO BRASIL CTVM LTDA.</option> <option value="132">ICBC DO BRASIL BM S.A.</option> <option value="492">ING BANK N.V.</option> <option value="139">INTESA SANPAOLO BRASIL S.A. BM</option> <option value="652">ITAÚ UNIBANCO HOLDING BM S.A.</option> <option value="488">JPMORGAN CHASE BANK</option> <option value="399">KIRTON BANK</option> <option value="105">LECCA CFI S.A.</option> <option value="145">LEVYCAM CCV LTDA</option> <option value="113">MAGLIANO S.A. CCVM</option> <option value="128">MS BANK S.A. BCO DE CÂMBIO</option> <option value="137">MULTIMONEY CC LTDA.</option> <option value="014">NATIXIS BRASIL S.A. BM</option> <option value="191">NOVA FUTURA CTVM LTDA.</option> <option value="753">NOVO BCO CONTINENTAL S.A. - BM</option> <option value="260">NU PAGAMENTOS S.A.</option> <option value="111">OLIVEIRA TRUST DTVM S.A.</option> <option value="613">OMNI BANCO S.A.</option> <option value="254">PARANA BCO S.A.</option> <option value="194">PARMETAL DTVM LTDA</option> <option value="174">PERNAMBUCANAS FINANC S.A. CFI</option> <option value="100">PLANNER CV S.A.</option> <option value="093">PÓLOCRED SCMEPP LTDA.</option> <option value="108">PORTOCRED S.A. - CFI</option> <option value="283">RB CAPITAL INVESTIMENTOS DTVM LTDA.</option> <option value="101">RENASCENCA DTVM LTDA</option> <option value="751">SCOTIABANK BRASIL</option> <option value="276">SENFF S.A. - CFI</option> <option value="545">SENSO CCVM S.A.</option> <option value="190">SERVICOOP</option> <option value="183">SOCRED S.A. SCM</option> <option value="118">STANDARD CHARTERED BI S.A.</option> <option value="197">STONE PAGAMENTOS S.A.</option> <option value="143">TREVISO CC S.A.</option> <option value="131">TULLETT PREBON BRASIL CVC LTDA</option> <option value="129">UBS BRASIL BI S.A.</option> <option value="015">UBS BRASIL CCTVM S.A.</option> <option value="099">UNIPRIME CENTRAL CCC LTDA.</option> <option value="084">UNIPRIME NORTE DO PARANÁ - CC</option> <option value="102">XP INVESTIMENTOS CCTVM S/A</option>
+                                        <option value="237">BCO BRADESCO S.A.</option> 
                                     </select>
                                     <p class="help-block text-danger"></p>
                                 </div>                                
@@ -440,32 +446,46 @@
                                 <p class="text-muted">COMPROVANTES DE IDENTIDADE</p>
                                 
                                 <div class="form-group" style="margin-bottom:0px">
-                                    <p class="text-muted">Cartão de crédito</p>
                                     <div class="row" >
-                                        <div class="col-lg-6">
-                                            <p class="text-muted">Foto da frente do cartão</p>
-                                            <input id="agency" class="form-control" type="file" placeholder="Agência *" required="required" >
-                                            <p class="help-block text-danger"></p>                                        
+                                        <div class="col-lg-6 upl">
+                                            <p class="text-muted">1. Foto da frente do cartão</p>
+                                            <label for="cartao">
+                                                <input type="file" id="cartao" class="hidden">
+                                                <div id="check_selfie_credit_card" class="upload upload-green pointer h-over-success" >
+                                                    <img src="<?php echo base_url().'assets/'?>img/photos/credit-card.png" alt="" style="width:200px;height:140px">
+                                                </div>
+                                            </label>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <p class="text-muted">Selfie segurando o cartão</p>
-                                            <input id="agency" class="form-control" type="file" placeholder="Agência *" required="required" >
-                                            <p class="help-block text-danger"></p>
+                                        <div class="col-lg-6 upl">
+                                            <p class="text-muted">2. Selfie com o cartão</p>
+                                            <label for="selcartao">
+                                                <input type="file" id="selcartao" class="hidden">
+                                                <div id="check_selfie_credit_card" class="upload upload-green pointer h-over-success">
+                                                    <img src="<?php echo base_url().'assets/'?>img/photos/selfie-with-credit-card.png" alt="" style="width:200px;height:140px">
+                                                </div>
+                                            </label>
                                         </div>                                            
                                     </div>                                    
                                 </div>
                                 <div class="form-group" style="margin-bottom:0px">
-                                    <p class="text-muted">Identidade</p>
-                                    <div class="row" >
-                                        <div class="col-lg-6">
-                                            <p class="text-muted">Foto da frente da identidade</p>
-                                            <input id="agency" class="form-control" type="file" placeholder="Agência *" required="required" >
-                                            <p class="help-block text-danger"></p>                                        
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-lg-6 upl">
+                                            <p class="text-muted">3. Foto da identidade aberta</p>
+                                            <label for="id">
+                                                <input type="file" id="id" class="hidden">
+                                                <div id="check_selfie_credit_card" class="upload upload-red pointer h-over-error">
+                                                    <img src="<?php echo base_url().'assets/'?>img/photos/identification.png" alt="" style="width:200px;height:140px">
+                                                </div>
+                                            </label>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <p class="text-muted">Selfie segurando a identidade</p>
-                                            <input id="agency" class="form-control" type="file" placeholder="Agência *" required="required" >
-                                            <p class="help-block text-danger"></p>
+                                        <div class="col-lg-6 upl">
+                                            <p class="text-muted">4. Selfie com a identidade</p>
+                                            <label for="selid">
+                                                <input type="file" id="selid" class="hidden">
+                                                <div id="check_selfie_credit_card" class="upload upload-white pointer h-over">
+                                                    <img  src="<?php echo base_url().'assets/'?>img/photos/selfie-with-identification.png" alt="" style="width:200px;height:140px">
+                                                </div>
+                                            </label>                                            
                                         </div>                                            
                                     </div>                                    
                                 </div>
@@ -473,9 +493,9 @@
 
                                 <div class="clearfix"></div>                                
                                 <div class="col-lg-12 text-center">
-                                    <div class="col-lg-12 text-center">
-                                    <button id="btn_steep_5" class="btn btn-primary btn-xl text-uppercase" style="padding:10px" type="submit">Contratar</button>
-                                </div>
+                                    <div class="col-lg-12 text-center" style="margin-top: 30px">
+                                        <button id="btn_steep_5" class="btn btn-primary btn-xl text-uppercase" style="padding:10px" type="submit">Contratar</button>
+                                    </div>
                                 </div>
                             </div>                                   
                         </form>
@@ -632,7 +652,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-justify">
-                        <p>A Lending é uma plataforma de crédito on-line que segue as diretrizes do Banco Central do Brasil, nos termos da 
+                        <p>A Lendgol é uma plataforma de crédito on-line que segue as diretrizes do Banco Central do Brasil, nos termos da 
                             <a href="https://www.bcb.gov.br/pre/normativos/res/2011/pdf/res_3954_v7_L.pdf">Resolução nº. 3.954</a>, de 24 de fevereiro de 2011. </p>
                         <p>O Custo Efetivo Total (CET) praticado varia de 56,68% a 98,32% ao ano, já incluindo a taxa de juros mensal que varia de 3,99% a 9,95% e a taxa de abertura de cadastro (TAC) de 20% sobre o valor tomado.</p>
                         <p>Coronel Moreira César, 160, Icaraí, Niterói - RJ, 24230-061.</p>
@@ -649,7 +669,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <span class="copyright">Copyright &copy; Lending <?php echo date("Y",time());?></span>
+            <span class="copyright">Copyright &copy; Lendgol <?php echo date("Y",time());?></span>
           </div>
           <div class="col-md-4">
             <ul class="list-inline social-buttons">              
