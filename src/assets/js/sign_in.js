@@ -8,17 +8,17 @@ $(document).ready(function () {
     init_values();
     
     //---------PRIMARY FUNCTIONS---------------------------------
-    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais
+    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais e enviar dados
     $("#btn_code_request").click(function () {        
-        $('.code_request').toggle("hide");
-        $('.code_verify').toggle("slow");
+//        $('.code_request').toggle("hide");
+//        $('.code_verify').toggle("slow");
+        phone_number = validate_element('#phone_number', '^([1-9]{2})+[0-9-]{7,10}$');
+        alert($("#phone_number").val());
         return false;
-        phone_ddd = validate_element('#phone_ddd', '^[0-9]{2}$');
-        phone_number = validate_element('#phone_number', '^[0-9]{7,10}$');
         if(phone_ddd && phone_number){
             $('#wait').show();
             $.ajax({
-                url: base_url+'index.php/welcome/request_sms_code',                
+                url: base_url+'index.php/welcome/request_sms_code',
                 data: {
                     'phone_ddd':$('#phone_ddd').val(),
                     'phone_number': $('#phone_number').val(),

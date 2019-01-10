@@ -17,11 +17,11 @@
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css4391.css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css546d.css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
         <!-- Custom styles for this template -->
-        <link href="<?php echo base_url()?>assets/css/agency.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>assets/css/agency.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">
         <!-- Social icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Proper styles -->
-        <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">        
+        <link href="<?php echo base_url()?>assets/css/style.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">        
         
         <script type="text/javascript">
             var base_url = '<?php echo base_url();?>';
@@ -476,8 +476,8 @@
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
     
-    <script src="<?php echo base_url()?>assets/js/index.js"></script>
-    <script src="<?php echo base_url()?>assets/js/talkme_painel.js"></script>
+    <script src="<?php echo base_url()?>assets/js/index.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url()?>assets/js/talkme_painel.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
     
   </body>
 

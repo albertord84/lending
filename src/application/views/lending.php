@@ -17,13 +17,13 @@
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css4391.css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='<?php echo base_url()?>assets/fonts.googleapis.com/css546d.css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
         <!-- Custom styles for this template -->
-        <link href="<?php echo base_url()?>assets/css/agency.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>assets/css/agency.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">
         <!-- Social icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Proper styles -->
-        <link href="<?php echo base_url()?>assets/css/style.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>assets/css/style.css<?php echo "?".$SCRIPT_VERSION;?>" rel="stylesheet">
         
-        <link rel="stylesheet" href="<?php echo base_url().'assets/'?>css/wizard.css">       
+        <link rel="stylesheet" href="<?php echo base_url().'assets/'?>css/wizard.css<?php echo "?".$SCRIPT_VERSION;?>">       
         
         <script type="text/javascript">
             var base_url = '<?php echo base_url();?>';
@@ -444,10 +444,9 @@
                         <form id="contactForm" name="sentMessage" novalidate="novalidate">
                             <div class="form-group">
                                 <p class="text-muted">COMPROVANTES DE IDENTIDADE</p>
-                                
                                 <div class="form-group" style="margin-bottom:0px">
                                     <div class="row" >
-                                        <div class="col-lg-6 upl">
+                                        <div class="col-lg-6 upl hvr-icon-up">
                                             <p class="text-muted">1. Foto da frente do cartão</p>
                                             <label for="cartao">
                                                 <input type="file" id="cartao" class="hidden">
@@ -753,9 +752,9 @@
     <!-- Custom scripts for this template -->
     <script src="<?php echo base_url()?>assets/js/agency.min.js"></script>
     
-    <script src="<?php echo base_url()?>assets/js/sign_in.js"></script>
-    <script src="<?php echo base_url()?>assets/js/talkme_painel.js"></script>
-    <script src="<?php echo base_url()?>assets/js/script.js"></script>
+    <script src="<?php echo base_url()?>assets/js/sign_in.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url()?>assets/js/talkme_painel.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
+    <script src="<?php echo base_url()?>assets/js/script.js<?php echo "?".$SCRIPT_VERSION;?>"></script>
     
   </body>
 
