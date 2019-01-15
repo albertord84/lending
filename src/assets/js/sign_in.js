@@ -11,7 +11,7 @@ $(document).ready(function () {
      
     //---------PRIMARY FUNCTIONS---------------------------------
     //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais
-    $("#btn_code_request").click(function () {  
+    $("#btn_code_request").click(function () {
         name  = validate_element('#name', '^[a-zA-Zñçâêôûîáéíóúàãẽõ ]{2,150}$');
         email = validate_element('#email', '^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,10}$');
         phone_number = validate_empty('#phone_number');
@@ -33,21 +33,23 @@ $(document).ready(function () {
             modal_alert_message("CPF inválido");
             return false;
         }
-        alert('ok');
         $.ajax({
             url: base_url+'index.php/welcome/request_sms_code',
             data: {
-                //'phone_ddd':$('#name').val(),
-                //'phone_ddd':$('#email').val(),
-                'phone_ddd':$('#phone_number').val(),
-                //'phone_number': $('#cpf').val(),
+                'phone_ddd':$('#name').val(),
+                'phone_ddd':$('#email').val(),
+                'phone_number':$('#phone_number').val(),
+                'cpf': $('#cpf').val(),
                 'key':key
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                $('#wait').hide();
                 if(response['success']){
+                    $("#name").prop('disabled', true);
+                    $("#email").prop('disabled', true);
+                    $("#phone_number").prop('disabled', true);
+                    $("#cpf").prop('disabled', true);
                     $('.code_request').toggle("hide");
                     $('.code_verify').toggle("slow");
                 } else{
@@ -59,26 +61,26 @@ $(document).ready(function () {
     
     //Passo 1.2. Conferir codigo de verificação de telefone
     $("#btn_code_verify").click(function () {
-        $('.check1').toggle("hide");
-        $('.check2').toggle("slow");
-        return false;
+        phone_sms_code  = validate_element('#phone_sms_code', '^[0-9]{6}$');
+        if(!phone_sms_code){
+            modal_alert_message("Código inválido");
+            return false;
+        }
         $.ajax({
             url: base_url+'index.php/welcome/verify_sms_code',                
             data: {
-                'input_sms_code_confirmation':$('#input_sms_code_confirmation').val(),
+                'input_sms_code_confirmation':$('#phone_sms_code').val(),
                 'key':key
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
                 if(response['success']){
-                   $('#sms').modal('hide');
-                   $('#request_cep_container').css({"visibility":"visible", "display":"block"});
-                   $('#request_cep_container').setCursorPosition(1);
-                   $('#request_cep_container').focus();
+                    save_personal_datas();
+                    //$('.check1').toggle("hide");
+                    //$('.check2').toggle("slow");
                 } else{
-                    $('#input_sms_code_confirmation').val('');
-                    $('#text_error_sms_confirmation').text("Codigo incorreto. Tente de novo");
+                    modal_alert_message(response['message']);
                 }
             }
         });
@@ -106,7 +108,9 @@ $(document).ready(function () {
     });
     
     //Passo 2. Enviar dados do endereço
-    $("#btn_steep_1").click(function () {             
+    function save_personal_datas() {
+        alert($('#cpf').val());
+        return false;
         var cpf_value=$('#cpf').val();
         cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
         name  = validate_element('#name', '^[a-zA-Zñçâêôûîáéíóúàãẽõ ]{6,150}$');
@@ -180,7 +184,7 @@ $(document).ready(function () {
             else
                 modal_alert_message("Erro nos dados fornecidos. Por favor, verifique.");
         } 
-    });
+    }
     
     //Passo 2. Voltar ao passo 1
     $("#btn_steep_2_prev").click(function () {
@@ -1202,6 +1206,7 @@ $(function() {
         $('#email').val("tonyramos@gmail.com");
         $('#phone_number').val("(21) 96591-3089");
         $('#cpf').val("694.171.470-05");
+        $('#phone_sms_code').val("123123");
     }
     
     my_init_steep_1();

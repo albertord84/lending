@@ -36,7 +36,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color:black">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">Lendgol</a>
+            <a class="navbar-brand js-scroll-trigger" href="<?php echo base_url();?>">Lendgol</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               Menu
               <i class="fas fa-bars"></i>
@@ -63,7 +63,6 @@
     
     <section style="padding: 0px">
         <div class="row" style="margin-top: 100px;margin-bottom: 0px">
-            
             <div class="col-lg-3" style="padding:50px;padding-right:20px; background-color:white"><!--#e9ecef-->
                 <h5 class="subheading">Resumo do empréstimo</h5>
                 <div class="text-left res">
@@ -158,7 +157,7 @@
                                             <p class="help-block text-danger"></p>
                                         </div>
                                         <div class="col-lg-6 form-group">
-                                            <button id="btn_code_request" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;" type="button">SOLICITAR CÓDIGO</button>
+                                            <button id="btn_code_request" class="btn btn-primary btn-xl text-uppercase" style="padding:8px;" type="button">SOLICITAR CÓDIGO</button>
                                         </div>                                            
                                     </div>                                            
                                 </div>
@@ -169,18 +168,13 @@
                                             <input id="phone_sms_code" class="form-control" type="tel" placeholder="Inserir código *" required="required" data-validation-required-message="Código inválido.">
                                             <p class="help-block text-danger"></p>
                                         </div>
-                                        <div class="col-lg-6 form-group text-right">
-                                            <button id="btn_code_verify" class="btn btn-primary btn-xl text-uppercase" style="padding:5px;width:170px" type="button">CONFERIR</button><br>
+                                        <div id="conferir" class="col-lg-6 form-group">
+                                            <button id="btn_code_verify" class="btn btn-primary btn-xl text-uppercase" style="padding:8px;width:170px" type="button">CONFERIR</button><br>
                                             <a id="lnk_code_resend" href="#" class="text-muted">Novo código?</a>
                                         </div>                                            
                                     </div>                                            
                                 </div>                       
-                                <!--                                
-                                <div class="clearfix"></div>
-                                <div class="col-lg-12 text-center cnt_btn_steep_1" style="display:none">
-                                    <div id="success"></div>
-                                    <button id="btn_steep_1" class="btn btn-primary btn-xl text-uppercase" style="padding:12px" type="button">Seguinte</button>
-                                </div>-->
+                                <button id="btn_steep_1" class="btn btn-primary btn-xl text-uppercase hidden" style="padding:12px" type="button">Seguinte</button>
                             </div>                                   
                         </form>
                     </div>

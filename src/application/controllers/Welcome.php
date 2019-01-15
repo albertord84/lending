@@ -11,34 +11,16 @@ class Welcome extends CI_Controller {
         parent::__construct();
     }
     
-    
-    //-------VIEWS FUNCTIONS--------------------------------    
-
+//-------VIEWS FUNCTIONS--------------------------------    
     public function index() {
-        if ($this->is_ip_hacker_response()) {
-            die('Sitio atualmente inacessível');
-            return;
-        }
+        $this->load->model('class/system_config');
+        if ($this->is_ip_hacker_response()) { die('Sitio atualmente inacessível'); return; }
         $this->set_session();
         $datas = $this->input->get();
-        if (isset($datas['afiliado']))
-            $_SESSION['affiliate_code'] = $datas['afiliado'];
-        else
-            $_SESSION['affiliate_code'] = '';
-        if (isset($datas['utm_source']) && $datas['utm_source'] != NULL)
-            $_SESSION['utm_source'] = $datas['utm_source'];
-        else
-            $_SESSION['utm_source'] = '';
-        if (isset($datas['utm_campaign']) && $datas['utm_campaign'] != NULL)
-            $_SESSION['utm_campaign'] = $datas['utm_campaign'];
-        else
-            $_SESSION['utm_campaign'] = '';
-
-        if (isset($datas['utm_content']) && $datas['utm_content'] != NULL)
-            $_SESSION['utm_content'] = $datas['utm_content'];
-        else
-            $_SESSION['utm_content'] = '';
-        $this->load->model('class/system_config');
+        if(isset($datas['afiliado'])) $_SESSION['affiliate_code'] = $datas['afiliado']; else $_SESSION['affiliate_code'] = '';
+        if(isset($datas['utm_source']) && $datas['utm_source'] != NULL) $_SESSION['utm_source'] = $datas['utm_source']; else $_SESSION['utm_source'] = '';
+        if(isset($datas['utm_campaign']) && $datas['utm_campaign'] != NULL) $_SESSION['utm_campaign'] = $datas['utm_campaign']; else $_SESSION['utm_campaign'] = '';
+        if(isset($datas['utm_content']) && $datas['utm_content'] != NULL) $_SESSION['utm_content'] = $datas['utm_content']; else $_SESSION['utm_content'] = '';
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $params['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
         $params['key'] = $_SESSION['key'];
@@ -46,21 +28,19 @@ class Welcome extends CI_Controller {
     }
     
     public function lend() {
-        die("aaaaaaaaa");
         $this->load->model('class/track_money_model');
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
         if (session_id() == '')
             header('Location: ' . base_url());
         if (!$_SESSION['transaction_values']['amount_months'])
             header('Location: ' . base_url());
-        $this->load->model('class/system_config');
-        $GLOBALS['sistem_config'] = $this->system_config->load();
-        $params['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
-        $params['key'] = $_SESSION['key'];
         $_SESSION['transaction_values']['frm_money_use_form'] = $this->input->get()['frm_money_use_form'];
         $_SESSION['transaction_values']['utm_source'] = $this->input->get()['utm_source'];
         $_SESSION['transaction_values']['utm_campaign'] = $this->input->get()['utm_campaign'];
         $_SESSION['transaction_values']['utm_content'] = $this->input->get()['utm_content'];
-
+        $params['SCRIPT_VERSION'] = $GLOBALS['sistem_config']->SCRIPT_VERSION;
+        $params['key'] = $_SESSION['key'];
         $params['month_value'] = str_replace('.', ',', $_SESSION['transaction_values']['month_value']);
         $params['solicited_value'] = str_replace('.', ',', $_SESSION['transaction_values']['solicited_value']);
         $params['amount_months'] = $_SESSION['transaction_values']['amount_months'];
@@ -69,12 +49,11 @@ class Welcome extends CI_Controller {
         $params['IOF'] = str_replace('.', ',', $_SESSION['transaction_values']['IOF']);
         $params['CET_PERC'] = str_replace('.', ',', $_SESSION['transaction_values']['CET_PERC']);
         $params['CET_YEAR'] = str_replace('.', ',', $_SESSION['transaction_values']['CET_YEAR']);
-        //save value
+        //save track values
         $data_track['solicited_value'] = $_SESSION['transaction_values']['solicited_value'] * 100;
         $data_track['ip'] = $_SERVER['REMOTE_ADDR'];
         $data_track['track_date'] = time();
         $id_row = $this->track_money_model->insert_required_money($data_track);
-
         $this->load->view('lending', $params);
     }
 
@@ -172,12 +151,10 @@ class Welcome extends CI_Controller {
 
     public function transacoes() {
         if ($_SESSION['logged_role'] === 'ADMIN') {
-
             $this->load->model('class/affiliate_model');
             $this->load->model('class/Crypt');
             $this->load->model('class/system_config');
             $GLOBALS['sistem_config'] = $this->system_config->load();
-
             if (count($_POST))
                 $datas = $_POST;
             else {
@@ -198,7 +175,6 @@ class Welcome extends CI_Controller {
                 $end_date += 23 * 60 * 60 + 59 * 60 + 59;
             }
             $status = $datas['status'];
-
             $_SESSION["filter_datas"] = $datas;
             $_SESSION['affiliate_logged_datas'] = $this->affiliate_model->load_afiliate_information($_SESSION['logged_id']);
             $_SESSION['affiliate_logged_transactions'] = $this->affiliate_model->load_transactions(
@@ -376,70 +352,114 @@ class Welcome extends CI_Controller {
     public function logout() {
         $this->load->model('class/watchdog');
         $this->load->model('class/watchdog_type');
-
         $register = ['user_id' => $_SESSION['logged_id'], 'type' => Watchdog_type::LOGOUT, 'date' => time(), 'ip' => $_SESSION['ip'], 'data' => $_SESSION['logged_id']];
         $this->watchdog->add_watchdog($register);
-
         session_unset();
         session_destroy();
         header('Location: ' . base_url() . 'index.php/welcome/afhome');
     }
 
-    //-------TRANSACTION FUNCTIONS--------------------------------    
+//-------LEND TRANSACTION FUNCTIONS--------------------------------    
     /*
       //varaiveis armazenadas na sessao para a solicitação de um empréstimo
       $_SESSION
-      ['ip']
-      ['pk']
-      ['key']
-      ['front_credit_card']
-      ['selfie_with_credit_card']
-      ['open_identity']
-      ['selfie_with_identity']
-      ['transaction_values']['frm_money_use_form']
-      ['transaction_values']['utm_source']
-      ['transaction_values']['month_value']
-      ['transaction_values']['total_cust_value']
-      ['transaction_values']['solicited_value']
-      ['transaction_values']['amount_months']
-      ['transaction_values']['success']
-      ['client_datas']['random_sms_code']
-      ['client_datas']['phone_ddd']
-      ['client_datas']['sms_verificated']
-      ['client_datas']['verified_phone']
-      ['client_datas']['name']
-      ['client_datas']['email']
+        ['ip']
+        ['pk']
+        ['key']
+        ['front_credit_card']
+        ['selfie_with_credit_card']
+        ['open_identity']
+        ['selfie_with_identity']
+        ['transaction_values']['frm_money_use_form']
+        ['transaction_values']['utm_source']
+        ['transaction_values']['month_value']
+        ['transaction_values']['total_cust_value']
+        ['transaction_values']['solicited_value']
+        ['transaction_values']['amount_months']
+        ['transaction_values']['success']
+        ['client_datas']['random_sms_code']
+        ['client_datas']['sms_verificated']
+        ['client_datas']['verified_phone']
+        ['client_datas']['name']
+        ['client_datas']['email']
 
-      //Dados do cartão para a BRASPAG
-      ['b_card_name']
-      ['b_card_number']
-      ['b_card_cvv']
-      ['b_card_exp_month']
-      ['b_card_exp_year']
-      ['brand']
+        //Dados do cartão para a BRASPAG
+        ['b_card_name']
+        ['b_card_number']
+        ['b_card_cvv']
+        ['b_card_exp_month']
+        ['b_card_exp_year']
+        ['brand']
 
-      //Variaveis para subir novamente as fotos
-      ['new_front_credit_card']
-      ['new_selfie_with_credit_card']
-      ['new_open_identity']
-      ['new_selfie_with_identity']
-      ['new_cpf_card']
-      ['session_new_foto']
+        //Variaveis para subir novamente as fotos
+        ['new_front_credit_card']
+        ['new_selfie_with_credit_card']
+        ['new_open_identity']
+        ['new_selfie_with_identity']
+        ['new_cpf_card']
+        ['session_new_foto']
 
-      //Variaveis retentativa
-      ['captured'] : INT in [0,100]
-      ['re_financials'] : ARRAY con index [month_value, amount_months, solicited_value, tax, total_cust_value, IOF, CET_PERC, CET_YEAR]
-      ['used_method'] : INT in [0,1,2..., MAX_NUM_PAYMENTS]
+        //Variaveis retentativa
+        ['captured'] : INT in [0,100]
+        ['re_financials'] : ARRAY con index [month_value, amount_months, solicited_value, tax, total_cust_value, IOF, CET_PERC, CET_YEAR]
+        ['used_method'] : INT in [0,1,2..., MAX_NUM_PAYMENTS]
 
-     */
-
+    */
     /* La funcion de pagamento debe devolver un arreglo con la siguiente estructura:
+        [success]
+    */
+    
+    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais    
+    public function request_sms_code() {
+        $datas = $this->input->post();
+        $phone_number = $this->unmask_phone_number($datas['phone_number']);
+        $hack_result = $this->is_phone_hacker($phone_number);
+        if ($hack_result['success']) {
+            if ($datas['key'] === $_SESSION['key']) {
+                $phone_country_code = '+55';
+                //---------------------------------
+                $random_code = 123123;
+                $response['success'] = true;
+                //$random_code = rand(100000, 999999); 
+                //$message = $random_code;
+                //$response = $this->send_sms_kaio_api($phone_country_code, $phone_number, $message);
+                //---------------------------------
+                if ($response['success']) {
+                    $_SESSION['client_datas']['sms_verificated'] = $datas['phone_number'];
+                    $_SESSION['client_datas']['random_sms_code'] = $random_code;
+                    $result['success'] = true;
+                } else {
+                    $result['success'] = false;
+                    $result['message'] = $response['message'];
+                }
+            } else {
+                $result['success'] = false;
+                $result['message'] = 'Access violation';
+            }
+        } else {
+            $result = $hack_result;
+        }
 
-      [
-      success
-      ]
-
-     */
+        echo json_encode($result);
+    }
+    
+    //Passo 1.2. Conferir codigo de verificação de telefone
+    public function verify_sms_code() {
+        if ($this->input->post()['key'] === $_SESSION['key']) {
+            if ($this->input->post()['input_sms_code_confirmation'] == $_SESSION['client_datas']['random_sms_code']) {
+                $_SESSION['client_datas']['verified_phone'] = $_SESSION['client_datas']['sms_verificated'];
+                $_SESSION['client_datas']['sms_verificated'] = true;
+                $result['success'] = true;
+            } else {
+                $result['success'] = false;
+                $result['message'] = 'Código incorreto';
+            }
+        } else {
+            $result['success'] = false;
+            $result['message'] = 'Access violation';
+        }
+        echo json_encode($result);
+    }
 
     public function is_possible_steep_1_for_this_client($datas) {
         $this->load->model('class/transaction_model');
@@ -1342,7 +1362,7 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
 
-    //-------AFFILIATES FUNCTIONS----------------------------------
+//-------AFFILIATES FUNCTIONS----------------------------------
     /*
       //varaiveis armazenadas na sessao para cadastro de un afiliado
       $_SESSION
@@ -1908,7 +1928,7 @@ class Welcome extends CI_Controller {
         $this->load->view('afhome');
     }
 
-    //-------ADMIN TRANSACTION FUNCTIONS----------------------------------
+//-------ADMIN TRANSACTION FUNCTIONS----------------------------------
     public function approve_transaction() {
         $this->load->model('class/affiliate_model');
         $this->load->model('class/transaction_model');
@@ -2524,7 +2544,7 @@ class Welcome extends CI_Controller {
         var_dump($datas1);
     }
 
-    //-------AUXILIAR FUNCTIONS------------------------------------    
+//-------AUXILIAR FUNCTIONS------------------------------------    
     public function set_session() {
         session_start();
         $_SESSION = array();
@@ -2578,17 +2598,10 @@ class Welcome extends CI_Controller {
         }
     }
 
-    public function is_phone_hacker($datas) {
-        $phone = '000000000';
-        if (array_key_exists("phone_ddd", $datas) && array_key_exists("phone_number", $datas))
-            $phone = $datas['phone_ddd'] . $datas['phone_number'];
-
-        /* $phone_hackers= array(
-          '000000000', '27997353520', '71991412687', '88988681079','85998401261','88988381515'
-          ); */
+    public function is_phone_hacker($phone) {        
         $this->load->model('class/hack');
         $result = $this->hack->is_data_hacker('phone', $phone);
-        if ($result) {
+        if ($result){
             return ['success' => false, 'message' => 'Problemas enviando o codigo de SMS'];
         }
         return ['success' => true, 'message' => 'OK'];
@@ -2599,28 +2612,15 @@ class Welcome extends CI_Controller {
         $email = 'a@a';
         if (array_key_exists("email", $datas))
             $email = $datas['email'];
-
-        /* $email_hackers= array(
-          'a@a', 'taciodsbarbosa@hotmail.com', 'joseluiznovaisdasilvaluiz@gmail.com',
-          'paulogutembergamaral001@gmail.com','paulolindembergamaral@gmail.com',
-          'silvaeliomarp129@gmail.com','nelvsj@gmail.com','edivandop129@gmail.com'
-          ); */
         $result = $this->hack->is_data_hacker('email', $email);
         if ($result) {
-            //header('Location: '.base_url());
             return ['success' => false, 'message' => 'Não foi possível continuar com a solicitude'];
         }
-
         $cpf = '00000000000';
         if (array_key_exists("cpf", $datas))
             $cpf = $datas['cpf'];
-
-        /* $cpf_hackers= array(
-          '00000000000', '05748580594','05073125380','72556846372','31786862824','04446988336'
-          ); */
         $result = $this->hack->is_data_hacker('cpf', $cpf);
         if ($result) {
-            //header('Location: '.base_url());
             return ['success' => false, 'message' => 'Não foi possível continuar com a solicitude'];
         }
         return ['success' => true, 'message' => 'OK'];
@@ -2843,54 +2843,12 @@ class Welcome extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function request_sms_code() {
-        $datas = $this->input->post();
-        $hack_result = $this->is_phone_hacker($datas);
-        if ($hack_result['success']) {
-            if ($datas['key'] === $_SESSION['key']) {
-                $phone_country_code = '+55';
-                $phone_ddd = $datas['phone_ddd'];
-                $phone_number = $datas['phone_number'];
-                $random_code = rand(100000, 999999); //$random_code = 123;
-                $message = $random_code;
-                $response = $this->send_sms_kaio_api($phone_country_code, $phone_ddd, $phone_number, $message);
-                if ($response['success']) {
-                    $_SESSION['client_datas']['phone_ddd'] = $phone_ddd;
-                    $_SESSION['client_datas']['sms_verificated'] = $phone_number;
-                    $_SESSION['client_datas']['random_sms_code'] = $random_code;
-                    $result['success'] = true;
-                } else {
-                    $result['success'] = false;
-                    $result['message'] = $response['message'];
-                }
-            } else {
-                $result['success'] = false;
-                $result['message'] = 'Access violation';
-            }
-        } else {
-            $result = $hack_result;
-        }
-
-        echo json_encode($result);
-    }
-
-    public function verify_sms_code() {
-        $a = $this->input->post()['input_sms_code_confirmation'];
-        $b = $_SESSION['client_datas']['random_sms_code'];
-        if ($this->input->post()['key'] === $_SESSION['key']) {
-            if ($this->input->post()['input_sms_code_confirmation'] == $_SESSION['client_datas']['random_sms_code']) {
-                $_SESSION['client_datas']['verified_phone'] = $_SESSION['client_datas']['sms_verificated'];
-                $_SESSION['client_datas']['sms_verificated'] = true;
-                $result['success'] = true;
-            } else {
-                $result['success'] = false;
-                $result['message'] = 'Código incorreto';
-            }
-        } else {
-            $result['success'] = false;
-            $result['message'] = 'Access violation';
-        }
-        echo json_encode($result);
+    public function unmask_phone_number($phone_number){
+        $num = str_replace("(", "", $phone_number);
+        $num = str_replace(")", "", $num);
+        $num = str_replace(" ", "", $num);
+        $num = str_replace("-", "", $num);
+        return $num;
     }
 
     public function to_csv($values) {
@@ -2924,21 +2882,15 @@ class Welcome extends CI_Controller {
         return $csv;
     }
 
-    //-------SMS KAIO API---------------------------------------
-    public function send_sms_kaio_api($phone_country_code, $phone_ddd, $phone_number, $message) {
+//-------SMS KAIO API---------------------------------------
+    public function send_sms_kaio_api($phone_country_code, $phone_number, $message) {
         //com kaio_api
-        //$response['success'] = TRUE;    //remover essas dos lineas
-        //return $response;
-
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $authenticationtoken = $GLOBALS['sistem_config']->AUTENTICATION_TOKEN_SMS;
         $username = $GLOBALS['sistem_config']->USER_NAME_SMS;
-
-        $full_number = $phone_country_code . $phone_ddd . $phone_number;
-
+        $full_number = $phone_country_code.$phone_number;
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api-messaging.movile.com/v1/send-sms",
             CURLOPT_RETURNTRANSFER => true,
@@ -2947,23 +2899,18 @@ class Welcome extends CI_Controller {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            //CURLOPT_POSTFIELDS => "{\"destination\": \"".$full_number."\" ,  \"messageText\": \"Code number\\n".$message."\"}",
-            CURLOPT_POSTFIELDS => '{"destination": "' . $full_number . '" ,  "messageText": "Para validar seu telefone na livre.digital use o codigo ' . $message . '"}',
+            CURLOPT_POSTFIELDS => '{"destination": "' . $full_number . '" ,  "messageText": "Use '.$message.' para validar seu telefone."}',
             CURLOPT_HTTPHEADER => array(
                 "authenticationtoken: " . $authenticationtoken,
                 "username: " . $username,
                 "content-type: application/json"
             ),
         ));
-
         $response_curl = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
-
         $response = [];
         if ($err) {
-            //echo "cURL Error #:" . $err;
             $response['success'] = FALSE;
             $response['message'] = $err;
         } else {
@@ -2972,20 +2919,14 @@ class Welcome extends CI_Controller {
         return $response;
     }
 
-    public function sms_message($phone_country_code, $phone_ddd, $phone_number, $message) {
+    public function sms_message($phone_country_code, $phone_number, $message) {
         //com kaio_api
-        //$response['success'] = TRUE;    //remover essas dos lineas
-        //return $response;
-
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $authenticationtoken = $GLOBALS['sistem_config']->AUTENTICATION_TOKEN_SMS;
         $username = $GLOBALS['sistem_config']->USER_NAME_SMS;
-
         $full_number = $phone_country_code . $phone_ddd . $phone_number;
-
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api-messaging.movile.com/v1/send-sms",
             CURLOPT_RETURNTRANSFER => true,
@@ -2994,7 +2935,6 @@ class Welcome extends CI_Controller {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            //CURLOPT_POSTFIELDS => "{\"destination\": \"".$full_number."\" ,  \"messageText\": \"Code number\\n".$message."\"}",
             CURLOPT_POSTFIELDS => '{"destination": "' . $full_number . '" ,  "messageText": "' . $message . '"}',
             CURLOPT_HTTPHEADER => array(
                 "authenticationtoken: " . $authenticationtoken,
@@ -3002,15 +2942,11 @@ class Welcome extends CI_Controller {
                 "content-type: application/json"
             ),
         ));
-
         $response_curl = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
-
         $response = [];
         if ($err) {
-            //echo "cURL Error #:" . $err;
             $response['success'] = FALSE;
             $response['message'] = $err;
         } else {
@@ -3019,7 +2955,7 @@ class Welcome extends CI_Controller {
         return $response;
     }
 
-    //-------UPLOADING PHOTO---------------------------------------
+//-------UPLOADING PHOTO---------------------------------------
     public function upload_file() {
         $this->load->model('class/transaction_model');
         $datas = $this->input->post();
@@ -3307,7 +3243,7 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
 
-    //-------IUGU API-----------------------------------------------
+//-------IUGU API-----------------------------------------------
     /* public function iugu_simples_sale(){
       require_once($_SERVER['DOCUMENT_ROOT']."/lending/src/application/libraries/iugu-php-master/lib/Iugu.php");
       Iugu::setApiKey("c73d49f9-6490-46ee-ba36-dcf69f6334fd"); // Ache sua chave API no Painel
@@ -3529,8 +3465,83 @@ class Welcome extends CI_Controller {
 
         return $response;
     }
+    
+    public function iugu_report($LR, $CET, $parcelas) {
+        $report = [
+            [
+                'LR' => ['01', '02', '04', '05', '07', '15', '39', '57', '24', '60', '62', '63', '65', '75', '88', '92', 'BL', 'BM', 'CF', 'FC', 'GD'],
+                'message' => 'Seu banco não autorizou a transação. Entre em contato com o banco emissor do seu cartão agora mesmo e informe que você permite a cobrança no estabelecimento IUGU*Livredigital ou no Livre.Digital, no valor de R$ ' . $CET . ', parcelado em ' . $parcelas . ' vezes. Feito isso, basta solicitar novamente em nosso site, que seu empréstimo será aprovado com sucesso!',
+                'email' => 'O valor solicitado com o Livre.digital não foi liberado pelo banco emissor do seu cartão de crédito, pois você não está habituado a utilizar seu cartão em nossa plataforma. <br><br> 
+                         <b>PARA LIBERAR O DINHEIRO:</b><br> Você só precisa solicitar a aprovação, ligue para seu banco e informe que deseja aprovação para a cobrança da empresa IUGU*Livredigital ou Livre.Digital, no valor de R$ ' . $CET . ', parcelado em ' . $parcelas . ' vezes. <br><br> 
+                        <b>Depois disso, basta solicitar novamente em nosso site que ele será aprovado!</b>',
+                'subject' => 'Falta pouco! - Livre.digital',
+                'destroy' => true
+            ],
+            [
+                'LR' => ['51', '70'],
+                'message' => 'Não há limite suficiente em seu cartão de crédito. Que tal escolher um valor menor? Solicite metade do valor agora e o restante em 24h, assim a aprovação será mais fácil.',
+                'email' => 'Recebemos a resposta do banco sobre o dinheiro solicitado. Não havia saldo suficiente para aprovar o valor escolhido por você, que tal um valor menor?<br><br>
+                                    Experimente solicitar metade do valor primeiro e amanhã solicitar o restante. 
+                                    Lembre que o <b>valor total</b> do crédito <b>(CET)</b> deve ser menor que o limite que você tem. 
+                                    Por exemplo, se você tem <b>R$ 3.000,00</b> de limite, você deve solicitar ao Livre um valor que seja menor que o <b>Custo Total (CET)</b> e que caiba nesse limite.',
+                'subject' => 'Saldo insuficiente - Livre.digital',
+                'destroy' => true
+            ],
+            [
+                'LR' => ['91', 'AA', 'AE', '19'],
+                'message' => 'Não foi possível aprovar sua solicitação devido a falta de comunicação com o banco emissor do cartão de crédito. Espere alguns minutos, depois volte a tela com os dados de seu cartão para serem novamente validados e tente novamente.',
+                'email' => 'O valor solicitado não foi aprovado pois não conseguimos contato com o banco. Mas não se preocupe, você só precisa aguardar alguns minutos e tentar de novo.  Lembre validar novamente os dados de seu cartão!<br><br> Antes, pedimos que faça contato com seu banco previamente para informa-lo que irá utilizar o cartão para a transação no valor R$ ' . $CET . ' para a empresa iugu*livre.digital ou Livre.Digital.',
+                'subject' => 'Tente novamente - Livre.digital',
+                'destroy' => false
+            ],
+            [
+                'LR' => ['BV'],
+                'message' => 'Utilize outro cartão de crédito, o cartão utilizado não tem validade.',
+                'email' => 'Identificamos que seu cartão está vencido e por isso o valor solicitado não pode ser aprovado. Mas não tem problema, você pode utilizar outro cartão de crédito para solicitar um novo valor. Ele só precisa ser da mesma titularidade da conta bancária.',
+                'subject' => 'Cartão vencido - Livre.digital',
+                'destroy' => false
+            ],
+            [
+                'LR' => ['KA', 'KE', '12'],
+                'message' => 'O valor não pode ser aprovado devido aos dados do cartão de crédito não estarem corretos.
+                                      Volte e atualize seus dados do cartão com atenção. Não utilize espaço ou caracteres especiais.',
+                'email' => 'O banco não autorizou a transação pois os dados do cartão estão incorretos, você só precisa refazer o pedido e preencher os dados corretamente. Atente-se para não adicionar espaços ou caracteres em locais que não são permitidos como no número do cartão, no seu nome e no CVV (Código de verificação de 3 dígitos que fica atrás do seu cartão)',
+                'subject' => 'Dados incorretos - Livre.digital',
+                'destroy' => false
+            ],
+            [
+                'LR' => ['N7'],
+                'message' => 'Volte e corrija seu o CVV (Código de verificação - Número de 3 dígitos na parte de trás do cartão, ou se for American Express, 4 digitos localizados na frente do cartão). Lembre-se de não utilizar espaços ou caracteres especiais.',
+                'email' => 'O valor solicitado não pode ser aprovado pois o Código de Verificação do seu cartão foi preenchido incorretamente. Você precisa utilizar o CVV código de verificação que fica atrás do cartão. Esse código tem 3 dígitos (ou 4, se for American Express). Se precisar de ajuda é só nos comunicar!',
+                'subject' => 'Seu CVV está incorreto - Livre.digital',
+                'destroy' => false
+            ],
+            [
+                'LR' => ['AC'],
+                'message' => 'Você utilizou seu cartão de DÉBITO. Para que seu pedido seja aprovado, volte e atualize os dados com seu cartão de CRÉDITO.',
+                'email' => 'Você utilizou seu cartão de <b>Débito</b>. Para que o pedido seja aprovado, é necessário utilizar seu cartão de <b>Crédito</b>. É importante lembrar que o valor final (Custo Total - CET) deve caber no seu limite de crédito, ou seja, ele deve ser menor que o limite do seu cartão de crédito.',
+                'subject' => 'Utilize seu cartão de CRÉDITO - Livre.digital',
+                'destroy' => false
+            ]
+        ];
+        $result = [];
+        $result['known'] = false;
+        foreach ($report as $type) {
+            if (in_array($LR, $type['LR'])) {
+                $result = $type;
+                $result['known'] = true;
+                break;
+            }
+        }
+        $email91 = 'O valor solicitado não pode ser aprovado pois não conseguimos a resposta do banco emissor do cartão de crédito.
+                      Mas não se preocupe, é só você tentar novamente em alguns minutos. Lembre validar novamente os dados de seu cartão!<br>\n<br>\n 
+                      Aproveite e faça contato com seu banco para informar que você aprova a transação feita pela iugu*livre.digital ou pela Livre.Digital, assim o empréstimo será liberado com muito mais facilidade!';
+        if ($LR == '91')
+            $result['email'] = $email91;
+        return $result;
+    }
 
-    //-------TOPAZIO API-----------------------------------------------
+//-------TOPAZIO API-----------------------------------------------
     public function get_topazio_API_token() {
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
@@ -4165,7 +4176,17 @@ class Welcome extends CI_Controller {
         return $result_api;
     }
 
-    //-------API D4Sign-----------------------------------------------
+//-------API D4Sign-----------------------------------------------
+    /*
+      Status dos documentos na D4Sign
+      ID 1 - Processando
+      ID 2 - Aguardando Signatários
+      ID 3 - Aguardando Assinaturas
+      ID 4 - Finalizado
+      ID 5 - Arquivado
+      ID 6 - Cancelado
+     */
+    
     public function get_safes_D4Sign() {
         //obtener lista de cofres
         $this->load->model('class/system_config');
@@ -4559,23 +4580,125 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
-    //-------End API D4Sign-----------------------------------------------
+// -------Calculating economical values-----------------------------------------------
+    /* Usando excel proporcionado por Pedro 
+        B1: valor solicitado por cliente
+        B2: numero de parcelas
+        B3: taxa de juros
+        B7: valor financiado pelo cliente
+        C1: IOF
+        C5: TAC
+        F10: CET
+        F9: valor da parcela  
+        J10: CET%  
+        J11: CET anual
+        F16: JUROS 
+    */
+    
+    public function calculating_enconomical_values($valor_solicitado, $num_parcelas, $tax = NULL, $tac_transaction = NULL) {
+        $this->load->model('class/tax_model');
+        $this->load->model('class/system_config');
+        $GLOBALS['sistem_config'] = $this->system_config->load();
+        $B11 = number_format($valor_solicitado, 2, '.', '');
+        $B16 = $num_parcelas;
+        if (!$tax){
+            $x1=$this->get_field($B11);
+            $x2=$this->tax_model->get_tax_row($B16)[$x1];
+            $B10 = ( $x2 ) / 100;
+        }
+        else
+            $B10 = $tax / 100;
+        $num_days = 30 * ($num_parcelas - 1) + 10;
+        //$B20 = 0.1;
+        if (!$tac_transaction)
+            $B20 = $GLOBALS['sistem_config']->TAC / 100; //20%
+        else
+            $B20 = $tac_transaction;
+        $B21 = number_format($B20 * $B11, 2, '.', ''); //TAC
+        $IOF_YEAR = 0.0038;
+        $IOF_DAY = 0.000082;
+        $IOF_LIM = 0.03;
+        /*         * **********  simulando oper ************** */
+        $B9 = $B11 + $B21;
+        $IOF_ADD_oper = $IOF_YEAR * $B9;
+        $oper_parcela = $this->PGTO($B10, $B16, $B9);
+        $operB13 = number_format(pow(pow((1 + $B10), 12), (1.0 / 365)) - 1, 2, '.', '');
+        $acumulado = 0;
+        $IOF_PRAZO_oper = 0;
+        $oper_table = [];
+        $oper_table['saldo_dev'][0] = $B9;
+        for ($i = 1; $i <= $num_parcelas; $i++) {
+            $oper_table['parcela'][$i] = $i;
+            //esta estrategia sera definida posteriormente
+            if ($i <= 2) {
+                $acumulado += 31;
+            } else {
+                $acumulado += 30 + ($i + 1) % 2;
+            }
+            /* $extra_day = ($i <= ($num_parcelas+2)/2 + 1)?1:0;
+              $acumulado += 30 + $extra_day; */
+            $oper_table['dias_juros'][$i] = $acumulado;
+            $oper_table['parcela'][$i] = $oper_parcela;
+            $oper_table['pgto_princ'][$i] = $this->PGTOPRINC($B10, $B16, $B9, $i, $i, 0);
+            $oper_table['saldo_dev'][$i] = number_format($oper_table['saldo_dev'][$i - 1] - $oper_table['pgto_princ'][$i], 2, '.', '');
+            $oper_table['pgto_juros'][$i] = number_format($oper_table['saldo_dev'][$i - 1] * ( pow(1 + $operB13, $oper_table['dias_juros'][$i]) ) - $oper_table['saldo_dev'][$i - 1], 2, '.', '');
+            $oper_table['limite_iof'][$i] = number_format($oper_table['pgto_princ'][$i] * $IOF_LIM, 2, '.', '');
+            $oper_table['prazo_iof'][$i] = min([$oper_table['pgto_princ'][$i] * $IOF_DAY * $oper_table['dias_juros'][$i], $oper_table['limite_iof'][$i]]);
+            $IOF_PRAZO_oper += number_format($oper_table['prazo_iof'][$i], 2, '.', '');
+        }
+        $IOF_PRAZO_oper = number_format($IOF_PRAZO_oper, 2, '.', '');
+        /*         * **********  OPER ************** */
+        $IOF_FINAC = number_format($B9 * ($IOF_PRAZO_oper + $IOF_ADD_oper) / ($B9 - ($IOF_PRAZO_oper + $IOF_ADD_oper)), 2, '.', '');
+        $B8 = $B9 + $IOF_FINAC; //valor principal
+        $IOF_ADD = $IOF_ADD_oper;
+        $OP_parcela = $this->PGTO($B10, $B16, $B8);
+        $acumulado = 0;
 
-    /* -------Calculating economical values-----------------------------------------------
-     * Usando excel proporcionado por Pedro 
-     * B1: valor solicitado por cliente
-     * B2: numero de parcelas
-     * B3: taxa de juros
-     * B7: valor financiado pelo cliente
-     * C1: IOF
-     * C5: TAC
-     * F10: CET
-     * F9: valor da parcela  
-     * J10: CET%  
-     * J11: CET anual
-     * F16: JUROS 
-     */
-
+        $OP_table = [];
+        $OP_table['saldo_dev'][0] = $B8;
+        for ($i = 1; $i <= $num_parcelas; $i++) {
+            $OP_table['parcela'][$i] = $i;
+            //esta estrategia sera definida posteriormente
+            if ($i <= 2) {
+                $acumulado += 31;
+            } else {
+                $acumulado += 30 + ($i + 1) % 2;
+            }
+            /* $extra_day = ($i <= ($num_parcelas+2)/2 + 1)?1:0;
+              $acumulado += 30 + $extra_day; */
+            $OP_table['dias_juros'][$i] = $acumulado;
+            $OP_table['parcela'][$i] = $OP_parcela;
+            $OP_table['pgto_princ'][$i] = $this->PGTOPRINC($B10, $B16, $B8, $i, $i, 0);
+            $OP_table['saldo_dev'][$i] = number_format($OP_table['saldo_dev'][$i - 1] - $OP_table['pgto_princ'][$i], 2, '.', '');
+            $OP_table['pgto_juros'][$i] = number_format($OP_table['saldo_dev'][$i - 1] * ( pow(1 + $OPB13, $OP_table['dias_juros'][$i]) ) - $OP_table['saldo_dev'][$i - 1], 2, '.', '');
+            $OP_table['limite_iof'][$i] = number_format($OP_table['pgto_princ'][$i] * $IOF_LIM, 2, '.', '');
+            $OP_table['prazo_iof'][$i] = min([$OP_table['pgto_princ'][$i] * $IOF_DAY * $OP_table['dias_juros'][$i], $OP_table['limite_iof'][$i]]);
+            $IOF_PRAZO_OP += number_format($OP_table['prazo_iof'][$i], 2, '.', '');
+        }
+        $IOF_PRAZO_OP = number_format($IOF_PRAZO_OP, 2, '.', '');
+        /*         * *********** retornando valores ************ */
+        $B10 = number_format($B10 * 100, 2, '.', '');
+        $total_cust = number_format($B16 * $OP_parcela, 2, '.', '');
+        $cet_month = number_format(100.0 * ($total_cust - $B11) / $B11, 2, '.', '');
+        $cet_year = number_format(($cet_month * 12) / $B16, 2, '.', '');
+        $result = array(
+            'solicited_value' => $B11,
+            'amount_months' => $B16,
+            'tax' => $B10, //juros
+            'month_value' => $OP_parcela,
+            'total_cust_value' => $total_cust,
+            'funded_value' => $B8,
+            'IOF' => $IOF_FINAC,
+            'TAC' => $B21,
+            'CET_PERC' => $cet_month,
+            'CET_YEAR' => $cet_year,
+            'tax_value' => number_format($total_cust - $B8, 2, '.', ''),
+            'TAC_API' => number_format($total_cust - $B8, 2, '.', ''),
+            'TAC_PERC' => number_format($B20, 2, '.', '')
+        );
+        return $result;
+    }
+    
     public function calculating_enconomical_values2($valor_solicitado, $num_parcelas) {
         $this->load->model('class/tax_model');
         $B1 = number_format($valor_solicitado, 2, '.', '');
@@ -4610,6 +4733,8 @@ class Welcome extends CI_Controller {
         return $result;
     }
 
+    
+//-------ROBOTS FUNCTIONS-----------------------------------------------
     public function robot_conciliation() {
         $this->load->model('class/affiliate_model');
         $this->load->model('class/system_config');
@@ -4714,10 +4839,9 @@ class Welcome extends CI_Controller {
         }
         echo "<br>\n<br>\n----------  END CONCILIATION AT " . date('Y-m-d H:i:s', time());
     }
-
-    /* Vamos resolver con dos funciones separadas */
-
-    public function robot_conciliation2() {
+    
+    public function robot_conciliation2() { 
+        /* Vamos resolver con dos funciones separadas */
         $this->load->model('class/affiliate_model');
         $this->load->model('class/system_config');
         $this->load->model('class/transactions_status');
@@ -4844,17 +4968,7 @@ class Welcome extends CI_Controller {
         }
         echo "<br>\n<br>\n----------  END CONCILIATION AT " . date('Y-m-d H:i:s', time());
     }
-
-    /*
-      Status dos documentos na D4Sign
-      ID 1 - Processando
-      ID 2 - Aguardando Signatários
-      ID 3 - Aguardando Assinaturas
-      ID 4 - Finalizado
-      ID 5 - Arquivado
-      ID 6 - Cancelado
-     */
-
+    
     public function robot_checking_contracts() {
         $this->load->model('class/affiliate_model');
         $this->load->model('class/transaction_model');
@@ -4972,198 +5086,13 @@ class Welcome extends CI_Controller {
         return number_format(-1 * ($remainingBalanceAtEnd - $remainingBalanceAtStart), 2, '.', '');
     }
 
-    public function calculating_enconomical_values($valor_solicitado, $num_parcelas, $tax = NULL, $tac_transaction = NULL) {
-        $this->load->model('class/tax_model');
-        $this->load->model('class/system_config');
-        $GLOBALS['sistem_config'] = $this->system_config->load();
-
-        $B11 = number_format($valor_solicitado, 2, '.', '');
-        $B16 = $num_parcelas;
-        if (!$tax){
-            $x1=$this->get_field($B11);
-            $x2=$this->tax_model->get_tax_row($B16)[$x1];
-            $B10 = ( $x2 ) / 100;
-        }
-            
-        else
-            $B10 = $tax / 100;
-        $num_days = 30 * ($num_parcelas - 1) + 10;
-        //$B20 = 0.1;
-        if (!$tac_transaction)
-            $B20 = $GLOBALS['sistem_config']->TAC / 100; //20%
-        else
-            $B20 = $tac_transaction;
-        $B21 = number_format($B20 * $B11, 2, '.', ''); //TAC
-        $IOF_YEAR = 0.0038;
-        $IOF_DAY = 0.000082;
-        $IOF_LIM = 0.03;
-        /*         * **********  simulando oper ************** */
-        $B9 = $B11 + $B21;
-        $IOF_ADD_oper = $IOF_YEAR * $B9;
-        $oper_parcela = $this->PGTO($B10, $B16, $B9);
-        $operB13 = number_format(pow(pow((1 + $B10), 12), (1.0 / 365)) - 1, 2, '.', '');
-        $acumulado = 0;
-        $IOF_PRAZO_oper = 0;
-        $oper_table = [];
-        $oper_table['saldo_dev'][0] = $B9;
-        for ($i = 1; $i <= $num_parcelas; $i++) {
-            $oper_table['parcela'][$i] = $i;
-            //esta estrategia sera definida posteriormente
-            if ($i <= 2) {
-                $acumulado += 31;
-            } else {
-                $acumulado += 30 + ($i + 1) % 2;
-            }
-            /* $extra_day = ($i <= ($num_parcelas+2)/2 + 1)?1:0;
-              $acumulado += 30 + $extra_day; */
-            $oper_table['dias_juros'][$i] = $acumulado;
-            $oper_table['parcela'][$i] = $oper_parcela;
-            $oper_table['pgto_princ'][$i] = $this->PGTOPRINC($B10, $B16, $B9, $i, $i, 0);
-            $oper_table['saldo_dev'][$i] = number_format($oper_table['saldo_dev'][$i - 1] - $oper_table['pgto_princ'][$i], 2, '.', '');
-            $oper_table['pgto_juros'][$i] = number_format($oper_table['saldo_dev'][$i - 1] * ( pow(1 + $operB13, $oper_table['dias_juros'][$i]) ) - $oper_table['saldo_dev'][$i - 1], 2, '.', '');
-            $oper_table['limite_iof'][$i] = number_format($oper_table['pgto_princ'][$i] * $IOF_LIM, 2, '.', '');
-            $oper_table['prazo_iof'][$i] = min([$oper_table['pgto_princ'][$i] * $IOF_DAY * $oper_table['dias_juros'][$i], $oper_table['limite_iof'][$i]]);
-            $IOF_PRAZO_oper += number_format($oper_table['prazo_iof'][$i], 2, '.', '');
-        }
-        $IOF_PRAZO_oper = number_format($IOF_PRAZO_oper, 2, '.', '');
-        /*         * **********  OPER ************** */
-        $IOF_FINAC = number_format($B9 * ($IOF_PRAZO_oper + $IOF_ADD_oper) / ($B9 - ($IOF_PRAZO_oper + $IOF_ADD_oper)), 2, '.', '');
-        $B8 = $B9 + $IOF_FINAC; //valor principal
-        $IOF_ADD = $IOF_ADD_oper;
-        $OP_parcela = $this->PGTO($B10, $B16, $B8);
-        $acumulado = 0;
-
-        $OP_table = [];
-        $OP_table['saldo_dev'][0] = $B8;
-        for ($i = 1; $i <= $num_parcelas; $i++) {
-            $OP_table['parcela'][$i] = $i;
-            //esta estrategia sera definida posteriormente
-            if ($i <= 2) {
-                $acumulado += 31;
-            } else {
-                $acumulado += 30 + ($i + 1) % 2;
-            }
-            /* $extra_day = ($i <= ($num_parcelas+2)/2 + 1)?1:0;
-              $acumulado += 30 + $extra_day; */
-            $OP_table['dias_juros'][$i] = $acumulado;
-            $OP_table['parcela'][$i] = $OP_parcela;
-            $OP_table['pgto_princ'][$i] = $this->PGTOPRINC($B10, $B16, $B8, $i, $i, 0);
-            $OP_table['saldo_dev'][$i] = number_format($OP_table['saldo_dev'][$i - 1] - $OP_table['pgto_princ'][$i], 2, '.', '');
-            $OP_table['pgto_juros'][$i] = number_format($OP_table['saldo_dev'][$i - 1] * ( pow(1 + $OPB13, $OP_table['dias_juros'][$i]) ) - $OP_table['saldo_dev'][$i - 1], 2, '.', '');
-            $OP_table['limite_iof'][$i] = number_format($OP_table['pgto_princ'][$i] * $IOF_LIM, 2, '.', '');
-            $OP_table['prazo_iof'][$i] = min([$OP_table['pgto_princ'][$i] * $IOF_DAY * $OP_table['dias_juros'][$i], $OP_table['limite_iof'][$i]]);
-            $IOF_PRAZO_OP += number_format($OP_table['prazo_iof'][$i], 2, '.', '');
-        }
-        $IOF_PRAZO_OP = number_format($IOF_PRAZO_OP, 2, '.', '');
-        /*         * *********** retornando valores ************ */
-        $B10 = number_format($B10 * 100, 2, '.', '');
-        $total_cust = number_format($B16 * $OP_parcela, 2, '.', '');
-        $cet_month = number_format(100.0 * ($total_cust - $B11) / $B11, 2, '.', '');
-        $cet_year = number_format(($cet_month * 12) / $B16, 2, '.', '');
-        $result = array(
-            'solicited_value' => $B11,
-            'amount_months' => $B16,
-            'tax' => $B10, //juros
-            'month_value' => $OP_parcela,
-            'total_cust_value' => $total_cust,
-            'funded_value' => $B8,
-            'IOF' => $IOF_FINAC,
-            'TAC' => $B21,
-            'CET_PERC' => $cet_month,
-            'CET_YEAR' => $cet_year,
-            'tax_value' => number_format($total_cust - $B8, 2, '.', ''),
-            'TAC_API' => number_format($total_cust - $B8, 2, '.', ''),
-            'TAC_PERC' => number_format($B20, 2, '.', '')
-        );
-        return $result;
-    }
-
-    public function iugu_report($LR, $CET, $parcelas) {
-        $report = [
-            [
-                'LR' => ['01', '02', '04', '05', '07', '15', '39', '57', '24', '60', '62', '63', '65', '75', '88', '92', 'BL', 'BM', 'CF', 'FC', 'GD'],
-                'message' => 'Seu banco não autorizou a transação. Entre em contato com o banco emissor do seu cartão agora mesmo e informe que você permite a cobrança no estabelecimento IUGU*Livredigital ou no Livre.Digital, no valor de R$ ' . $CET . ', parcelado em ' . $parcelas . ' vezes. Feito isso, basta solicitar novamente em nosso site, que seu empréstimo será aprovado com sucesso!',
-                'email' => 'O valor solicitado com o Livre.digital não foi liberado pelo banco emissor do seu cartão de crédito, pois você não está habituado a utilizar seu cartão em nossa plataforma. <br><br> 
-                         <b>PARA LIBERAR O DINHEIRO:</b><br> Você só precisa solicitar a aprovação, ligue para seu banco e informe que deseja aprovação para a cobrança da empresa IUGU*Livredigital ou Livre.Digital, no valor de R$ ' . $CET . ', parcelado em ' . $parcelas . ' vezes. <br><br> 
-                        <b>Depois disso, basta solicitar novamente em nosso site que ele será aprovado!</b>',
-                'subject' => 'Falta pouco! - Livre.digital',
-                'destroy' => true
-            ],
-            [
-                'LR' => ['51', '70'],
-                'message' => 'Não há limite suficiente em seu cartão de crédito. Que tal escolher um valor menor? Solicite metade do valor agora e o restante em 24h, assim a aprovação será mais fácil.',
-                'email' => 'Recebemos a resposta do banco sobre o dinheiro solicitado. Não havia saldo suficiente para aprovar o valor escolhido por você, que tal um valor menor?<br><br>
-                                    Experimente solicitar metade do valor primeiro e amanhã solicitar o restante. 
-                                    Lembre que o <b>valor total</b> do crédito <b>(CET)</b> deve ser menor que o limite que você tem. 
-                                    Por exemplo, se você tem <b>R$ 3.000,00</b> de limite, você deve solicitar ao Livre um valor que seja menor que o <b>Custo Total (CET)</b> e que caiba nesse limite.',
-                'subject' => 'Saldo insuficiente - Livre.digital',
-                'destroy' => true
-            ],
-            [
-                'LR' => ['91', 'AA', 'AE', '19'],
-                'message' => 'Não foi possível aprovar sua solicitação devido a falta de comunicação com o banco emissor do cartão de crédito. Espere alguns minutos, depois volte a tela com os dados de seu cartão para serem novamente validados e tente novamente.',
-                'email' => 'O valor solicitado não foi aprovado pois não conseguimos contato com o banco. Mas não se preocupe, você só precisa aguardar alguns minutos e tentar de novo.  Lembre validar novamente os dados de seu cartão!<br><br> Antes, pedimos que faça contato com seu banco previamente para informa-lo que irá utilizar o cartão para a transação no valor R$ ' . $CET . ' para a empresa iugu*livre.digital ou Livre.Digital.',
-                'subject' => 'Tente novamente - Livre.digital',
-                'destroy' => false
-            ],
-            [
-                'LR' => ['BV'],
-                'message' => 'Utilize outro cartão de crédito, o cartão utilizado não tem validade.',
-                'email' => 'Identificamos que seu cartão está vencido e por isso o valor solicitado não pode ser aprovado. Mas não tem problema, você pode utilizar outro cartão de crédito para solicitar um novo valor. Ele só precisa ser da mesma titularidade da conta bancária.',
-                'subject' => 'Cartão vencido - Livre.digital',
-                'destroy' => false
-            ],
-            [
-                'LR' => ['KA', 'KE', '12'],
-                'message' => 'O valor não pode ser aprovado devido aos dados do cartão de crédito não estarem corretos.
-                                      Volte e atualize seus dados do cartão com atenção. Não utilize espaço ou caracteres especiais.',
-                'email' => 'O banco não autorizou a transação pois os dados do cartão estão incorretos, você só precisa refazer o pedido e preencher os dados corretamente. Atente-se para não adicionar espaços ou caracteres em locais que não são permitidos como no número do cartão, no seu nome e no CVV (Código de verificação de 3 dígitos que fica atrás do seu cartão)',
-                'subject' => 'Dados incorretos - Livre.digital',
-                'destroy' => false
-            ],
-            [
-                'LR' => ['N7'],
-                'message' => 'Volte e corrija seu o CVV (Código de verificação - Número de 3 dígitos na parte de trás do cartão, ou se for American Express, 4 digitos localizados na frente do cartão). Lembre-se de não utilizar espaços ou caracteres especiais.',
-                'email' => 'O valor solicitado não pode ser aprovado pois o Código de Verificação do seu cartão foi preenchido incorretamente. Você precisa utilizar o CVV código de verificação que fica atrás do cartão. Esse código tem 3 dígitos (ou 4, se for American Express). Se precisar de ajuda é só nos comunicar!',
-                'subject' => 'Seu CVV está incorreto - Livre.digital',
-                'destroy' => false
-            ],
-            [
-                'LR' => ['AC'],
-                'message' => 'Você utilizou seu cartão de DÉBITO. Para que seu pedido seja aprovado, volte e atualize os dados com seu cartão de CRÉDITO.',
-                'email' => 'Você utilizou seu cartão de <b>Débito</b>. Para que o pedido seja aprovado, é necessário utilizar seu cartão de <b>Crédito</b>. É importante lembrar que o valor final (Custo Total - CET) deve caber no seu limite de crédito, ou seja, ele deve ser menor que o limite do seu cartão de crédito.',
-                'subject' => 'Utilize seu cartão de CRÉDITO - Livre.digital',
-                'destroy' => false
-            ]
-        ];
-
-        $result = [];
-        $result['known'] = false;
-        foreach ($report as $type) {
-            if (in_array($LR, $type['LR'])) {
-                $result = $type;
-                $result['known'] = true;
-                break;
-            }
-        }
-
-        $email91 = 'O valor solicitado não pode ser aprovado pois não conseguimos a resposta do banco emissor do cartão de crédito.
-                      Mas não se preocupe, é só você tentar novamente em alguns minutos. Lembre validar novamente os dados de seu cartão!<br>\n<br>\n 
-                      Aproveite e faça contato com seu banco para informar que você aprova a transação feita pela iugu*livre.digital ou pela Livre.Digital, assim o empréstimo será liberado com muito mais facilidade!';
-        if ($LR == '91')
-            $result['email'] = $email91;
-        return $result;
-    }
-
-    //------------BRASPAG---COBRANÇA PARCELADA NO CARTÃO DE CRÉDITO-------------------------
-
+//--------BRASPAG---COBRANÇA PARCELADA NO CARTÃO DE CRÉDITO-------------------------
     public function BRASPAG_Authorize($param) { 
         /* É quando uma transação é autorizada e capturada no mesmo momento, isentando do lojista enviar uma confirmação posterior. */
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
         $merchant_key = $GLOBALS['sistem_config']->MERCHANT_KEY_BRASPAG;
-
         $ch = curl_init();
         $post_fields = "{\n   \"MerchantOrderId\":\"" . $param['order_id'] . "\",\n " .
                 "  \"Customer\":{\n   " .
@@ -5186,21 +5115,16 @@ class Welcome extends CI_Controller {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($ch, CURLOPT_POST, 1);
-
         $headers = array();
         $headers[] = "Content-Type: application/json";
         //$headers[] = "Merchantid: dabe7f53-fd8b-4e70-975b-9b3fcc9da8b7";
         //$headers[] = "Merchantkey: NMQCBOXFCCRZJQBXMWTWAEYPHNZFFDZFOROFZELT";
         $headers[] = "Merchantid: " . $merchant_id;
         $headers[] = "Merchantkey: " . $merchant_key;
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         $result_curl = curl_exec($ch);
         $parsed_response = json_decode($result_curl);
-
         curl_close($ch);
-
         if (is_array($parsed_response)) {
             $result['success'] = false;
             $result['code'] = $parsed_response[0]->Code;
@@ -5223,7 +5147,6 @@ class Welcome extends CI_Controller {
                 }
             }
         }
-
         return $result;
     }
 
@@ -5233,7 +5156,6 @@ class Welcome extends CI_Controller {
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
         $merchant_key = $GLOBALS['sistem_config']->MERCHANT_KEY_BRASPAG;
-
         $ch = curl_init();
         $post_fields = "{\n   \"MerchantOrderId\":\"" . $param['order_id'] . "\",\n " .
                 "  \"Customer\":{\n   " .
@@ -5270,21 +5192,16 @@ class Welcome extends CI_Controller {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($ch, CURLOPT_POST, 1);
-
         $headers = array();
         $headers[] = "Content-Type: application/json";
         //$headers[] = "Merchantid: dabe7f53-fd8b-4e70-975b-9b3fcc9da8b7";
         //$headers[] = "Merchantkey: NMQCBOXFCCRZJQBXMWTWAEYPHNZFFDZFOROFZELT";
         $headers[] = "Merchantid: " . $merchant_id;
         $headers[] = "Merchantkey: " . $merchant_key;
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         $result_curl = curl_exec($ch);
         $parsed_response = json_decode($result_curl);
-
         curl_close($ch);
-
         if (is_array($parsed_response)) {
             $result['success'] = false;
             $result['code'] = $parsed_response[0]->Code;
@@ -5307,7 +5224,6 @@ class Welcome extends CI_Controller {
                 }
             }
         }
-
         return $result;
     }
 
@@ -5317,7 +5233,6 @@ class Welcome extends CI_Controller {
             $result['captured'] = 100;
             return $result;
         }
-
         $result['captured'] = 0;
         //return $result;     //apagar para fazer retentativa
         //salir si provider_code diferente de 51 y de 5
@@ -5325,21 +5240,17 @@ class Welcome extends CI_Controller {
             return $result;
         $this->load->model('class/system_config');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-
         $PERC = $GLOBALS['sistem_config']->PERC_TO_TRY;
         $new_amount = number_format(($param['solicited'] / 100.0) * ($PERC / 100.0), 2, '.', '');
-        ;
         //recalcular para $PERC% do valor
         $financials = $this->calculating_enconomical_values($new_amount, $param["plots"]);
         $param['amount'] = $financials['total_cust_value'] * 100;
         $result = $this->BRASPAG_Authorize_with_Issuer_DATA($param);
-
         if ($result['success']) {
             $result['success'] = false;
             $result['captured'] = $PERC;
             $result['financials'] = $financials;
         }
-
         return $result;
     }
 
@@ -5349,7 +5260,6 @@ class Welcome extends CI_Controller {
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
         $merchant_key = $GLOBALS['sistem_config']->MERCHANT_KEY_BRASPAG;
-
         $ch = curl_init();
         $post_fields = "{\n   \"MerchantOrderId\":\"" . $param['order_id'] . "\",\n " .
                 "  \"Customer\":{\n   " .
@@ -5387,27 +5297,21 @@ class Welcome extends CI_Controller {
                 "     \"ExpirationDate\":\"" . $param['card_month'] . "/" . $param['card_year'] . "\",\n   " .
                 "     \"SecurityCode\":\"" . $param['card_cvc'] . "\",\n    " .
                 "     \"Brand\":\"" . $param['card_brand'] . "\"\n     }\n   }\n}";
-
         //curl_setopt($ch, CURLOPT_URL, "https://apisandbox.braspag.com.br/v2/sales/");
         curl_setopt($ch, CURLOPT_URL, "https://api.braspag.com.br/v2/sales/");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
         curl_setopt($ch, CURLOPT_POST, 1);
-
         $headers = array();
         $headers[] = "Content-Type: application/json";
 //        $headers[] = "Merchantid: dabe7f53-fd8b-4e70-975b-9b3fcc9da8b7";
 //        $headers[] = "Merchantkey: NMQCBOXFCCRZJQBXMWTWAEYPHNZFFDZFOROFZELT";
         $headers[] = "Merchantid: " . $merchant_id;
         $headers[] = "Merchantkey: " . $merchant_key;
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         $result_curl = curl_exec($ch);
         $parsed_response = json_decode($result_curl);
-
         curl_close($ch);
-
         if (is_array($parsed_response)) {
             $result['success'] = false;
             $result['code'] = $parsed_response[0]->Code;
@@ -5431,7 +5335,6 @@ class Welcome extends CI_Controller {
                 }
             }
         }
-
         return $result;
     }
 
@@ -5441,30 +5344,23 @@ class Welcome extends CI_Controller {
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
         $merchant_key = $GLOBALS['sistem_config']->MERCHANT_KEY_BRASPAG;
-
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: 0'));
         //curl_setopt($ch, CURLOPT_URL, "https://apisandbox.braspag.com.br/v2/sales/".$payment_id."/capture?amount=".$amount);
         curl_setopt($ch, CURLOPT_URL, "https://api.braspag.com.br/v2/sales/" . $payment_id . "/capture?amount=" . $amount);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array()));
-
         $headers = array();
         $headers[] = "Content-Type: application/json";
 //        $headers[] = "Merchantid: dabe7f53-fd8b-4e70-975b-9b3fcc9da8b7";
 //        $headers[] = "Merchantkey: NMQCBOXFCCRZJQBXMWTWAEYPHNZFFDZFOROFZELT";
         $headers[] = "Merchantid: " . $merchant_id;
         $headers[] = "Merchantkey: " . $merchant_key;
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         $result_curl = curl_exec($ch);
         $parsed_response = json_decode($result_curl);
-
         curl_close($ch);
-
         if (is_array($parsed_response)) {
             $result['success'] = false;
             $result['code'] = $parsed_response[0]->Code;
@@ -5491,35 +5387,27 @@ class Welcome extends CI_Controller {
         $GLOBALS['sistem_config'] = $this->system_config->load();
         $merchant_id = $GLOBALS['sistem_config']->MERCHANT_ID_BRASPAG;
         $merchant_key = $GLOBALS['sistem_config']->MERCHANT_KEY_BRASPAG;
-
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: 0'));
         //curl_setopt($ch, CURLOPT_URL, "https://apisandbox.braspag.com.br/v2/sales/".$payment_id."/void?amount=".$amount);
         curl_setopt($ch, CURLOPT_URL, "https://api.braspag.com.br/v2/sales/" . $payment_id . "/void?amount=" . $amount);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array()));
-
         $headers = array();
         $headers[] = "Content-Type: application/json";
         //$headers[] = "Merchantid: dabe7f53-fd8b-4e70-975b-9b3fcc9da8b7";
         //$headers[] = "Merchantkey: NMQCBOXFCCRZJQBXMWTWAEYPHNZFFDZFOROFZELT";
         $headers[] = "Merchantid: " . $merchant_id;
         $headers[] = "Merchantkey: " . $merchant_key;
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         $result_curl = curl_exec($ch);
         $parsed_response = json_decode($result_curl);
-
         curl_close($ch);
-
         $result['success'] = false;
         if ($parsed_response->ReasonCode == 0 && ($parsed_response->Status == 10 || $parsed_response->Status == 11))
             $result['success'] = true;
         $result['message'] = $parsed_response->ProviderReturnMessage;
-
         return $result;
     }
 
@@ -5529,9 +5417,7 @@ class Welcome extends CI_Controller {
         $this->load->model('class/system_config');
         $this->load->model('class/transaction_model');
         $GLOBALS['sistem_config'] = $this->system_config->load();
-
         $transaction = $this->transaction_model->get_client('id', $id)[0];
-
         $param = [
             'order_id' => time(),
             'name' => $_SESSION['b_card_name'],
@@ -5555,7 +5441,6 @@ class Welcome extends CI_Controller {
             'provider' => 'Cielo30',
             'solicited' => $transaction['amount_solicited']
         ];
-
         //$result = $this->BRASPAG_Authorize_with_Issuer_DATA($param);
         if (!$_SESSION['used_method'])
             $result = $this->BRASPAG_Authorize_with_Issuer_DATA_and_Search($param);
@@ -5566,7 +5451,6 @@ class Welcome extends CI_Controller {
                 'payment_id' => $_SESSION[payment_manager::NAME_BRASPAG]['payment_id']
             ];
         }
-
         if ($result['success'] && $result['payment_id']) {
             $result_capture = $this->BRASPAG_Capture($result['payment_id'], $param['amount']);
             if ($result_capture['success'])
@@ -5659,18 +5543,15 @@ class Welcome extends CI_Controller {
     public function do_payment($id, $payment_method) {
         $this->load->model('class/payment_manager');
         $result = ['success' => false, 'message' => 'Erro tentando passar o cartão'];
-
         if ($payment_method == payment_manager::IUGU)
             $result = $this->do_payment_iugu($id);
         else
         if ($payment_method == payment_manager::BRASPAG)
             $result = $this->do_braspag_payment($id);
-
         return $result;
     }
     
-    
-    //-------VIEWS FUNCTIONS--------------------------------    
+//-------TEST FUNCTIONS--------------------------------    
     public function test_cr(){
         $this->load->model('class/Crypt');
         echo $this->Crypt->crypt('1');

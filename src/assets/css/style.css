@@ -64,6 +64,10 @@
   cursor: pointer;
 }
 
+#conferir{
+      text-align:right;
+  }
+
 @media (max-width: 768px) {    
   .upl {
     text-align:center;
@@ -71,6 +75,10 @@
   
   .res {
     margin-left: 50px;
+  }
+  
+  #conferir{
+      text-align:center;
   }
   
 }
