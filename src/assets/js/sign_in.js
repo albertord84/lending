@@ -17,27 +17,15 @@ $(document).ready(function () {
         phone_number = validate_empty('#phone_number');
         var cpf_value=$('#cpf').val(); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
         cpf = validate_cpf(cpf_value, '#cpf', '^[0-9]{11}$');
-        if(!name){
-            modal_alert_message("Nome inválido");
-            return false;
-        }
-        if(!email){
-            modal_alert_message("Email inválido");
-            return false;
-        }
-        if(!phone_number){
-            modal_alert_message("Telefone inválido");
-            return false;
-        }
-        if(!cpf){
-            modal_alert_message("CPF inválido");
-            return false;
-        }
+        if(!name){ modal_alert_message("Nome inválido"); return false;}
+        if(!email){ modal_alert_message("Email inválido"); return false;}
+        if(!phone_number){ modal_alert_message("Telefone inválido"); return false;}
+        if(!cpf){ modal_alert_message("CPF inválido"); return false;}
         $.ajax({
             url: base_url+'index.php/welcome/request_sms_code',
             data: {
-                'phone_ddd':$('#name').val(),
-                'phone_ddd':$('#email').val(),
+                'name':$('#name').val(),
+                'email':$('#email').val(),
                 'phone_number':$('#phone_number').val(),
                 'cpf': $('#cpf').val(),
                 'key':key
@@ -59,7 +47,23 @@ $(document).ready(function () {
         });        
     });
     
-    //Passo 1.2. Conferir codigo de verificação de telefone
+    //Passo 1.2. Requerir novo codigo de verificação de telefone
+    $("#lnk_code_resend").click(function () {
+        $.ajax({
+            url: base_url+'index.php/welcome/request_sms_code',                
+            data: {
+                'phone_number': $('#phone_number').val(),
+                'key':key
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                modal_alert_message(response['message']);
+            }
+        });
+    });
+        
+    //Passo 1.3. Conferir codigo de verificação de telefone
     $("#btn_code_verify").click(function () {
         phone_sms_code  = validate_element('#phone_sms_code', '^[0-9]{6}$');
         if(!phone_sms_code){
@@ -70,15 +74,18 @@ $(document).ready(function () {
             url: base_url+'index.php/welcome/verify_sms_code',                
             data: {
                 'input_sms_code_confirmation':$('#phone_sms_code').val(),
+                'name':$('#name').val(),
+                'email':$('#email').val(),
+                'phone_number':$('#phone_number').val(),
+                'cpf': $('#cpf').val(),
                 'key':key
             },
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if(response['success']){
-                    save_personal_datas();
-                    //$('.check1').toggle("hide");
-                    //$('.check2').toggle("slow");
+                if(response['success']){                    
+                    $('.check1').toggle("hide");
+                    $('.check2').toggle("slow");
                 } else{
                     modal_alert_message(response['message']);
                 }
@@ -86,105 +93,87 @@ $(document).ready(function () {
         });
     });
     
-    //Passo 1.3. Requerir novo codigo de verificação de telefone
-    $("#lnk_code_resend").click(function () {
-        $.ajax({
-            url: base_url+'index.php/welcome/request_sms_code',                
-            data: {
-                'phone_ddd':$('#phone_ddd').val(),
-                'phone_number': $('#phone_number').val(),
-                'key':key
-            },
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                if(response['success']){
-                    modal_success_message("Código reenviado satisfatóriamente");
-                } else{
-                    modal_alert_message(response['message']);
-                }
-            }
-        });
-    });
-    
-    //Passo 2. Enviar dados do endereço
-    function save_personal_datas() {
-        alert($('#cpf').val());
-        return false;
-        var cpf_value=$('#cpf').val();
-        cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('.',''); cpf_value = cpf_value.replace('-','');
-        name  = validate_element('#name', '^[a-zA-Zñçâêôûîáéíóúàãẽõ ]{6,150}$');
-        email = validate_element('#email', '^[a-zA-Z0-9\._-]+@([a-zA-Z0-9-]{2,}[.])*[a-zA-Z]{2,10}$');
-        phone_ddd = validate_element('#phone_ddd', '^[0-9]{2}$');
-        phone_number = validate_element('#phone_number', '^[0-9]{8,9}$');
-        cpf = validate_cpf(cpf_value, '#cpf', '^[0-9]{11}$');
-        cep = validate_element('#cep', '^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$');
-        street_address = validate_empty('#street_address');
-        number_address = validate_element('#number_address', '^[0-9]{1,10}$');
-        complement = validate_element('#complement_number_address', '^$|^[a-zA-Z0-9 -\.]+$');
-        city = validate_element('#city_address', '^[a-zA-Z0-9 ñçâêôûîáéíóúàãẽõ]{1,50}$');
-        state = validate_element('#state_address', '^[a-zA-Z]{2}$'); 
-        var upper_name = $('#name').val(); upper_name = upper_name.toUpperCase();
-        if(name!=="false" && email && phone_ddd && phone_number && cpf && cep && street_address && number_address && city && state && complement){                                
+    //Passo 2.1 Verificar e carregar CEP
+    $("#verify_cep").click(function () {
+        if(validate_element("#cep",'^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$')){
             $.ajax({
-                url: base_url + 'index.php/welcome/insert_datas_steep_1',
-                data:{
-                    'name': upper_name,
-                    'email': $('#email').val(),
-                    'phone_ddd': $('#phone_ddd').val(),
-                    'phone_number': $('#phone_number').val(),
-                    'cpf': cpf_value,
+                url: base_url+'index.php/welcome/get_cep_datas',                
+                data: {
                     'cep': $('#cep').val(),
-                    'street_address': $('#street_address').val(),
-                    'number_address': $('#number_address').val(),
-                    'complement_number_address': $('#complement_number_address').val(),
-                    'city_address': $('#city_address').val(),
-                    'state_address': $('#state_address').val(),
-                    'district': $('#district').val(),
-                    'utm_source': typeof getUrlVars()["utm_source"] !== 'undefined' ? getUrlVars()["utm_source"] : 'NULL',                   
-//                    'utm_campaign': typeof getUrlVars()["utm_campaign"] !== 'undefined' ? getUrlVars()["utm_campaign"] : 'NULL',                   
-//                    'utm_content': typeof getUrlVars()["utm_content"] !== 'undefined' ? getUrlVars()["utm_content"] : 'NULL',                   
-                    'key':key,
+                    'key':key
                 },
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
-                    if (response['success']) {
-                        set_global_var('pk',response['pk']);
-                        $('#titular_cpf').val($('#cpf').val());
-                        $('#titular_name').val(upper_name);
-                        $('#credit_card_name').val(upper_name);
-                        a=upper_name;
-                        $('#first_name').text(upper_name.split(' ')[0]);
-                        $('li[id=li_complete_name]').text(upper_name);
-                        $('li[id=li_email]').text($('#email').val());        
-                        $('li[id=li_phone]').text( "("+$('#phone_ddd').val()+")"+$('#phone_number').val() );        
-                        $('li[id=li_cpf]').text($('#cpf').val());
-                        $('li[id=li_cep]').text($('#cep').val());
-                        $('li[id=li_street]').text($('#street_address').val());
-                        if($('#complement_number_address').val()!="")
-                            $('li[id=li_number_address]').text($('#number_address').val()+" / APT "+$('#complement_number_address').val());
-                        else
-                            $('li[id=li_number_address]').text($('#number_address').val());        
-                        $('li[id=li_city_state]').text($('#city_address').val()+" / "+$('#state_address').val());
-                        $('.check1').toggle("hide");
-                        $('.check2').toggle("slow");                    
-                    }
-                    else{
-                        modal_alert_message(response['message']);
-                    }
-                },
-                error: function (xhr, status) {
-                    modal_alert_message('Internal error in Steep 1');
+                    if(response['success']){
+                        response = response['datas'];
+                        $('#street_address').val(response['logradouro']);
+                        $('#city_address').val(response['localidade']);
+                        $('#state_address').val(response['uf']);                        
+                        $('#address_container').css({"visibility":"visible", "display":"block"}); 
+                        $('#btn_steep_1').removeAttr("disabled");
+                        $('#district').val(response['bairro']);
+                    } else
+                        modal_alert_message('CEP inválido');
+                    $('#wait').hide();
                 }
-            });            
+            });
         } else{
-            if(name==="false")
-                modal_alert_message("O nome não pode conter acentos, ñ ou ç. Por favor, verifique seus dados");
-            else
-                modal_alert_message("Erro nos dados fornecidos. Por favor, verifique.");
-        } 
-    }
+            modal_alert_message('CEP inválido');
+        }
+    });
+    
+    //Passo 2.2 Enviar todos os dados da transação    
+    $("#btn_steep_2_next").click(function () {
+        cep = validate_element('#cep', '^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$');
+        street_address = validate_empty('#street_address');
+        number_address = validate_element('#number_address', '^sn|s/n|[0-9]{1,10}$');
+        complement = validate_element('#complement_number_address', '^$|^[a-zA-Z0-9 -\.]+$');
+        city = validate_element('#city_address', '^[a-zA-Z0-9 ñçâêôûîáéíóúàãẽõ]{1,50}$');
+        state = validate_element('#state_address', '^[a-zA-Z]{2}$'); 
+        if(!cep){ modal_alert_message("CEP inválido"); return false;}
+        if(!street_address){ modal_alert_message("Endereço inválido"); return false;}
+        if(!number_address){ modal_alert_message("Número inválido"); return false;}
+        if(!complement){ modal_alert_message("Complemento inválido"); return false;}
+        if(!city){ modal_alert_message("Cidade inválida"); return false;}
+        if(!state){ modal_alert_message("Unidade Federativa inválida"); return false;}        
+        var upper_name = $('#name').val(); upper_name = upper_name.toUpperCase();
+        $.ajax({
+            url: base_url + 'index.php/welcome/insert_datas_steep_1',
+            data:{
+                'name': upper_name,
+                'email': $('#email').val(),
+                'phone_number': $('#phone_number').val(),
+                'cpf': $('#cpf').val(),
+                'cep': $('#cep').val(),
+                'street_address': $('#street_address').val(),
+                'number_address': $('#number_address').val(),
+                'complement_number_address': $('#complement_number_address').val(),
+                'city_address': $('#city_address').val(),
+                'state_address': $('#state_address').val(),
+                'district': $('#district').val(),
+                'utm_source': typeof getUrlVars()["utm_source"] !== 'undefined' ? getUrlVars()["utm_source"] : 'NULL',                   
+                //'utm_campaign': typeof getUrlVars()["utm_campaign"] !== 'undefined' ? getUrlVars()["utm_campaign"] : 'NULL',                   
+                //'utm_content': typeof getUrlVars()["utm_content"] !== 'undefined' ? getUrlVars()["utm_content"] : 'NULL',                   
+                'key':key,
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response['success']) {
+                    set_global_var('pk',response['pk']);                    
+                    $('.check1').toggle("hide");
+                    $('.check2').toggle("slow");                    
+                }
+                else{
+                    modal_alert_message(response['message']);
+                }
+            },
+            error: function (xhr, status) {
+                modal_alert_message('Internal error in Steep 1');
+            }
+        });
+    });
     
     //Passo 2. Voltar ao passo 1
     $("#btn_steep_2_prev").click(function () {
@@ -194,7 +183,7 @@ $(document).ready(function () {
     });
     
     //Passo 3. Enviar dados do cartão
-    $("#btn_steep_2_next").click(function () {
+    $("#btn_steep_3_next").click(function () {
         $('.check2').toggle("hide");
         $('.check3').toggle("slow");
         return false;
@@ -206,10 +195,8 @@ $(document).ready(function () {
                 || ($('#credit_card_name').val()).toUpperCase()==='AMEX') {            
             modal_alert_message("Alerta! Informe seu nome no cartão e não a bandeira dele.");
         }
-        
         var number = validate_element('#credit_card_number', "^[0-9]{10,20}$"); 
         //var brand = Iugu.utils.getBrandByCreditCardNumber($('#credit_card_number').val());//
-        
         var brand = 'UNKNOW';
         var brand_detected = false;
         // Visa card: starting with 4, length 13 or 16 digits.
@@ -698,35 +685,7 @@ $(document).ready(function () {
         });
     }
     
-    $("#verify_cep").click(function () {
-        if(validate_element("#cep",'^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$')){
-            $('#wait').show();
-            $.ajax({
-                url: base_url+'index.php/welcome/get_cep_datas',                
-                data: {
-                    'cep': $('#cep').val(),
-                    'key':key
-                },
-                type: 'POST',
-                dataType: 'json',
-                success: function (response) {
-                    if(response['success']){
-                        response = response['datas'];
-                        $('#street_address').val(response['logradouro']);
-                        $('#city_address').val(response['localidade']);
-                        $('#state_address').val(response['uf']);                        
-                        $('#address_container').css({"visibility":"visible", "display":"block"}); 
-                        $('#btn_steep_1').removeAttr("disabled");
-                        $('#district').val(response['bairro']);
-                    } else
-                        modal_alert_message('CEP inválido');
-                    $('#wait').hide();
-                }
-            });
-        } else{
-            modal_alert_message('CEP inválido');
-        }
-    });
+    
         
     $("#cartao_old").change(function (evt) {
         var files = evt.target.files; 
@@ -1207,6 +1166,7 @@ $(function() {
         $('#phone_number').val("(21) 96591-3089");
         $('#cpf').val("694.171.470-05");
         $('#phone_sms_code').val("123123");
+        $('#cep').val("24.020-206");
     }
     
     my_init_steep_1();

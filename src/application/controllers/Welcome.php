@@ -405,11 +405,7 @@ class Welcome extends CI_Controller {
         ['used_method'] : INT in [0,1,2..., MAX_NUM_PAYMENTS]
 
     */
-    /* La funcion de pagamento debe devolver un arreglo con la siguiente estructura:
-        [success]
-    */
-    
-    //Passo 1.1 Requerir codigo de verificação de telefone e enviar dados pessoais    
+    //Passo 1.1 e 1.2 Requerir codigo de verificação de telefone e enviar dados pessoais    
     public function request_sms_code() {
         $datas = $this->input->post();
         $phone_number = $this->unmask_phone_number($datas['phone_number']);
@@ -420,14 +416,15 @@ class Welcome extends CI_Controller {
                 //---------------------------------
                 $random_code = 123123;
                 $response['success'] = true;
-                //$random_code = rand(100000, 999999); 
-                //$message = $random_code;
-                //$response = $this->send_sms_kaio_api($phone_country_code, $phone_number, $message);
+//                $random_code = rand(100000, 999999); 
+//                $message = $random_code;
+//                $response = $this->send_sms_kaio_api($phone_country_code, $phone_number, $message);
                 //---------------------------------
                 if ($response['success']) {
                     $_SESSION['client_datas']['sms_verificated'] = $datas['phone_number'];
                     $_SESSION['client_datas']['random_sms_code'] = $random_code;
                     $result['success'] = true;
+                    $result['message'] = "Código reenviado com sucesso";
                 } else {
                     $result['success'] = false;
                     $result['message'] = $response['message'];
@@ -443,12 +440,13 @@ class Welcome extends CI_Controller {
         echo json_encode($result);
     }
     
-    //Passo 1.2. Conferir codigo de verificação de telefone
+    //Passo 1.3. Conferir codigo de verificação de telefone
     public function verify_sms_code() {
         if ($this->input->post()['key'] === $_SESSION['key']) {
             if ($this->input->post()['input_sms_code_confirmation'] == $_SESSION['client_datas']['random_sms_code']) {
                 $_SESSION['client_datas']['verified_phone'] = $_SESSION['client_datas']['sms_verificated'];
                 $_SESSION['client_datas']['sms_verificated'] = true;
+                $this->save_new_leads($this->input->post());
                 $result['success'] = true;
             } else {
                 $result['success'] = false;
@@ -459,6 +457,11 @@ class Welcome extends CI_Controller {
             $result['message'] = 'Access violation';
         }
         echo json_encode($result);
+    }
+    
+    public function save_new_leads($datas){
+        $this->load->model('class/transaction_model');
+        $this->transaction_model->save_new_leads($datas);
     }
 
     public function is_possible_steep_1_for_this_client($datas) {

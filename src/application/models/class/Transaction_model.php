@@ -386,7 +386,36 @@
             } catch (Exception $exc) {
                 return 0;
             }
-        }  
+        }
+        
+        public function select_new_leads($datas) {
+            try {
+                $this->db->select('*');
+                $this->db->from('lendingdb.leads');
+                $this->db->where('email',$datas['email']);
+                $this->db->or_where('phone_number',$datas['phone_number']);
+                return $this->db->get()->result_array()[0];
+            } catch (Exception $exc) {
+                return 0;
+            }
+        }
+        
+        public function save_new_leads($datas) {
+            try {
+                $datas_tmp=$datas;
+                unset($datas_tmp['input_sms_code_confirmation']);
+                unset($datas_tmp['phone_sms_code']);
+                unset($datas_tmp['key']);
+                $id_row = 0;
+                if(!$this->select_new_leads($datas)){
+                    $this->db->insert('lendingdb.leads',$datas_tmp);
+                    $id_row=$this->db->insert_id();
+                }
+                return $id_row;
+            } catch (Exception $exc) {
+                return 0;
+            }
+        }
                 
     }
 ?>
