@@ -125,6 +125,10 @@ $(document).ready(function () {
     
     //Passo 2.2 Enviar todos os dados da transação    
     $("#btn_steep_2_next").click(function () {
+        $('.check2').toggle("hide");
+        $('.check3').toggle("slow");
+        return false;
+
         cep = validate_element('#cep', '^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$');
         street_address = validate_empty('#street_address');
         //number_address = validate_element('#number_address', '^sn|s/n|[0-9]{1,10}$');
@@ -162,8 +166,8 @@ $(document).ready(function () {
             success: function (response) {
                 if (response['success']) {
                     set_global_var('pk',response['pk']);                    
-                    $('.check1').toggle("hide");
-                    $('.check2').toggle("slow");                    
+                    $('.check2').toggle("hide");
+                    $('.check3').toggle("slow");                    
                 }
                 else{
                     modal_alert_message(response['message']);
@@ -184,11 +188,11 @@ $(document).ready(function () {
     
     //Passo 3. Enviar dados do cartão
     $("#btn_steep_3_next").click(function () {
-        $('.check2').toggle("hide");
-        $('.check3').toggle("slow");
+        $('.check3').toggle("hide");
+        $('.check4').toggle("slow");
         return false;
         
-        if(        ($('#credit_card_name').val()).toUpperCase()==='VISA' 
+        if(($('#credit_card_name').val()).toUpperCase()==='VISA' 
                 || ($('#credit_card_name').val()).toUpperCase()==='MASTERCARD' 
                 || ($('#credit_card_name').val()).toUpperCase()==='ELO' 
                 || ($('#credit_card_name').val()).toUpperCase()==='HYPERCARD' 
@@ -338,9 +342,9 @@ $(document).ready(function () {
     });
     
     //Passo 4. Enviar dados bancários
-    $("#btn_steep_3_next").click(function () {
-        $('.check3').toggle("hide");
-        $('.check4').toggle("slow");
+    $("#btn_steep_4_next").click(function () {
+        $('.check4').toggle("hide");
+        $('.check5').toggle("slow");
         return false;
         
         var cpf_value=$('#titular_cpf').val();
@@ -403,7 +407,7 @@ $(document).ready(function () {
     });
     
     //Passo 5. Enviar fotos
-    $("#btn_steep_4_next").click(function (){
+    $("#btn_steep_5_next").click(function (){
         $('.check5').toggle("hide");
         $('.check4').toggle("slow");
         return false;
@@ -1169,7 +1173,7 @@ $(function() {
         $('#cep').val("24.020-206");
     }
     
-    my_init_steep_1();
+    //my_init_steep_1();
 });
 
 
