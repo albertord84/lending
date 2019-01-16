@@ -149,7 +149,7 @@
                                     <h4 class="subheading">Adicione seus dados e documentos.</h4>
                                 </div>
                               <div class="timeline-body">
-                                    <p class="text-muted">Voce fornece digitalmente os dados pessoais, dados do cartão de crédito, dados bancários e documentos de identificação para formalizar-mos o empréstimo. Por último, você assina digitalmente o contrato.</p>
+                                    <p class="text-muted">Voce fornece digitalmente os dados pessoais, dados do cartão de crédito, dados bancários e documentos de identificação para formalizarmos o empréstimo. Por último, você assina digitalmente o contrato.</p>
                               </div>
                             </div>
                         </li>
