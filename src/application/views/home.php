@@ -75,14 +75,16 @@
                 <div class="intro-lead-in">Solicite seu empréstimo aqui</div>
                 <div class="intro-heading text-uppercase">Rápido e sem burocracia</div>
                 <div class="intro-lead-in-in">Atrelado ao seu cartão de crédito</div>
-                <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Simule agora</a>
+                <div class="centralize-in-responsive">                    
+                    <a id="simule-now-1" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Simule agora</a>
+                </div>
                 
             </div>
         </div>
     </header>
     
     <section class="bg-light" id="team">
-        <div class="row text-center">
+        <div class="row text-center padding-in-responsive">
             <div class="col-md-4">
                 <span class="fa-stack fa-4x">
                     <i class="fas fa-circle fa-stack-2x text-primary"></i>
@@ -181,7 +183,7 @@
                         </li>
                         <li class="timeline-inverted">                           
                             <div class="timeline-image">
-                                <a id="simule-now-2" href="#services" style="color:white"><h4>Simule seu<br>empréstimo <br>agora!!</h4></a>
+                                <a id="simule-now-2" href="#services" style="color:white"><h4>Simule e contrate!!</h4></a>
                             </div>
                         </li>
                     </ul>
@@ -256,7 +258,7 @@
                             </script>
                         </div>                        
                     </div>
-                    <div class="row">
+                    <div class="row centralize-in-responsive">
                         <div class="col-lg-4"></div>
                         <div class="col-lg-4 text-rigth">
                             <br><button id="btn_contratar_emprestimo" class="btn btn-primary btn-xl text-uppercase" type="submit">Solicitar</button>

@@ -228,7 +228,7 @@
                                         <p class="help-block text-danger"></p>
                                     </div>
                                     <div class="col-lg-6 form-group">
-                                        <input id="number_address" class="form-control" type="text" placeholder="Número" required="required" data-validation-required-message="Número ou S/N.">
+                                        <input id="number_address" class="form-control" type="text" placeholder="Número">
                                     </div>
                                 </div>
                                 <div class="row">

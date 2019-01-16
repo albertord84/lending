@@ -127,13 +127,13 @@ $(document).ready(function () {
     $("#btn_steep_2_next").click(function () {
         cep = validate_element('#cep', '^[0-9]{8}|[0-9]{2}.[0-9]{3}-[0-9]{3}|[0-9]{5}-[0-9]{3}$');
         street_address = validate_empty('#street_address');
-        number_address = validate_element('#number_address', '^sn|s/n|[0-9]{1,10}$');
+        //number_address = validate_element('#number_address', '^sn|s/n|[0-9]{1,10}$');
         complement = validate_element('#complement_number_address', '^$|^[a-zA-Z0-9 -\.]+$');
         city = validate_element('#city_address', '^[a-zA-Z0-9 ñçâêôûîáéíóúàãẽõ]{1,50}$');
         state = validate_element('#state_address', '^[a-zA-Z]{2}$'); 
         if(!cep){ modal_alert_message("CEP inválido"); return false;}
         if(!street_address){ modal_alert_message("Endereço inválido"); return false;}
-        if(!number_address){ modal_alert_message("Número inválido"); return false;}
+        //if(!number_address){ modal_alert_message("Número inválido"); return false;}
         if(!complement){ modal_alert_message("Complemento inválido"); return false;}
         if(!city){ modal_alert_message("Cidade inválida"); return false;}
         if(!state){ modal_alert_message("Unidade Federativa inválida"); return false;}        

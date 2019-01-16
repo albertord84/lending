@@ -77,9 +77,29 @@
     margin-left: 50px;
   }
   
+  .centralize-in-responsive {
+    text-align: center;
+  }
+  .padding-in-responsive {
+    padding-left: 25px;
+    padding-right:25px;
+  }
+  
   #conferir{
       text-align:center;
   }
+  
+  #simule-now-2 > h4{
+      padding-top: 13px;
+      font-size: 0.8em;
+  }
+  
+  .timeline > li .timeline-image{    
+        width:95px; 
+        height:95px; 
+    }
+
+
   
 }
 
