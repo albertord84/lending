@@ -1173,7 +1173,7 @@ $(function() {
         $('#cep').val("24.020-206");
     }
     
-    //my_init_steep_1();
+    my_init_steep_1();
 });
 
 
